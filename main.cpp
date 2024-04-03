@@ -4,6 +4,7 @@ using namespace std;
 
 int main()
 {
+    //test commit
     cout << "Usage:\n"
          << "\tIndex all files in <directory> and store the index in one or several files:\n"
          << "\tsupersearch index <directory>\n\n"
