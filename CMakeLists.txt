@@ -12,6 +12,8 @@ add_compile_options(-Wall -Wextra -pedantic)
 
 add_executable(rapidJSONExample rapidJSONExample.cpp)
 add_executable(supersearch main.cpp)
+add_executable(test_AVLTree test_AVLTree.cpp)
+add_test(NAME TestAVL COMMAND test_AVLTree)
 
 # this makes sure we also link rapidjson
 target_include_directories(rapidJSONExample PRIVATE rapidjson/)
