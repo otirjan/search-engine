@@ -2,7 +2,7 @@
 #include "catch2/catch.hpp"
 #include "AVLTree.h"
 
-TEST_CASE("")
+TEST_CASE(" ")
 {
 
 }
