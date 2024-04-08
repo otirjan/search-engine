@@ -15,7 +15,7 @@ using namespace std;
  * @brief This implementation is based on the unbalanced binary search tree and adds hight information
  * to the nodes and a balance function to perform the needed rotations.
  */
-template <typename Comparable>
+template <typename Comparable, typename Value>
 class AvlTree
 {
 private:
@@ -24,7 +24,7 @@ private:
         //the word stored in each node
         Comparable key;
         //map that will hold filepaths to documents (templated data type) and the frequency of the given word (size_t because no frequency should be negative); this is the node's data
-        std::map<Comparable, size_t> data;
+        std::map<Value, size_t> data;
         //pointer to the node's left child
         AvlNode *left;
         //pointer to the node's right child
@@ -32,7 +32,7 @@ private:
         //height of the node, used for balancing
         int height; // Height of the node used for balancing
         //default constructor for an AVL node
-        AvlNode(const Comparable& k, const std::map<Comparable, size_t>& d)
+        AvlNode(const Comparable& k, const std::map<Value, size_t>& d)
         {
             //setting the node's key equal to the word passed into the constructor
             key = k;
@@ -123,7 +123,7 @@ public:
     /**
      * Insert x into the tree; duplicates are ignored.
      */
-    void insert(const Comparable &x, const std::map<Comparable, size_t>& d)
+    void insert(const Comparable &x, const std::map<Value, size_t>& d)
     {
         insert(x, d, root);
     }
@@ -157,7 +157,7 @@ private:
      * t is the node that roots the subtree.
      * Set the new root of the subtree.
      */
-    void insert(const Comparable &x, const std::map<Comparable, size_t>& d, AvlNode *&t)
+    void insert(const Comparable &x, const std::map<Value, size_t>& d, AvlNode *&t)
     {
         //if the tree is empty
         if (t == nullptr)
