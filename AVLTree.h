@@ -128,14 +128,6 @@ public:
         insert(x, d, root);
     }
 
-    /**
-     * Remove x from the tree. Nothing is done if x is not found.
-     */
-    void remove(const Comparable &x)
-    {
-        remove(x, root);
-    }
-
 #ifdef DEBUG
     /**
      * Check if the tree is balanced and that the height of the nodes is correct.
