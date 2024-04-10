@@ -95,6 +95,14 @@ public:
         return contains(x, root);
     }
 
+     /**
+     *
+     */
+    std::map<Value, size_t> find(const Comparable &x) const
+    {
+        return find(x, root);
+    }
+
     /**
      * Test if the tree is logically empty.
      * Return true if empty, false otherwise.
@@ -197,6 +205,22 @@ private:
             return contains(x, t->left);
         else
             return contains(x, t->right);
+    }
+
+        /**
+     * Internal method to check if x is found in a subtree rooted at t.
+     */
+    std::map<Value, size_t> find(const Comparable &x, AvlNode *t) const
+    {
+        if (t == nullptr)
+            return std::map<Value,size_t>();
+
+        if (x == t->key)
+            return t->data; // Element found.
+        else if (x < t->key)
+            return find(x, t->left);
+        else
+            return find(x, t->right);
     }
 
     /**
