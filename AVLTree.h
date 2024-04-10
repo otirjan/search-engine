@@ -190,13 +190,6 @@ private:
      * t is the node that roots the subtree.
      * Set the new root of the subtree.
      */
-    void remove(const Comparable &x, AvlNode *&t)
-    {
-        throw std::runtime_error("Not implemented yet!");
-        // same as in a binary search tree
-
-        // don't forget to balance the AVL tree after the deletion!
-    }
 
     /**
      * Internal method to check if x is found in a subtree rooted at t.
