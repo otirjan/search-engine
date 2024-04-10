@@ -32,7 +32,7 @@ private:
         //height of the node, used for balancing
         int height; // Height of the node used for balancing
         //default constructor for an AVL node
-        AvlNode(const Comparable& k, const std::map<Value, size_t>& d)
+        AvlNode(const Comparable& k, std::map<Value, size_t>& d)
         {
             //setting the node's key equal to the word passed into the constructor
             key = k;
@@ -123,7 +123,7 @@ public:
     /**
      * Insert x into the tree; duplicates are ignored.
      */
-    void insert(const Comparable &x, const std::map<Value, size_t>& d)
+    void insert(const Comparable &x, std::map<Value, size_t>& d)
     {
         insert(x, d, root);
     }
@@ -157,7 +157,7 @@ private:
      * t is the node that roots the subtree.
      * Set the new root of the subtree.
      */
-    void insert(const Comparable &x, const std::map<Value, size_t>& d, AvlNode *&t)
+    void insert(const Comparable &x, std::map<Value, size_t>& d, AvlNode *&t)
     {
         //if the tree is empty
         if (t == nullptr)
@@ -170,9 +170,9 @@ private:
 
         //recursive call of insert in order to set the node in its place within the tree
         if (x < t->key)
-            insert(x, t->left);
+            insert(x, d, t->left);
         else if (t->key < x)
-            insert(x, t->right);
+            insert(x, d, t->right);
         else
         {
             // Duplicate; do nothing

@@ -7,7 +7,7 @@
 TEST_CASE("testing insert")
 {
     //creating an instance of the avl tree
-    AvlTree<std::string, std::map<std::string, size_t>> exampleTree;
+    AvlTree<std::string,std::string> exampleTree;
 
     SECTION("inserting")
     {
