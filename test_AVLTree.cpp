@@ -11,13 +11,11 @@
         - copy constructor
         - deconstructor
         - copy assignment
-        - contains
+        - contains 
         - isEmpty()
         - prettyPrintTree()
         - makeEmpty()
         - insert()
-        
-        * I want to write a function or somehow figure out how to check that the frequencies in a map are correct
 */
 
 TEST_CASE("testing insert")
@@ -27,20 +25,21 @@ TEST_CASE("testing insert")
 
     SECTION("inserting, checking to see if the values in the map are correct")
     {
-
+       //creating a sample maps, which will hold a filepath (string) and a frequency
        std::map<std::string, size_t> value1 = {{"filepathEx", 2}, {"filepathEx2", 6}};
+       //creating a sample map called value2, which will hold a filepath (string) and a frequency
        std::map<std::string, size_t> value2 = {{"filepathEx3", 8}, {"filepathEx4", 1}};
 
+        //inserting node into AVL tree
         exampleTree.insert("hello", value1);
         exampleTree.insert("world", value2);
 
-
+        //checking whether the nodes exist within the tree
         REQUIRE(exampleTree.contains("hello") == true);
         REQUIRE(exampleTree.contains("world") == true);
 
+        //checking the node hello's frequency value, which is associated with a key (filepath) in a map
         REQUIRE(exampleTree.find("hello")["filepathEx"] == 2);
-
-        //write find which will return a map. then i can access the map using the key which will be the filename, or loop over
 
 
 
