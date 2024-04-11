@@ -23,8 +23,8 @@ private:
     {
         //the word stored in each node
         Comparable key;
-        //map that will hold filepaths to documents (templated data type) and the frequency of the given word (size_t because no frequency should be negative); this is the node's data
-        std::map<Value, size_t> data;
+        //map that will associate frequency values with filepaths; this is the node's data
+        std::map<size_t,Value> data;
         //pointer to the node's left child
         AvlNode *left;
         //pointer to the node's right child
@@ -32,7 +32,7 @@ private:
         //height of the node, used for balancing
         int height; // Height of the node used for balancing
         //default constructor for an AVL node
-        AvlNode(const Comparable& k, std::map<Value, size_t>& d)
+        AvlNode(const Comparable& k, std::map<size_t, Value>& d)
         {
             //setting the node's key equal to the word passed into the constructor
             key = k;
@@ -44,7 +44,11 @@ private:
             right = nullptr;
             //initial height is 0
             height = 0;
+
         }
+        
+        
+        
 
 
     };
@@ -95,14 +99,6 @@ public:
         return contains(x, root);
     }
 
-     /**
-     *
-     */
-    std::map<Value, size_t> find(const Comparable &x) const
-    {
-        return find(x, root);
-    }
-
     /**
      * Test if the tree is logically empty.
      * Return true if empty, false otherwise.
@@ -131,10 +127,19 @@ public:
     /**
      * Insert x into the tree; duplicates are ignored.
      */
-    void insert(const Comparable &x, std::map<Value, size_t>& d)
+    void insert(const Comparable &x, std::map<size_t, Value>& d)
     {
         insert(x, d, root);
     }
+
+    /**
+    *
+    */
+    std::map<size_t,Value> find(const Comparable &x) const
+    {
+        return find(x, root);
+    }
+
 
 #ifdef DEBUG
     /**
@@ -157,7 +162,7 @@ private:
      * t is the node that roots the subtree.
      * Set the new root of the subtree.
      */
-    void insert(const Comparable &x, std::map<Value, size_t>& d, AvlNode *&t)
+    void insert(const Comparable &x, std::map<size_t, Value>& d, AvlNode *&t)
     {
         //if the tree is empty
         if (t == nullptr)
@@ -210,10 +215,10 @@ private:
         /**
      * Internal method to check if x is found in a subtree rooted at t.
      */
-    std::map<Value, size_t> find(const Comparable &x, AvlNode *t) const
+    std::map<size_t, Value> find (const Comparable &x, AvlNode *t) const
     {
         if (t == nullptr)
-            return std::map<Value,size_t>();
+            return std::map<size_t,Value>();
 
         if (x == t->key)
             return t->data; // Element found.
