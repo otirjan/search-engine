@@ -18,19 +18,14 @@
         - insert()
 */
 
-TEST_CASE("testing insert")
+TEST_CASE("Avltree tests")
 {
     //creating an instance of the avl tree
     AvlTree<std::string,std::string> exampleTree;
-  // AvlTree<std::string, std::map<size_t, std::string, MapComparator<std::string>>> exampleTree;
 
-    
-
-    SECTION("inserting, checking to see if the values in the map are correct")
+    SECTION("insert, contains, find")
     {
         //creating sample maps, which hold a frequency and a filepath (string)
-       // std::map<size_t, std::string, MapComparator<std::string>> value1 = {{2, "filepathEx"}, {6, "filepathEx2"}};
-       // std::map<size_t, std::string, MapComparator<std::string>> value2 = {{8, "filepathEx3"}, {1, "filepathEx4"}};
        std::map<size_t, std::string> value1 = {{2, "filepathEx"}, {6, "filepathEx2"}};
        std::map<size_t, std::string> value2 = {{8, "filepathEx3"}, {1, "filepathEx4"}};
 
@@ -44,10 +39,36 @@ TEST_CASE("testing insert")
 
         //checking the map stored in the node "hello." it should give me back the filepath associated with a frequency
         REQUIRE(exampleTree.find("hello")[2] == "filepathEx");
-
-        //doing it with the numbers first so that the map will be ordered. a map orders in ascending order so I will need to write an organize function 
-        //organize function to reverse the order of the map so the biggest is first 
-
     }
 
+    SECTION ("insert, makeEmpty, isEmpty")
+    {
+        //creating sample maps, which hold a frequency and a filepath (string)
+       std::map<size_t, std::string> value1 = {{2, "filepathEx"}, {6, "filepathEx2"}};
+       std::map<size_t, std::string> value2 = {{8, "filepathEx3"}, {1, "filepathEx4"}};
+
+        //inserting node into AVL tree
+        exampleTree.insert("hello", value1);
+        exampleTree.insert("world", value2);
+
+        REQUIRE(exampleTree.isEmpty() == false);
+
+        exampleTree.makeEmpty();
+
+        REQUIRE(exampleTree.isEmpty());
+    }
+
+    SECTION("copy assignment and copy constructor")
+    {
+        //copy constructor
+        AvlTree<std::string,std::string> exampleTree2(exampleTree);
+
+        //copy assignment
+        AvlTree<std::string,std::string> exampleTree3 = exampleTree;
+
+        
+
+
+    }
 }
+
