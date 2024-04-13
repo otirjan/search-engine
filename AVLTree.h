@@ -10,6 +10,16 @@
 
 using namespace std;
 
+template<typename Value>
+    //using this struct in order the sort the data each node has, so that highest frequency is first in the map and lowest frequency is last
+    struct MapComparator
+    {
+        bool operator()(const std::pair<size_t, Value>& a, const std::pair<size_t, Value>& b) const
+        {
+            return a.first > b.first;
+        }
+    };
+
 /*
  * @class AvlTree
  * @brief This implementation is based on the unbalanced binary search tree and adds hight information
@@ -19,12 +29,13 @@ template <typename Comparable, typename Value>
 class AvlTree
 {
 private:
+
     struct AvlNode
     {
         //the word stored in each node
         Comparable key;
         //map that will associate frequency values with filepaths; this is the node's data
-        std::map<size_t,Value> data;
+        std::map<size_t,Value, MapComparator> data;
         //pointer to the node's left child
         AvlNode *left;
         //pointer to the node's right child
@@ -46,11 +57,6 @@ private:
             height = 0;
 
         }
-        
-        
-        
-
-
     };
 
     AvlNode *root;

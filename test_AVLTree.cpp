@@ -21,14 +21,16 @@
 TEST_CASE("testing insert")
 {
     //creating an instance of the avl tree
-    AvlTree<std::string,std::string> exampleTree;
+   // AvlTree<std::string,std::string> exampleTree;
+   AvlTree<std::string, std::map<size_t, std::string, MapComparator<std::string>>> exampleTree;
+
     
 
     SECTION("inserting, checking to see if the values in the map are correct")
     {
         //creating sample maps, which hold a frequency and a filepath (string)
-        std::map<size_t, std::string> value1 = {{2, "filepathEx"}, {6, "filepathEx2"}};
-        std::map<size_t, std::string> value2 = {{8, "filepathEx3"}, {1, "filepathEx4"}};
+        std::map<size_t, std::string, MapComparator<std::string>> value1 = {{2, "filepathEx"}, {6, "filepathEx2"}};
+        std::map<size_t, std::string, MapComparator<std::string>> value2 = {{8, "filepathEx3"}, {1, "filepathEx4"}};
 
         //inserting node into AVL tree
         exampleTree.insert("hello", value1);
