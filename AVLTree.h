@@ -60,13 +60,13 @@ private:
         }
     };
 
-    struct FrequencyComparator 
-    {
-        bool operator()(const std::pair<size_t, Value>& a, const std::pair<size_t, Value>& b) const 
-        {
-            return a.first > b.first; // Sort in descending order of frequency
-        }
-    };
+    // struct FrequencyComparator 
+    // {
+    //     bool operator()(const std::pair<size_t, Value>& a, const std::pair<size_t, Value>& b) const 
+    //     {
+    //         return a.first > b.first; // Sort in descending order of frequency
+    //     }
+    // };
 
     AvlNode *root;
 
@@ -157,7 +157,7 @@ public:
         return find(x, root);
     }
 
-    std::map<size_t, Value, FrequencyComparator> organize(const Comparable &x) const
+    std::map<size_t, Value> organize(const Comparable &x) const
     {
         return organize(x, root);
     }
@@ -274,9 +274,9 @@ private:
             return find(x, t->right);
     }
 
-    std::map<size_t, Value, FrequencyComparator> organize(const Comparable &x, AvlNode *t) const
+    std::map<size_t, Value> organize(const Comparable &x, AvlNode *t) const
     {
-        std::map<size_t, Value, FrequencyComparator> organizedData;
+        std::map<size_t, Value> organizedData;
 
         if (t == nullptr)
            // return std::map<size_t,Value>();
@@ -289,7 +289,9 @@ private:
             for (const auto& pair : t->data) 
             {
                 // Insert the key-value pair into the new map with the frequency as the key
-                organizedData.emplace(pair.first, pair.second);
+                //organizedData.emplace(pair.first, pair.second);
+                
+
             }
                     // Return the organized data map
             return organizedData;
