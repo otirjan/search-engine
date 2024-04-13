@@ -157,37 +157,28 @@ public:
         return find(x, root);
     }
 
-    // std::map<size_t, Value> organize(AvlNode* node)
-    // {
-    //     std::map<size_t, Value, FrequencyComparator> organizedData;
+    std::map<size_t, Value, FrequencyComparator> organize(const Comparable &x) const
+    {
+        return organize(x, root);
+    }
 
-    //     // Iterate through the original data map of the node
-    //     for (const auto& pair : node->data) {
-    //         // Insert the key-value pair into the new map with the frequency as the key
-    //         organizedData.emplace(pair.first, pair.second);
-    //     }
+        // void organize(AvlNode* node) 
+        // {
+        //     // Create a vector of pairs to store the map entries
+        //     std::vector<std::pair<size_t, Value>> entries(node->data.begin(), node->data.end());
 
-    //     // Return the organized data map
-    //     return organizedData;
-    // }
+        //     // Sort the vector using the custom comparator
+        //     std::sort(entries.begin(), entries.end(), FrequencyComparator());
 
-        void organize(AvlNode* node) 
-        {
-            // Create a vector of pairs to store the map entries
-            std::vector<std::pair<size_t, Value>> entries(node->data.begin(), node->data.end());
+        //     // Clear the original data map
+        //     node->data.clear();
 
-            // Sort the vector using the custom comparator
-            std::sort(entries.begin(), entries.end(), FrequencyComparator());
-
-            // Clear the original data map
-            node->data.clear();
-
-            // Populate the data map with sorted entries
-            for (const auto& entry : entries) 
-            {
-                node->data.emplace(entry.first, entry.second);
-            }
-        }
+        //     // Populate the data map with sorted entries
+        //     for (const auto& entry : entries) 
+        //     {
+        //         node->data.emplace(entry.first, entry.second);
+        //     }
+        // }
 
 
 
@@ -281,6 +272,33 @@ private:
             return find(x, t->left);
         else
             return find(x, t->right);
+    }
+
+    std::map<size_t, Value, FrequencyComparator> organize(const Comparable &x, AvlNode *t) const
+    {
+        std::map<size_t, Value, FrequencyComparator> organizedData;
+
+        if (t == nullptr)
+           // return std::map<size_t,Value>();
+           return organizedData;
+
+
+        if (x == t->key)
+        {
+            // Iterate through the original data map of the node
+            for (const auto& pair : t->data) 
+            {
+                // Insert the key-value pair into the new map with the frequency as the key
+                organizedData.emplace(pair.first, pair.second);
+            }
+                    // Return the organized data map
+            return organizedData;
+
+        }        
+        else if (x < t->key)
+            return find(x, t->left);
+        else
+            return find(x, t->right); 
     }
 
     /**
