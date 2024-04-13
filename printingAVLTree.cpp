@@ -33,6 +33,8 @@ int main()
             std::cout << "Frequency: " << pair.first << ", Filepath: " << pair.second << std::endl;
         }
     }
+
+    exampleTree.prettyPrintTree();
     
 
 

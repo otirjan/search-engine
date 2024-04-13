@@ -280,17 +280,42 @@ private:
 
     std::map<size_t, Value> organize(const Comparable &x, AvlNode *t) const
     {
+        
+        
+        std::map<size_t, Value> OGdata = find(x, root);
+      //  std::map<size_t, Value> organizedData(OGdata.rbegin(), OGdata.rend());
         std::map<size_t, Value> organizedData;
 
-        if (t == nullptr)
+        auto iter = OGdata.rbegin();
+
+        while (iter != OGdata.rend())
         {
-            return organizedData;   
+            organizedData[iter->first] = iter->second;
+            iter++;
+
         }
+
+
+
+
+
+        // for (auto iter = t->data.rbegin(); iter != t->data.rend(); ++iter)
+        // {
+        //     organizedData[iter->first] = iter->second;
+        // }
+
+
+
+
+        // if (t == nullptr)
+        // {
+        //     return organizedData;   
+        // }
            // return std::map<size_t,Value>();
         //    return organizedData;
 
-        if (x == t->key)
-        {
+        // if (x == t->key)
+        // {
             // Iterate through the original data map of the node
             // for (const auto& pair : t->data) 
             // {
@@ -299,23 +324,26 @@ private:
                 
 
             // }
-           // for (auto iter t->data.rbegin(); iter != t->data.rend(); ++iter)
-           for (const auto& iter : t->data)
-            {
-                organizedData[iter.first] = iter.second;
-            }
-            // Return the organized data map
-            return organizedData;
+        //    for (auto iter = t->data.rbegin(); iter != t->data.rend(); ++iter)
+        //   // for (const auto& iter : t->data)
+        //     {
+        //         //organizedData[iter.first] = iter.second;
+        //         organizedData[iter->first] = iter->second;
+        //     }
+       // }        
+        // else if (x < t->key)
+        // {
+        //     //return find(x, t->left);
+        //     organizedData = organize(x, t->left);
+        // }
+        // else
+        // {
+        //     //return find(x, t->right); 
+        //     organizedData = organize(x, t->right);
 
-        }        
-        else if (x < t->key)
-        {
-            return find(x, t->left);
-        }
-        else
-        {
-            return find(x, t->right); 
-        }
+        // }
+
+        return organizedData;
     }
 
     /**
