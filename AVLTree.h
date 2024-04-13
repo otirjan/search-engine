@@ -219,11 +219,15 @@ private:
 
         //recursive call of insert in order to set the node in its place within the tree
         if (x < t->key)
+        {
             insert(x, d, t->left);
             total++;
+        }
         else if (t->key < x)
+        {
             insert(x, d, t->right);
             total++;
+        }
         else
         {
             // Duplicate; do nothing
@@ -279,28 +283,39 @@ private:
         std::map<size_t, Value> organizedData;
 
         if (t == nullptr)
+        {
+            return organizedData;   
+        }
            // return std::map<size_t,Value>();
-           return organizedData;
-
+        //    return organizedData;
 
         if (x == t->key)
         {
             // Iterate through the original data map of the node
-            for (const auto& pair : t->data) 
-            {
-                // Insert the key-value pair into the new map with the frequency as the key
-                //organizedData.emplace(pair.first, pair.second);
+            // for (const auto& pair : t->data) 
+            // {
+            //     // Insert the key-value pair into the new map with the frequency as the key
+            //     //organizedData.emplace(pair.first, pair.second);
                 
 
+            // }
+           // for (auto iter t->data.rbegin(); iter != t->data.rend(); ++iter)
+           for (const auto& iter : t->data)
+            {
+                organizedData[iter.first] = iter.second;
             }
-                    // Return the organized data map
+            // Return the organized data map
             return organizedData;
 
         }        
         else if (x < t->key)
+        {
             return find(x, t->left);
+        }
         else
+        {
             return find(x, t->right); 
+        }
     }
 
     /**
