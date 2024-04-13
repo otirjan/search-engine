@@ -10,15 +10,15 @@
 
 using namespace std;
 
-template<typename Value>
-    //using this struct in order the sort the data each node has, so that highest frequency is first in the map and lowest frequency is last
-    struct MapComparator
-    {
-        bool operator()(const std::pair<size_t, Value>& a, const std::pair<size_t, Value>& b) const
-        {
-            return a.first > b.first;
-        }
-    };
+// template<typename Value>
+//     //using this struct in order the sort the data each node has, so that highest frequency is first in the map and lowest frequency is last
+//     struct MapComparator
+//     {
+//         bool operator()(const std::pair<size_t, Value>& a, const std::pair<size_t, Value>& b) const
+//         {
+//             return a.first > b.first;
+//         }
+//     };
 
 /*
  * @class AvlTree
@@ -35,7 +35,8 @@ private:
         //the word stored in each node
         Comparable key;
         //map that will associate frequency values with filepaths; this is the node's data
-        std::map<size_t,Value, MapComparator> data;
+        std::map<size_t,Value> data;
+        //std::map<size_t, Value, MapComparator> data;
         //pointer to the node's left child
         AvlNode *left;
         //pointer to the node's right child
@@ -59,7 +60,17 @@ private:
         }
     };
 
+    struct FrequencyComparator 
+    {
+        bool operator()(const std::pair<size_t, Value>& a, const std::pair<size_t, Value>& b) const 
+        {
+            return a.first > b.first; // Sort in descending order of frequency
+        }
+    };
+
     AvlNode *root;
+
+    size_t total = 0;
 
     // Allowed imbalance in the AVL tree. A higher value will make balancing cheaper
     // but the search less efficient.
@@ -146,6 +157,42 @@ public:
         return find(x, root);
     }
 
+    // std::map<size_t, Value> organize(AvlNode* node)
+    // {
+    //     std::map<size_t, Value, FrequencyComparator> organizedData;
+
+    //     // Iterate through the original data map of the node
+    //     for (const auto& pair : node->data) {
+    //         // Insert the key-value pair into the new map with the frequency as the key
+    //         organizedData.emplace(pair.first, pair.second);
+    //     }
+
+    //     // Return the organized data map
+    //     return organizedData;
+    // }
+
+        void organize(AvlNode* node) 
+        {
+            // Create a vector of pairs to store the map entries
+            std::vector<std::pair<size_t, Value>> entries(node->data.begin(), node->data.end());
+
+            // Sort the vector using the custom comparator
+            std::sort(entries.begin(), entries.end(), FrequencyComparator());
+
+            // Clear the original data map
+            node->data.clear();
+
+            // Populate the data map with sorted entries
+            for (const auto& entry : entries) 
+            {
+                node->data.emplace(entry.first, entry.second);
+            }
+        }
+
+
+
+
+
 
 #ifdef DEBUG
     /**
@@ -182,8 +229,10 @@ private:
         //recursive call of insert in order to set the node in its place within the tree
         if (x < t->key)
             insert(x, d, t->left);
+            total++;
         else if (t->key < x)
             insert(x, d, t->right);
+            total++;
         else
         {
             // Duplicate; do nothing
