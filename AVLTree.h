@@ -152,7 +152,7 @@ public:
         return find(x, root);
     }
 
-    std::map<size_t, Value> organize(const Comparable &x) const
+    std::map<size_t, Value, std::greater<size_t>> organize(const Comparable &x) const
     {
         return organize(x, root);
     }
@@ -263,20 +263,14 @@ private:
             return find(x, t->right);
     }
 
-    std::map<size_t, Value> organize(const Comparable &x, AvlNode *t) const
+    std::map<size_t, Value, std::greater<size_t>> organize(const Comparable &x, AvlNode *t) const
     {
-        
-        
         std::map<size_t, Value> OGdata = find(x, root);
-        std::map<size_t, Value> organizedData;
+        std::map<size_t, Value, std::greater<size_t>> organizedData;
 
-        auto iter = OGdata.rbegin();
-
-        while (iter != OGdata.rend())
+        for (const auto& pair : OGdata)
         {
-            organizedData[iter->first] = iter->second;
-            iter++;
-
+            organizedData[pair.first] = pair.second;
         }
         return organizedData;
     }
@@ -287,23 +281,10 @@ private:
        std::map<size_t, Value> results;
        int count = 0;
 
-        // std::cout << "Contents of nodeData:" << std::endl;
-        // for (const auto& entry : nodeData)
-        // {
-        //     std::cout << "Frequency: " << entry.first << ", filepath: " << entry.second << std::endl;
-        // }
-
-
        for (const auto& entry : nodeData)
        {
-            // while (count != 15)
-            // {
-            //     results.insert(entry);
-            //     count++;
-            // }
             if (count < 15)
             {
-               // results.insert(entry);
                 results[entry.first] = entry.second;
                 count++;
             }
