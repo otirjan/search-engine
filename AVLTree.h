@@ -10,16 +10,6 @@
 
 using namespace std;
 
-// template<typename Value>
-//     //using this struct in order the sort the data each node has, so that highest frequency is first in the map and lowest frequency is last
-//     struct MapComparator
-//     {
-//         bool operator()(const std::pair<size_t, Value>& a, const std::pair<size_t, Value>& b) const
-//         {
-//             return a.first > b.first;
-//         }
-//     };
-
 /*
  * @class AvlTree
  * @brief This implementation is based on the unbalanced binary search tree and adds hight information
@@ -58,15 +48,19 @@ private:
             height = 0;
 
         }
-    };
+        //constructor for the clone function/for internal functions
+        // AvlNode(const Comparable& k, std::map<size_t, Value>& d, AvlNode* l, AvlNode* r, int h)
+        // {
+        //     key = k;
+        //     data = d;
+        //     left = l;
+        //     right = r;
+        //     height = h;
+        // }
+        AvlNode(const Comparable& k, std::map<size_t, Value>& d, AvlNode* l, AvlNode* r, int h)
+        : key(k), data(d), left(l), right(r), height(h) {}
 
-    // struct FrequencyComparator 
-    // {
-    //     bool operator()(const std::pair<size_t, Value>& a, const std::pair<size_t, Value>& b) const 
-    //     {
-    //         return a.first > b.first; // Sort in descending order of frequency
-    //     }
-    // };
+    };
 
     AvlNode *root;
 
@@ -162,24 +156,6 @@ public:
         return organize(x, root);
     }
 
-        // void organize(AvlNode* node) 
-        // {
-        //     // Create a vector of pairs to store the map entries
-        //     std::vector<std::pair<size_t, Value>> entries(node->data.begin(), node->data.end());
-
-        //     // Sort the vector using the custom comparator
-        //     std::sort(entries.begin(), entries.end(), FrequencyComparator());
-
-        //     // Clear the original data map
-        //     node->data.clear();
-
-        //     // Populate the data map with sorted entries
-        //     for (const auto& entry : entries) 
-        //     {
-        //         node->data.emplace(entry.first, entry.second);
-        //     }
-        // }
-
     size_t getTotal() const
     {
         return total;
@@ -222,6 +198,7 @@ private:
         {
             //call node constructor, pass the node its key (the word) and its value (the map)
             t = new AvlNode{x, d};
+            total++;
             // a single node is always balanced
             return; 
         }
@@ -230,12 +207,10 @@ private:
         if (x < t->key)
         {
             insert(x, d, t->left);
-            total++;
         }
         else if (t->key < x)
         {
             insert(x, d, t->right);
-            total++;
         }
         else
         {
@@ -292,7 +267,6 @@ private:
         
         
         std::map<size_t, Value> OGdata = find(x, root);
-      //  std::map<size_t, Value> organizedData(OGdata.rbegin(), OGdata.rend());
         std::map<size_t, Value> organizedData;
 
         auto iter = OGdata.rbegin();
@@ -303,55 +277,6 @@ private:
             iter++;
 
         }
-
-
-
-
-
-        // for (auto iter = t->data.rbegin(); iter != t->data.rend(); ++iter)
-        // {
-        //     organizedData[iter->first] = iter->second;
-        // }
-
-
-
-
-        // if (t == nullptr)
-        // {
-        //     return organizedData;   
-        // }
-           // return std::map<size_t,Value>();
-        //    return organizedData;
-
-        // if (x == t->key)
-        // {
-            // Iterate through the original data map of the node
-            // for (const auto& pair : t->data) 
-            // {
-            //     // Insert the key-value pair into the new map with the frequency as the key
-            //     //organizedData.emplace(pair.first, pair.second);
-                
-
-            // }
-        //    for (auto iter = t->data.rbegin(); iter != t->data.rend(); ++iter)
-        //   // for (const auto& iter : t->data)
-        //     {
-        //         //organizedData[iter.first] = iter.second;
-        //         organizedData[iter->first] = iter->second;
-        //     }
-       // }        
-        // else if (x < t->key)
-        // {
-        //     //return find(x, t->left);
-        //     organizedData = organize(x, t->left);
-        // }
-        // else
-        // {
-        //     //return find(x, t->right); 
-        //     organizedData = organize(x, t->right);
-
-        // }
-
         return organizedData;
     }
 
@@ -369,7 +294,6 @@ private:
                 count++;
             }
        }
-
        return results;
     }
 
@@ -394,8 +318,7 @@ private:
     {
         if (t == nullptr)
             return nullptr;
-
-        return new AvlNode{t->key, clone(t->left), clone(t->right), t->height};
+        return new AvlNode(t->key, t->data, clone(t->left), clone(t->right), t->height);
     }
 
     /**
