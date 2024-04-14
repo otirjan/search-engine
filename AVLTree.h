@@ -287,12 +287,29 @@ private:
        std::map<size_t, Value> results;
        int count = 0;
 
+        // std::cout << "Contents of nodeData:" << std::endl;
+        // for (const auto& entry : nodeData)
+        // {
+        //     std::cout << "Frequency: " << entry.first << ", filepath: " << entry.second << std::endl;
+        // }
+
+
        for (const auto& entry : nodeData)
        {
-            while (count != 15)
+            // while (count != 15)
+            // {
+            //     results.insert(entry);
+            //     count++;
+            // }
+            if (count < 15)
             {
-                results.insert(entry);
+               // results.insert(entry);
+                results[entry.first] = entry.second;
                 count++;
+            }
+            else
+            {
+                break;
             }
        }
        return results;
