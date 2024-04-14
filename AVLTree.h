@@ -72,12 +72,12 @@ private:
 
 public:
     // Default constructor
-    AvlTree() : root{nullptr}
+    AvlTree() : root{nullptr}, total{0}
     {
     }
 
     // Rule-of-3 Part 1: Copy constructor
-    AvlTree(const AvlTree &rhs) : root{nullptr}
+    AvlTree(const AvlTree &rhs) : root{nullptr}, total{rhs.total}
     {
         root = clone(rhs.root);
     }
@@ -95,6 +95,7 @@ public:
         {
             makeEmpty();
             root = clone(rhs.root);
+            total = rhs.total;
         }
 
         return *this;
