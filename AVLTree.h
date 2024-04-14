@@ -185,6 +185,11 @@ public:
         return total;
     }
 
+    std::map<size_t, Value> first15(const Comparable &x) const
+    {
+        return first15(x, root);
+    }
+
 
 
 
@@ -348,6 +353,24 @@ private:
         // }
 
         return organizedData;
+    }
+
+    std::map<size_t, Value> first15(const Comparable& x, AvlNode *t) const
+    {
+       std::map<size_t, Value> nodeData = find(x, root);
+       std::map<size_t, Value> results;
+       int count = 0;
+
+       for (const auto& entry : nodeData)
+       {
+            while (count != 15)
+            {
+                results.insert(entry);
+                count++;
+            }
+       }
+
+       return results;
     }
 
     /**

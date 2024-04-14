@@ -92,7 +92,7 @@ TEST_CASE("Avltree tests")
             REQUIRE(exampleTree3.isEmpty() == false);
         }
 
-        SECTION("copy assignment, copy constructor")
+        SECTION("messing with the exampleTrees independently of each other")
         {
             std::map<size_t, std::string> value3 = {{2, "filepathEx"}, {6, "filepathEx2"}, {16, "filepathEx3"}, {23, "filepathEx4"}};
             std::map<size_t, std::string> value4 = {{20, "filepathEx"}};
@@ -110,13 +110,37 @@ TEST_CASE("Avltree tests")
 
         }
 
-        SECTION("messing with the exampleTrees indepently of each other")
+        SECTION("extra copy assignment test")
         {
-            
+            AvlTree<std::string,std::string> exampleTree4;
 
+            std::map<size_t, std::string> value1 = {{2, "filepathEx"}, {6, "filepathEx2"}, {16, "filepathEx3"}, {23, "filepathEx4"}};
+            std::map<size_t, std::string> value2 = {{20, "filepathEx"}};
+            std::map<size_t, std::string> value3 = {{80, "filepathEx"}, {4, "filepathEx2"}, {9, "filepathEx3"}, {1, "filepathEx4"}, {13, "filepathEx5"}};
+
+            exampleTree4.insert("apple", value1);
+            exampleTree4.insert("data", value2);
+            exampleTree4.insert("structures", value3);
+
+            exampleTree4 = exampleTree;
+
+            REQUIRE(exampleTree4.getTotal() == 2);
         }
+    }
 
-        SECTION("")
+    TEST_CASE("extra tests")
+    {
+        AvlTree<std::string,std::string> exampleTree;
+
+        std::map<size_t, std::string> value1 = {{2, "filepathEx"}, {6, "filepathEx2"}};
+        std::map<size_t, std::string> value2 = {{8, "filepathEx3"}, {1, "filepathEx4"}};
+
+        //inserting node into AVL tree
+        exampleTree.insert("hello", value1);
+        exampleTree.insert("world", value2);
+
+
+        SECTION("making sure there aren't duplicates")
         {
             //test adding a duplicate node
             std::map<size_t, std::string> value3 = {{2, "filepathEx"}, {6, "filepathEx2"}, {16, "filepathEx3"}, {23, "filepathEx4"}};
@@ -124,7 +148,8 @@ TEST_CASE("Avltree tests")
             exampleTree.insert("hello", value3);
 
             //should not have done anything because this is a duplicate
+            REQUIRE(exampleTree.getTotal() == 2);
         }
-    
-}
+
+    }
 

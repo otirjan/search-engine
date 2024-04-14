@@ -35,6 +35,8 @@ int main()
     }
 
     exampleTree.prettyPrintTree();
+
+    //function that prints the first 15 elements in a node's map
     
 
 
