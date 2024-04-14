@@ -57,18 +57,74 @@ TEST_CASE("Avltree tests")
 
         REQUIRE(exampleTree.isEmpty());
     }
-
-    SECTION("copy assignment and copy constructor")
+}
+    TEST_CASE("all things copying")
     {
+        AvlTree<std::string,std::string> exampleTree;
+
+        std::map<size_t, std::string> value1 = {{2, "filepathEx"}, {6, "filepathEx2"}};
+        std::map<size_t, std::string> value2 = {{8, "filepathEx3"}, {1, "filepathEx4"}};
+
+        //inserting node into AVL tree
+        exampleTree.insert("hello", value1);
+        exampleTree.insert("world", value2);
+
         //copy constructor
         AvlTree<std::string,std::string> exampleTree2(exampleTree);
 
         //copy assignment
         AvlTree<std::string,std::string> exampleTree3 = exampleTree;
 
-        
 
+        SECTION("copy assignment, copy constructor, getTotal")
+        {
+            REQUIRE(exampleTree.getTotal() == exampleTree2.getTotal());
+            REQUIRE(exampleTree.getTotal() == exampleTree3.getTotal());
 
-    }
+            REQUIRE(exampleTree.isEmpty() == exampleTree2.isEmpty());
+            REQUIRE(exampleTree.isEmpty() == exampleTree3.isEmpty());
+
+            exampleTree.makeEmpty();
+
+            REQUIRE(exampleTree2.getTotal() == 2);
+            REQUIRE(exampleTree3.getTotal() == 2);
+            REQUIRE(exampleTree2.isEmpty() == false);
+            REQUIRE(exampleTree3.isEmpty() == false);
+        }
+
+        SECTION("copy assignment, copy constructor")
+        {
+            std::map<size_t, std::string> value3 = {{2, "filepathEx"}, {6, "filepathEx2"}, {16, "filepathEx3"}, {23, "filepathEx4"}};
+            std::map<size_t, std::string> value4 = {{20, "filepathEx"}};
+            std::map<size_t, std::string> value5 = {{80, "filepathEx"}, {4, "filepathEx2"}, {9, "filepathEx3"}, {1, "filepathEx4"}, {13, "filepathEx5"}};
+
+            exampleTree2.insert("apple", value3);
+            exampleTree3.insert("data", value4);
+            exampleTree3.insert("structures", value5);
+
+            REQUIRE(exampleTree2.getTotal() == 3);
+            REQUIRE(exampleTree3.getTotal() == 5);
+
+            REQUIRE(exampleTree2.isEmpty() == false);
+            REQUIRE(exampleTree3.isEmpty() == false);
+
+        }
+
+        SECTION("messing with the exampleTrees indepently of each other")
+        {
+            
+
+        }
+
+        SECTION("")
+        {
+            //test adding a duplicate node
+            std::map<size_t, std::string> value3 = {{2, "filepathEx"}, {6, "filepathEx2"}, {16, "filepathEx3"}, {23, "filepathEx4"}};
+
+            exampleTree.insert("hello", value3);
+
+            //should not have done anything because this is a duplicate
+        }
+    
 }
 

@@ -180,6 +180,10 @@ public:
         //     }
         // }
 
+    size_t getTotal() const
+    {
+        return total;
+    }
 
 
 
