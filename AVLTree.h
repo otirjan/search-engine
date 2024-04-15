@@ -25,7 +25,7 @@ private:
         //the word stored in each node
         Comparable key;
         //map that will associate frequency values with filepaths; this is the node's data
-        std::map<size_t,Value> data;
+        std::map<Value, size_t> data;
         //std::map<size_t, Value, MapComparator> data;
         //pointer to the node's left child
         AvlNode *left;
@@ -34,7 +34,7 @@ private:
         //height of the node, used for balancing
         int height; // Height of the node used for balancing
         //default constructor for an AVL node
-        AvlNode(const Comparable& k, std::map<size_t, Value>& d)
+        AvlNode(const Comparable& k, std::map<Value, size_t>& d)
         {
             //setting the node's key equal to the word passed into the constructor
             key = k;
@@ -49,7 +49,7 @@ private:
 
         }
         //constructor for the clone function/for internal functions
-        AvlNode(const Comparable& k, std::map<size_t, Value>& d, AvlNode* l, AvlNode* r, int h)
+        AvlNode(const Comparable& k, std::map<Value, size_t>& d, AvlNode* l, AvlNode* r, int h)
         : key(k), data(d), left(l), right(r), height(h) {}
 
     };
@@ -134,7 +134,7 @@ public:
     /**
      * Insert x into the tree; duplicates are ignored.
      */
-    void insert(const Comparable &x, std::map<size_t, Value>& d)
+    void insert(const Comparable &x, std::map<Value, size_t>& d)
     {
         insert(x, d, root);
     }
@@ -142,7 +142,7 @@ public:
     /**
     *call to an internal recursive function that locates a given node in the AvlTree and returns the map that constitutes its values
     */
-    std::map<size_t,Value> find(const Comparable &x) const
+    std::map<Value, size_t> find(const Comparable &x) const
     {
         return find(x, root);
     }
@@ -150,10 +150,10 @@ public:
     /*
     *call to an internal recursive function that takes a node's map (its data) and organizes the map from highest frequency to lowest
     */
-    std::map<size_t, Value, std::greater<size_t>> organize(const Comparable &x) const
-    {
-        return organize(x, root);
-    }
+    // std::map<size_t, Value, std::greater<size_t>> organize(const Comparable &x) const
+    // {
+    //     return organize(x, root);
+    // }
 
     /*
     *returns the total amount of nodes in the AvlTree
@@ -166,10 +166,10 @@ public:
     /*
     *returns a map that consists of the first 15 keys in a node's data (its map of keys(frequencies) and values(filepaths))
     */
-    std::map<size_t, Value> first15(const Comparable &x) const
-    {
-        return first15(x, root);
-    }
+    // std::map<size_t, Value> first15(const Comparable &x) const
+    // {
+    //     return first15(x, root);
+    // }
 
 #ifdef DEBUG
     /**
@@ -192,7 +192,7 @@ private:
      * t is the node that roots the subtree.
      * Set the new root of the subtree.
      */
-    void insert(const Comparable &x, std::map<size_t, Value>& d, AvlNode *&t)
+    void insert(const Comparable &x, std::map<Value, size_t>& d, AvlNode *&t)
     {
         //if the tree is empty
         if (t == nullptr)
@@ -251,11 +251,11 @@ private:
     /**
      * Internal method to check if x is found in a subtree rooted at t.
      */
-    std::map<size_t, Value> find (const Comparable &x, AvlNode *t) const
+    std::map<Value, size_t> find (const Comparable &x, AvlNode *t) const
     {
         //if root is null, return an empty map
         if (t == nullptr)
-            return std::map<size_t,Value>();
+            return std::map<Value, size_t>();
         //if the word is found in the map, return its data
         if (x == t->key)
             return t->data; // Element found.
@@ -270,54 +270,54 @@ private:
     /*
     *interal method to sort a node's data from highest frequency to smallest frequency
     */
-    std::map<size_t, Value, std::greater<size_t>> organize(const Comparable &x, AvlNode *t) const
-    {
-        //get the node's data using the find function
-        std::map<size_t, Value> OGdata = find(x, root);
-        //create a new map which will be returned at the end of the function
-        std::map<size_t, Value, std::greater<size_t>> organizedData;
-        //iterate through the node's data
-        for (const auto& pair : OGdata)
-        {
-            //set key/value pair in organizedData
-            organizedData[pair.first] = pair.second;
-        }
-        //return the organized map
-        return organizedData;
-    }
+    // std::map<size_t, Value, std::greater<size_t>> organize(const Comparable &x, AvlNode *t) const
+    // {
+    //     //get the node's data using the find function
+    //     std::map<size_t, Value> OGdata = find(x, root);
+    //     //create a new map which will be returned at the end of the function
+    //     std::map<size_t, Value, std::greater<size_t>> organizedData;
+    //     //iterate through the node's data
+    //     for (const auto& pair : OGdata)
+    //     {
+    //         //set key/value pair in organizedData
+    //         organizedData[pair.first] = pair.second;
+    //     }
+    //     //return the organized map
+    //     return organizedData;
+    // }
 
     /*
     *internal function to return the first 15 key/value pairs in the node's data
     */
-    std::map<size_t, Value> first15(const Comparable& x, AvlNode *t) const
-    {
-       //retrieve the node's organized data from the organize() function
-       std::map<size_t, Value, std::greater<size_t>> nodeData = organize(x, t);
-       //intialize an empty map called results, which will be returned at the end of the function
-       std::map<size_t, Value> results;
-       //initalize a variable called count to keep track of the amount of elements im putting into the results  map
-       int count = 0;
-       //iterate through nodeData (the node's data, a map of keys(frequencies) and values(filepaths) now sorted greatest to least)
-       for (const auto& entry : nodeData)
-       {
-            //if the map doesn't have 15 elements yet
-            if (count < 15)
-            {
-                //put the key/value pair into the results map
-                results[entry.first] = entry.second;
-                //increment count
-                count++;
-            }
-            //if the map has 15 elements
-            else
-            {
-                //stop iterating through the data
-                break;
-            }
-       }
-       //return the map of 15 elements
-       return results;
-    }
+    // std::map<size_t, Value> first15(const Comparable& x, AvlNode *t) const
+    // {
+    //    //retrieve the node's organized data from the organize() function
+    //    std::map<size_t, Value, std::greater<size_t>> nodeData = organize(x, t);
+    //    //intialize an empty map called results, which will be returned at the end of the function
+    //    std::map<size_t, Value> results;
+    //    //initalize a variable called count to keep track of the amount of elements im putting into the results  map
+    //    int count = 0;
+    //    //iterate through nodeData (the node's data, a map of keys(frequencies) and values(filepaths) now sorted greatest to least)
+    //    for (const auto& entry : nodeData)
+    //    {
+    //         //if the map doesn't have 15 elements yet
+    //         if (count < 15)
+    //         {
+    //             //put the key/value pair into the results map
+    //             results[entry.first] = entry.second;
+    //             //increment count
+    //             count++;
+    //         }
+    //         //if the map has 15 elements
+    //         else
+    //         {
+    //             //stop iterating through the data
+    //             break;
+    //         }
+    //    }
+    //    //return the map of 15 elements
+    //    return results;
+    // }
 
     /**
      * Internal method to make subtree empty.
