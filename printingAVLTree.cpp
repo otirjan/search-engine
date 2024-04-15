@@ -12,26 +12,26 @@ int main()
     */
 
     //intialize an instance of the AvlTree called exampleTree
-    // AvlTree<std::string,std::string> exampleTree;
-    // //create the maps that will act as the data for a node
-    // std::map<std::string, size_t> value1 = {{"filepathEx", 2}, {"filepathEx2", 6}};
-    // std::map<std::string, size_t> value2 = {{"filepathEx3", 8}, {"filepathEx4", 11}};
-    // //intsert 2 words into the AvlTree
-    // exampleTree.insert("hello", value1);
-    // exampleTree.insert("world", value2);
-    // //checking if the node with the key "hello" exists inside the AvlTree
-    // if (exampleTree.contains("hello")) 
-    // {
-    //     //saving the results of organize() into a variable called organizedMapHello
-    //     auto organizedMapHello = exampleTree.organize("hello");
-    //     std::cout << "Organized map for 'hello':" << std::endl;
-    //     //loop through the organized map
-    //     for (const auto& pair : organizedMapHello) 
-    //     {
-    //         //printing. output: Frequency: 6, Filepath: filepathEx2; Frequency: 2, Filepath: filepathEx. This is now how they were initalized 
-    //         std::cout << "Frequency: " << pair.first << ", Filepath: " << pair.second << std::endl;
-    //     }
-    // }
+    AvlTree<std::string,std::string> exampleTree;
+    //create the maps that will act as the data for a node
+    std::map<std::string, size_t> value1 = {{"filepathEx", 2}, {"filepathEx2", 6}};
+    std::map<std::string, size_t> value2 = {{"filepathEx3", 8}, {"filepathEx4", 11}};
+    //insert 2 words into the AvlTree
+    exampleTree.insert("hello", value1);
+    exampleTree.insert("world", value2);
+    //checking if the node with the key "hello" exists inside the AvlTree
+    if (exampleTree.contains("hello")) 
+    {
+        //saving the results of organize() into a variable called organizedMapHello
+        auto organizedMapHello = exampleTree.organize("hello");
+        std::cout << "Organized map for 'hello':" << std::endl;
+        //loop through the organized map
+        for (const auto& pair : organizedMapHello) 
+        {
+            //printing. output: Frequency: 6, Filepath: filepathEx2; Frequency: 2, Filepath: filepathEx. This is now how they were initalized 
+            std::cout << "Frequency: " << pair.first << ", Filepath: " << pair.second << std::endl;
+        }
+    }
 
     
     // /*

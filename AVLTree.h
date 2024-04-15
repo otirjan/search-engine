@@ -150,10 +150,11 @@ public:
     /*
     *call to an internal recursive function that takes a node's map (its data) and organizes the map from highest frequency to lowest
     */
-    // std::map<size_t, Value, std::greater<size_t>> organize(const Comparable &x) const
-    // {
-    //     return organize(x, root);
-    // }
+  //  std::map<size_t, Value, std::greater<size_t>> organize(const Comparable &x) const
+    std::map<Value, size_t> organize(const Comparable& x) const
+    {
+        return organize(x, root);
+    }
 
     /*
     *returns the total amount of nodes in the AvlTree
@@ -270,21 +271,35 @@ private:
     /*
     *interal method to sort a node's data from highest frequency to smallest frequency
     */
-    // std::map<size_t, Value, std::greater<size_t>> organize(const Comparable &x, AvlNode *t) const
-    // {
-    //     //get the node's data using the find function
-    //     std::map<size_t, Value> OGdata = find(x, root);
-    //     //create a new map which will be returned at the end of the function
-    //     std::map<size_t, Value, std::greater<size_t>> organizedData;
-    //     //iterate through the node's data
-    //     for (const auto& pair : OGdata)
-    //     {
-    //         //set key/value pair in organizedData
-    //         organizedData[pair.first] = pair.second;
-    //     }
-    //     //return the organized map
-    //     return organizedData;
-    // }
+   // std::map<size_t, Value, std::greater<size_t>> organize(const Comparable &x, AvlNode *t) const
+    std::map<Value, size_t> organize(const Comparable& x, AvlNode *t) const
+    {
+        //get the node's data using the find function
+        std::map<Value, size_t> OGdata = find(x, root);
+        std::map<Value, size_t> organizedData(OGdata.begin(), OGdata.end());
+        [] (const auto& lhs, const auto& rhs)
+        {
+            return lhs.second > rhs.second;
+        };
+
+
+
+
+
+        //old stuff
+
+        //create a new map which will be returned at the end of the function
+        //std::map<Value, size_t> OGdata = find(x, root);
+        // std::map<size_t, Value, std::greater<size_t>> organizedData;
+        // //iterate through the node's data
+        // for (const auto& pair : OGdata)
+        // {
+        //     //set key/value pair in organizedData
+        //     organizedData[pair.first] = pair.second;
+        // }
+        //return the organized map
+       // return organizedData;
+    }
 
     /*
     *internal function to return the first 15 key/value pairs in the node's data

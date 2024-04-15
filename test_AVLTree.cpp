@@ -38,7 +38,7 @@ TEST_CASE("Avltree tests")
         REQUIRE(exampleTree.contains("world") == true);
 
         //checking the map stored in the node "hello." it should give me back the filepath associated with a frequency
-       // REQUIRE(exampleTree.find("hello")[2] == "filepathEx");
+        REQUIRE(exampleTree.find("hello")["filepathEx"] == 2);
     }
 
     SECTION ("insert, makeEmpty, isEmpty")
