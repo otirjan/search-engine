@@ -43,12 +43,12 @@ int main()
     //insert new node into exampleTree
     exampleTree.insert("fifteen", testmap);
     //saving the map returned from first15()
-     std::vector<std::pair<std::string, size_t>> fifteenMap = exampleTree.first15("fifteen");
+    std::vector<std::pair<std::string, size_t>> fifteenMap = exampleTree.first15("fifteen");
     //iterating through the map of 15 elements
      for (const auto& pair : fifteenMap)
      {
         //printing the key/value pairs in the map
-        std::cout << "Frequency: " << pair.first << ", filepath: " << pair.second << std::endl;
+        std::cout << "Filepath: " << pair.first << ", frequency: " << pair.second << std::endl;
      }
 
 }

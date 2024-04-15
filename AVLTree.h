@@ -172,6 +172,15 @@ public:
         return first15(x, root);
     }
 
+    /*
+    *calls internal function to collapse AvlTree into a CSV file
+    */
+    void exportToCSV() const
+    {
+        const std::string filename = "AVLTree.csv";
+        exportToCSV(root, filename);
+    }
+
 #ifdef DEBUG
     /**
      * Check if the tree is balanced and that the height of the nodes is correct.
@@ -307,6 +316,35 @@ private:
         }
        //return the map of 15 (or less) elements
        return results;
+    }
+
+    /*
+    * internal function to export the Avltree to a csv
+    */
+    void exportToCSV(const AvlTree& tree, const std::string& filename) const
+    {
+        std::ofstream outputFile(filename);
+        //error message
+        //print header
+        //call inorderTraversal
+        inOrderTraversal(tree.root, outputFile);
+        //close output file
+        outputFile.close();
+    }
+
+    /*
+    *internal function for in order tree traversal
+    */
+    void inOrderTraversal(AvlNode *t, std::ofstream& outputFile)
+    {
+        //if null, return
+        if (t == nullptr)
+        {
+            return;
+        }
+        //traverse and print left subtree
+        //traverse and print right subtree
+
     }
 
     /**
