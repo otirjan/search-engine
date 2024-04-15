@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <iostream>
 #include <map>
+#include <vector>
 
 using namespace std;
 
@@ -150,8 +151,7 @@ public:
     /*
     *call to an internal recursive function that takes a node's map (its data) and organizes the map from highest frequency to lowest
     */
-  //  std::map<size_t, Value, std::greater<size_t>> organize(const Comparable &x) const
-    std::map<Value, size_t> organize(const Comparable& x) const
+    std::vector<std::pair<Value, size_t>> organize(const Comparable x) const
     {
         return organize(x, root);
     }
@@ -167,10 +167,10 @@ public:
     /*
     *returns a map that consists of the first 15 keys in a node's data (its map of keys(frequencies) and values(filepaths))
     */
-    // std::map<size_t, Value> first15(const Comparable &x) const
-    // {
-    //     return first15(x, root);
-    // }
+    std::vector<std::pair<Value, size_t>> first15(const Comparable& x) const
+    {
+        return first15(x, root);
+    }
 
 #ifdef DEBUG
     /**
@@ -271,68 +271,43 @@ private:
     /*
     *interal method to sort a node's data from highest frequency to smallest frequency
     */
-   // std::map<size_t, Value, std::greater<size_t>> organize(const Comparable &x, AvlNode *t) const
-    std::map<Value, size_t> organize(const Comparable& x, AvlNode *t) const
+    std::vector<std::pair<Value, size_t>> organize(const Comparable x, AvlNode *t) const
     {
         //get the node's data using the find function
         std::map<Value, size_t> OGdata = find(x, root);
-        std::map<Value, size_t> organizedData(OGdata.begin(), OGdata.end());
-        [] (const auto& lhs, const auto& rhs)
-        {
-            return lhs.second > rhs.second;
-        };
-
-
-
-
-
-        //old stuff
-
-        //create a new map which will be returned at the end of the function
-        //std::map<Value, size_t> OGdata = find(x, root);
-        // std::map<size_t, Value, std::greater<size_t>> organizedData;
-        // //iterate through the node's data
-        // for (const auto& pair : OGdata)
-        // {
-        //     //set key/value pair in organizedData
-        //     organizedData[pair.first] = pair.second;
-        // }
-        //return the organized map
-       // return organizedData;
+        //created a vector, organizedData, which is the node's data but in descending order; the keys are still the filepaths
+        std::vector<std::pair<Value, size_t>> organizedData(OGdata.begin(), OGdata.end());
+        //sort based on frequency
+        std::sort(organizedData.begin(), organizedData.end(), [](const auto& a, const auto& b) {
+        return a.second > b.second;
+        });
+        //return the organized vector
+        return organizedData;
     }
 
     /*
     *internal function to return the first 15 key/value pairs in the node's data
     */
-    // std::map<size_t, Value> first15(const Comparable& x, AvlNode *t) const
-    // {
-    //    //retrieve the node's organized data from the organize() function
-    //    std::map<size_t, Value, std::greater<size_t>> nodeData = organize(x, t);
-    //    //intialize an empty map called results, which will be returned at the end of the function
-    //    std::map<size_t, Value> results;
-    //    //initalize a variable called count to keep track of the amount of elements im putting into the results  map
-    //    int count = 0;
-    //    //iterate through nodeData (the node's data, a map of keys(frequencies) and values(filepaths) now sorted greatest to least)
-    //    for (const auto& entry : nodeData)
-    //    {
-    //         //if the map doesn't have 15 elements yet
-    //         if (count < 15)
-    //         {
-    //             //put the key/value pair into the results map
-    //             results[entry.first] = entry.second;
-    //             //increment count
-    //             count++;
-    //         }
-    //         //if the map has 15 elements
-    //         else
-    //         {
-    //             //stop iterating through the data
-    //             break;
-    //         }
-    //    }
-    //    //return the map of 15 elements
-    //    return results;
-    // }
+    std::vector<std::pair<Value, size_t>> first15(const Comparable& x, AvlNode *t) const
+    {
+       //retrieve the node's organized data from the organize() function
+        std::vector<std::pair<Value, size_t>> nodeData = organize(x, t);
+        //intialize an empty vector called results, which will be returned at the end of the function
+        std::vector<std::pair<Value, size_t>> results;
+        //initalize a variable called count to keep track of the amount of elements im putting into the results  map
+        int count = 0;
+       //iterate through nodeData (the node's data, a vector of keys(filepaths) and values(frequencies) now sorted greatest to least based on frequencies)
+       //if the map doesn't have 15 elements yet, or if nodeData isn't empty (for the ones with less than 15)
+        for (auto it = nodeData.begin(); it != nodeData.end() && count < 15; ++it)
+        {
+            // Put the pair into the results vector
+            results.push_back(*it);
+            // Increment count
+            count++;
+        }
+       //return the map of 15 (or less) elements
+       return results;
+    }
 
     /**
      * Internal method to make subtree empty.
