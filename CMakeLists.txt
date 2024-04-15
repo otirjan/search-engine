@@ -14,6 +14,7 @@ add_executable(rapidJSONExample rapidJSONExample.cpp)
 add_executable(supersearch main.cpp)
 add_executable(test_AVLTree test_AVLTree.cpp)
 add_test(NAME TestAVL COMMAND test_AVLTree)
+add_executable(printingAVLTree printingAVLTree.cpp)
 
 # this makes sure we also link rapidjson
 target_include_directories(rapidJSONExample PRIVATE rapidjson/)
