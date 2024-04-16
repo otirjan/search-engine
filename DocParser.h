@@ -4,6 +4,9 @@
 #include <string>
 #include <iomanip>
 
+#include <fstream>
+#include <sstream>
+
 #include <unordered_set>
 #include <vector>
 
@@ -47,17 +50,52 @@ class DocumentParser {
             return stemWord; 
         }
 
-        void extractInfo(const string& filePath){   
-            //take in the doc file path, go thru text, extract author, publication
-        }
-
 
     public: 
 
         void parseDoc(const string& filePath){
             //go thru and take out stop words, stem words that need it, and exctact info for each document
-        }
+            
+            
+            //this goes underneath livs code, where it reads in the document as isw 
+            //adding this here, was gonna be in extractInfo but it should be here in the doc parser 
+             if (document.HasMember("author") && document["author"].IsString()) {
+             string author = document["author"].GetString();
+            } else {
+            cerr << "Error: json file doesn't contain an author or it is not a string" << endl;
+            }
 
+            if (document.HasMember("publication") && document["publication"].IsString()) {
+             string author = document["publication"].GetString();
+            } else {
+            cerr << "Error: json file doesn't contain a publication or it is not a string" << endl;
+            }
+        }//end of parsedoc
+
+    void testFileSystem(const string &path)  //this takes in the folder of data and gives us the filepath for each 
+    {
+
+    // recursive_director_iterator used to "access" folder at parameter -path-
+    // we are using the recursive iterator so it will go into subfolders.
+    // see: https://en.cppreference.com/w/cpp/filesystem/recursive_directory_iterator
+    auto it = filesystem::recursive_directory_iterator(path);
+
+    // loop over all the entries.
+    for (const auto &entry : it)
+    {
+
+        cout << "--- " << setw(60) << left << entry.path().c_str() << " ---" << endl;
+
+        // We only want to attempt to parse files that end with .json...
+        if (entry.is_regular_file() && entry.path().extension().string() == ".json")
+        {
+            
+            
+            parseDoc(entry.path().string());   //call parsedoc and pass the file path 
+
+        }
+    }
+}
 
 
 

@@ -6,7 +6,6 @@
 #include <iostream>
 
 
-
 TEST_CASE("Doc Parser")
 {
    //when we are finished implementing doc parser put the tests here  
