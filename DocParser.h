@@ -13,7 +13,7 @@
 #include "rapidjson/istreamwrapper.h"
 #include "rapidjson/document.h"
 
-#include "porter2_stemmer.h"
+#include "porter2_stemmer.h"   //check why this is still swuiggly, i think something needs to be added in the CMAKE but idk what 
 
 
 using namespace rapidjson;
@@ -37,11 +37,14 @@ class DocumentParser {
             //look at each token, if its one of the stop words, take it out 
         }
 
-        string stemWord(string& word){
-            //implement logic to stem the word
-            Porter2Stemmer::trim(to_stem);
-            Porter2Stemmer::stem(to_stem);   //we need these to stem words 
-            return word; 
+        string stemWord(string& word){   //just takes in one word, returns that word stemmed
+
+            string stemWord = word;
+
+            Porter2Stemmer::trim(stemWord);
+            Porter2Stemmer::stem(stemWord);  
+
+            return stemWord; 
         }
 
         void extractInfo(const string& filePath){   
@@ -61,5 +64,5 @@ class DocumentParser {
 
 
 
-}//end of doc parser 
+};//end of doc parser 
 

@@ -1,4 +1,5 @@
 #include <iostream>
+#include "porter2_stemmer.h"
 
 using namespace std;
 
