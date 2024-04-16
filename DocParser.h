@@ -10,8 +10,6 @@
 #include <unordered_set>
 #include <vector>
 
-
-
 // RapidJSON headers we need for our parsing.
 #include "rapidjson/istreamwrapper.h"
 #include "rapidjson/document.h"
@@ -56,20 +54,31 @@ class DocumentParser {
         void parseDoc(const string& filePath){
             //go thru and take out stop words, stem words that need it, and exctact info for each document
             
+
             
             //this goes underneath livs code, where it reads in the document as isw 
             //adding this here, was gonna be in extractInfo but it should be here in the doc parser 
+           
+           //extract the author from document 
              if (document.HasMember("author") && document["author"].IsString()) {
              string author = document["author"].GetString();
             } else {
             cerr << "Error: json file doesn't contain an author or it is not a string" << endl;
             }
 
+            //extract the publication 
             if (document.HasMember("publication") && document["publication"].IsString()) {
              string author = document["publication"].GetString();
             } else {
             cerr << "Error: json file doesn't contain a publication or it is not a string" << endl;
             }
+
+            //extract people 
+
+
+            //extract orgs 
+
+
         }//end of parsedoc
 
     void testFileSystem(const string &path)  //this takes in the folder of data and gives us the filepath for each 
@@ -89,8 +98,6 @@ class DocumentParser {
         // We only want to attempt to parse files that end with .json...
         if (entry.is_regular_file() && entry.path().extension().string() == ".json")
         {
-            
-            
             parseDoc(entry.path().string());   //call parsedoc and pass the file path 
 
         }
