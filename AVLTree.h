@@ -35,19 +35,13 @@ private:
         //height of the node, used for balancing
         int height; // Height of the node used for balancing
         //default constructor for an AVL node
-        AvlNode(const Comparable& k, std::map<Value, size_t>& d)
+        AvlNode(const Comparable& k, Value& d, size_t& f)
         {
-            //setting the node's key equal to the word passed into the constructor
             key = k;
-            //setting the node's data equal to the map passed into the constructor
-            data = d;
-            //default value for the node's left child is null
+            data.insert({d, f});
             left = nullptr;
-            //default value for the node's right child is null
             right = nullptr;
-            //initial height is 0
             height = 0;
-
         }
         //constructor for the clone function/for internal functions
         AvlNode(const Comparable& k, std::map<Value, size_t>& d, AvlNode* l, AvlNode* r, int h)
@@ -135,9 +129,15 @@ public:
     /**
      * Insert x into the tree; duplicates are ignored.
      */
-    void insert(const Comparable &x, std::map<Value, size_t>& d)
+    // void insert(const Comparable &x, std::map<Value, size_t>& d)
+    // {
+    //     insert(x, d, root);
+    // }
+
+    //DOES DOCUMENT NEED TO BE A REFERENCE?????
+    void insert(const Comparable& x,const Value& d, const size_t& f) 
     {
-        insert(x, d, root);
+        insert(x, d, f, root);
     }
 
     /**
@@ -202,18 +202,25 @@ private:
      * t is the node that roots the subtree.
      * Set the new root of the subtree.
      */
-    void insert(const Comparable &x, std::map<Value, size_t>& d, AvlNode *&t)
+    void insert(const Comparable& x, const Value& document, const size_t& freq, AvlNode *&t)
+    //void insert(const Comparable &x, std::map<Value, size_t>& d, AvlNode *&t)
     {
-        //if the tree is empty
+        //if its not found, the word does NOT already exist inside the map
         if (t == nullptr)
         {
             //call node constructor, pass the node its key (the word) and its value (the map)
             t = new AvlNode{x, d};
             //increment total
             total++;
+
+            //add the document and the freq into the map
+            t.data.insert({document, freq});
+
             // a single node is always balanced
             return; 
         }
+
+        //potentially add a statement to check. if we find the node and the document matches, increment 
 
         //recursive call of insert in order to set the node in its place within the tree
         if (x < t->key)
@@ -227,6 +234,8 @@ private:
         else
         {
             // Duplicate; do nothing
+            //it ALREADY EXISTS! so, update the node's data by inserting the document and the freq into the node's map
+            t.data.insert({document, freq});
         } 
 
         // This will call balance on the way back up the tree. It will only balance

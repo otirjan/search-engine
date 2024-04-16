@@ -23,15 +23,20 @@ TEST_CASE("Avltree tests")
     //creating an instance of the avl tree
     AvlTree<std::string,std::string> exampleTree;
 
+
     SECTION("insert, contains, find")
     {
         //creating sample maps, which hold a frequency and a filepath (string)
        std::map<std::string, size_t> value1 = {{"filepathEx", 2}, {"filepathEx2", 6}};
        std::map<std::string, size_t> value2 = {{"filepathEx3", 8}, {"filepathEx4", 1}};
 
+       std::string doc1 = "filepathEx";
+       // std::string hello = "hello";
         //inserting node into AVL tree
-        exampleTree.insert("hello", value1);
-        exampleTree.insert("world", value2);
+        exampleTree.insert("hello", doc1, 5);
+
+        // exampleTree.insert("hello", value1);
+        // exampleTree.insert("world", value2);
 
         //checking whether the nodes exist within the tree
         REQUIRE(exampleTree.contains("hello") == true);
@@ -48,8 +53,8 @@ TEST_CASE("Avltree tests")
        std::map<std::string, size_t> value2 = {{"filepathEx3", 8}, {"filepathEx4", 1}};
 
         //inserting node into AVL tree
-        exampleTree.insert("hello", value1);
-        exampleTree.insert("world", value2);
+        // exampleTree.insert("hello", value1);
+        // exampleTree.insert("world", value2);
 
         REQUIRE(exampleTree.isEmpty() == false);
 
@@ -66,8 +71,8 @@ TEST_CASE("Avltree tests")
         std::map<std::string, size_t> value2 = {{"filepathEx3", 8}, {"filepathEx4", 1}};
 
         //inserting node into AVL tree
-        exampleTree.insert("hello", value1);
-        exampleTree.insert("world", value2);
+        // exampleTree.insert("hello", value1);
+        // exampleTree.insert("world", value2);
 
         //copy constructor
         AvlTree<std::string,std::string> exampleTree2(exampleTree);
@@ -98,9 +103,9 @@ TEST_CASE("Avltree tests")
             std::map<std::string, size_t> value4 = {{"filepathEx", 20}};
             std::map<std::string, size_t> value5 = {{"filepathEx", 80}, {"filepathEx2", 4}, {"filepathEx3", 9}, {"filepathEx4", 1}, {"filepathEx5", 13}};
 
-            exampleTree2.insert("apple", value3);
-            exampleTree3.insert("data", value4);
-            exampleTree3.insert("structures", value5);
+            // exampleTree2.insert("apple", value3);
+            // exampleTree3.insert("data", value4);
+            // exampleTree3.insert("structures", value5);
 
             REQUIRE(exampleTree2.getTotal() == 3);
             REQUIRE(exampleTree3.getTotal() == 4);
@@ -118,9 +123,9 @@ TEST_CASE("Avltree tests")
             std::map<std::string, size_t> value2 = {{"filepathEx", 20}};
             std::map<std::string, size_t> value3 = {{"filepathEx", 80}, {"filepathEx2", 4}, {"filepathEx3", 9}, {"filepathEx4", 1}, {"filepathEx5", 13}};
 
-            exampleTree4.insert("apple", value1);
-            exampleTree4.insert("data", value2);
-            exampleTree4.insert("structures", value3);
+            // exampleTree4.insert("apple", value1);
+            // exampleTree4.insert("data", value2);
+            // exampleTree4.insert("structures", value3);
 
             exampleTree4 = exampleTree;
 
@@ -136,8 +141,8 @@ TEST_CASE("Avltree tests")
         std::map<std::string, size_t> value2 = {{"filepathEx3", 8}, {"filepathEx4", 1}};
 
         //inserting node into AVL tree
-        exampleTree.insert("hello", value1);
-        exampleTree.insert("world", value2);
+        // exampleTree.insert("hello", value1);
+        // exampleTree.insert("world", value2);
 
 
         SECTION("making sure there aren't duplicates")
@@ -145,7 +150,7 @@ TEST_CASE("Avltree tests")
             //test adding a duplicate node
             std::map<std::string, size_t> value3 = {{"filepathEx", 2}, {"filepathEx2", 6}, {"filepathEx3", 16}, {"filepathEx4", 23}};
 
-            exampleTree.insert("hello", value3);
+            // exampleTree.insert("hello", value3);
 
             //should not have done anything because this is a duplicate
             REQUIRE(exampleTree.getTotal() == 2);
