@@ -35,7 +35,7 @@ private:
         //height of the node, used for balancing
         int height; // Height of the node used for balancing
         //default constructor for an AVL node
-        AvlNode(const Comparable& k, Value& d, size_t& f)
+        AvlNode(const Comparable& k, const Value& d, const size_t& f)
         {
             key = k;
             data.insert({d, f});
@@ -129,12 +129,6 @@ public:
     /**
      * Insert x into the tree; duplicates are ignored.
      */
-    // void insert(const Comparable &x, std::map<Value, size_t>& d)
-    // {
-    //     insert(x, d, root);
-    // }
-
-    //DOES DOCUMENT NEED TO BE A REFERENCE?????
     void insert(const Comparable& x,const Value& d, const size_t& f) 
     {
         insert(x, d, f, root);
@@ -175,11 +169,11 @@ public:
     /*
     *calls internal function to collapse AvlTree into a CSV file
     */
-    void exportToCSV() const
-    {
-        const std::string filename = "AVLTree.csv";
-        exportToCSV(root, filename);
-    }
+    // void exportToCSV() const
+    // {
+    //     const std::string filename = "AVLTree.csv";
+    //     exportToCSV(root, filename);
+    // }
 
 #ifdef DEBUG
     /**
@@ -208,14 +202,10 @@ private:
         //if its not found, the word does NOT already exist inside the map
         if (t == nullptr)
         {
-            //call node constructor, pass the node its key (the word) and its value (the map)
-            t = new AvlNode{x, d};
+            //call the node constructor, give it its key, document and freq into the map
+            t = new AvlNode({x, document, freq});
             //increment total
             total++;
-
-            //add the document and the freq into the map
-            t.data.insert({document, freq});
-
             // a single node is always balanced
             return; 
         }
@@ -225,17 +215,17 @@ private:
         //recursive call of insert in order to set the node in its place within the tree
         if (x < t->key)
         {
-            insert(x, d, t->left);
+            insert(x, document, freq, t->left);
         }
         else if (t->key < x)
         {
-            insert(x, d, t->right);
+            insert(x, document, freq, t->right);
         }
         else
         {
             // Duplicate; do nothing
             //it ALREADY EXISTS! so, update the node's data by inserting the document and the freq into the node's map
-            t.data.insert({document, freq});
+            t->data.insert({document, freq});
         } 
 
         // This will call balance on the way back up the tree. It will only balance
@@ -330,31 +320,31 @@ private:
     /*
     * internal function to export the Avltree to a csv
     */
-    void exportToCSV(const AvlTree& tree, const std::string& filename) const
-    {
-        std::ofstream outputFile(filename);
-        //error message
-        //print header
-        //call inorderTraversal
-        inOrderTraversal(tree.root, outputFile);
-        //close output file
-        outputFile.close();
-    }
+    // void exportToCSV(const AvlTree& tree, const std::string& filename) const
+    // {
+    //     std::ofstream outputFile(filename);
+    //     //error message
+    //     //print header
+    //     //call inorderTraversal
+    //     inOrderTraversal(tree.root, outputFile);
+    //     //close output file
+    //     outputFile.close();
+    // }
 
     /*
     *internal function for in order tree traversal
     */
-    void inOrderTraversal(AvlNode *t, std::ofstream& outputFile)
-    {
-        //if null, return
-        if (t == nullptr)
-        {
-            return;
-        }
-        //traverse and print left subtree
-        //traverse and print right subtree
+    // void inOrderTraversal(AvlNode *t, std::ofstream& outputFile)
+    // {
+    //     //if null, return
+    //     if (t == nullptr)
+    //     {
+    //         return;
+    //     }
+    //     //traverse and print left subtree
+    //     //traverse and print right subtree
 
-    }
+    // }
 
     /**
      * Internal method to make subtree empty.
