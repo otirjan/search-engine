@@ -35,19 +35,13 @@ private:
         //height of the node, used for balancing
         int height; // Height of the node used for balancing
         //default constructor for an AVL node
-        AvlNode(const Comparable& k, std::map<Value, size_t>& d)
+        AvlNode(const Comparable& k, const Value& d, const size_t& f)
         {
-            //setting the node's key equal to the word passed into the constructor
             key = k;
-            //setting the node's data equal to the map passed into the constructor
-            data = d;
-            //default value for the node's left child is null
+            data.insert({d, f});
             left = nullptr;
-            //default value for the node's right child is null
             right = nullptr;
-            //initial height is 0
             height = 0;
-
         }
         //constructor for the clone function/for internal functions
         AvlNode(const Comparable& k, std::map<Value, size_t>& d, AvlNode* l, AvlNode* r, int h)
@@ -135,9 +129,9 @@ public:
     /**
      * Insert x into the tree; duplicates are ignored.
      */
-    void insert(const Comparable &x, std::map<Value, size_t>& d)
+    void insert(const Comparable& x,const Value& d, const size_t& f) 
     {
-        insert(x, d, root);
+        insert(x, d, f, root);
     }
 
     /**
@@ -172,6 +166,15 @@ public:
         return first15(x, root);
     }
 
+    /*
+    *calls internal function to collapse AvlTree into a CSV file
+    */
+    // void exportToCSV() const
+    // {
+    //     const std::string filename = "AVLTree.csv";
+    //     exportToCSV(root, filename);
+    // }
+
 #ifdef DEBUG
     /**
      * Check if the tree is balanced and that the height of the nodes is correct.
@@ -193,31 +196,36 @@ private:
      * t is the node that roots the subtree.
      * Set the new root of the subtree.
      */
-    void insert(const Comparable &x, std::map<Value, size_t>& d, AvlNode *&t)
+    void insert(const Comparable& x, const Value& document, const size_t& freq, AvlNode *&t)
+    //void insert(const Comparable &x, std::map<Value, size_t>& d, AvlNode *&t)
     {
-        //if the tree is empty
+        //if its not found, the word does NOT already exist inside the map
         if (t == nullptr)
         {
-            //call node constructor, pass the node its key (the word) and its value (the map)
-            t = new AvlNode{x, d};
+            //call the node constructor, give it its key, document and freq into the map
+            t = new AvlNode({x, document, freq});
             //increment total
             total++;
             // a single node is always balanced
             return; 
         }
 
+        //potentially add a statement to check. if we find the node and the document matches, increment 
+
         //recursive call of insert in order to set the node in its place within the tree
         if (x < t->key)
         {
-            insert(x, d, t->left);
+            insert(x, document, freq, t->left);
         }
         else if (t->key < x)
         {
-            insert(x, d, t->right);
+            insert(x, document, freq, t->right);
         }
         else
         {
             // Duplicate; do nothing
+            //it ALREADY EXISTS! so, update the node's data by inserting the document and the freq into the node's map
+            t->data.insert({document, freq});
         } 
 
         // This will call balance on the way back up the tree. It will only balance
@@ -308,6 +316,35 @@ private:
        //return the map of 15 (or less) elements
        return results;
     }
+
+    /*
+    * internal function to export the Avltree to a csv
+    */
+    // void exportToCSV(const AvlTree& tree, const std::string& filename) const
+    // {
+    //     std::ofstream outputFile(filename);
+    //     //error message
+    //     //print header
+    //     //call inorderTraversal
+    //     inOrderTraversal(tree.root, outputFile);
+    //     //close output file
+    //     outputFile.close();
+    // }
+
+    /*
+    *internal function for in order tree traversal
+    */
+    // void inOrderTraversal(AvlNode *t, std::ofstream& outputFile)
+    // {
+    //     //if null, return
+    //     if (t == nullptr)
+    //     {
+    //         return;
+    //     }
+    //     //traverse and print left subtree
+    //     //traverse and print right subtree
+
+    // }
 
     /**
      * Internal method to make subtree empty.
