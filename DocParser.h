@@ -123,27 +123,27 @@ class DocumentParser {
         }//end parseDoc
           
           void testFileSystem(const string &path)  //this takes in the folder of data and gives us the filepath for each 
-    {
-
-    // recursive_director_iterator used to "access" folder at parameter -path-
-    // we are using the recursive iterator so it will go into subfolders.
-    // see: https://en.cppreference.com/w/cpp/filesystem/recursive_directory_iterator
-    auto it = filesystem::recursive_directory_iterator(path);
-
-    // loop over all the entries.
-    for (const auto &entry : it)
-    {
-
-        cout << "--- " << setw(60) << left << entry.path().c_str() << " ---" << endl;
-
-        // We only want to attempt to parse files that end with .json...
-        if (entry.is_regular_file() && entry.path().extension().string() == ".json")
         {
-            parseDoc(entry.path().string());   //call parsedoc and pass the file path 
 
+            // recursive_director_iterator used to "access" folder at parameter -path-
+            // we are using the recursive iterator so it will go into subfolders.
+            // see: https://en.cppreference.com/w/cpp/filesystem/recursive_directory_iterator
+            auto it = filesystem::recursive_directory_iterator(path);
+
+            // loop over all the entries.
+            for (const auto &entry : it)
+            {
+
+                cout << "--- " << setw(60) << left << entry.path().c_str() << " ---" << endl;
+
+                // We only want to attempt to parse files that end with .json...
+                if (entry.is_regular_file() && entry.path().extension().string() == ".json")
+                {
+                    parseDoc(entry.path().string());   //call parsedoc and pass the file path 
+
+                }
+            }
         }
-    }
-}
 
         void initializeStopWords(){
             stopwords = {"able", "about", "above", "abroad", "according", "accordingly", "across", "actually", "adj", "after",
