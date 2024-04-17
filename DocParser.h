@@ -3,12 +3,17 @@
 #include <fstream>
 #include <string>
 #include <iomanip>
+
+#include <fstream>
+#include <sstream>
+
+#include <unordered_set>
+
 #include <set>
 #include <sstream>
 #include <algorithm>
+
 #include <vector>
-
-
 
 // RapidJSON headers we need for our parsing.
 #include "rapidjson/istreamwrapper.h"
@@ -92,6 +97,7 @@ class DocumentParser {
             cerr << "Error: json file doesn't contain a publication or it is not a string" << endl;
             }
 
+               
             //extract people
             if (document.HasMember("people") && document["people"].IsString()) {
              string people = document["people"].GetString();
@@ -115,8 +121,29 @@ class DocumentParser {
 
         return wordFrequencies;
         }//end parseDoc
+          
+          void testFileSystem(const string &path)  //this takes in the folder of data and gives us the filepath for each 
+    {
 
+    // recursive_director_iterator used to "access" folder at parameter -path-
+    // we are using the recursive iterator so it will go into subfolders.
+    // see: https://en.cppreference.com/w/cpp/filesystem/recursive_directory_iterator
+    auto it = filesystem::recursive_directory_iterator(path);
 
+    // loop over all the entries.
+    for (const auto &entry : it)
+    {
+
+        cout << "--- " << setw(60) << left << entry.path().c_str() << " ---" << endl;
+
+        // We only want to attempt to parse files that end with .json...
+        if (entry.is_regular_file() && entry.path().extension().string() == ".json")
+        {
+            parseDoc(entry.path().string());   //call parsedoc and pass the file path 
+
+        }
+    }
+}
 
         void initializeStopWords(){
             stopwords = {"able", "about", "above", "abroad", "according", "accordingly", "across", "actually", "adj", "after",
