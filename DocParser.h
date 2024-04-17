@@ -41,24 +41,18 @@ class DocumentParser {
             while (stream >> word){
                 //remove punctuation
                 word.erase(remove_if(word.begin(), word.end(), ::ispunct), word.end());
-                word = stemWord(word); //stem the word
-                if (!word.empty()) {
+                //lowercase the word
+                transform(word.begin(), word.end(), word.begin(), ::tolower);
+                //stem the word
+                word = stemWord(word); 
+                //only add to the words vector if it is not a stop word
+                if (!word.empty() && stopwords.find(word) == stopwords.end()) {
                 words.push_back(word); 
                 }
             }
             return words;
         }
 
-        vector<string> removeStopWords(const vector<string>& words){
-            //look at each token, if its one of the stop words, take it out 
-            vector<string> filteredWords;
-            for (const string& word : words) {
-                if (stopwords.find(word) == stopwords.end()) {
-                    filteredWords.push_back(word);
-                }
-            }
-            return filteredWords;
-        }
 
         string stemWord(string& word){   //just takes in one word, returns that word stemmed
 
@@ -80,17 +74,47 @@ class DocumentParser {
             return wordFrequencies;
              }
 
-            string text((istreambuf_iterator<char>(ifs)), istreambuf_iterator<char>());
-            ifs.close();
+            IStreamWrapper isw(ifs);
+            Document document;
+            document.ParseStream(isw);
 
+            //extract author
+            if (document.HasMember("author") && document["author"].IsString()) {
+             string author = document["author"].GetString();
+            } else {
+            cerr << "Error: json file doesn't contain an author or it is not a string" << endl;
+            }
+
+            //extract the publication 
+            if (document.HasMember("publication") && document["publication"].IsString()) {
+             string publication = document["publication"].GetString();
+            } else {
+            cerr << "Error: json file doesn't contain a publication or it is not a string" << endl;
+            }
+
+            //extract people
+            if (document.HasMember("people") && document["people"].IsString()) {
+             string people = document["people"].GetString();
+            } else {
+            cerr << "Error: json file doesn't contain an person or it is not a string" << endl;
+            }
+
+            //extract orgs
+            if (document.HasMember("organization") && document["organization"].IsString()) {
+             string organization = document["organization"].GetString();
+            } else {
+            cerr << "Error: json file doesn't contain an author or it is not a string" << endl;
+            }
+
+
+            string text = document["text"].GetString();
             auto words = tokenize(text);
-            auto processedWords = removeStopWords(words);
-            for (const auto& word : processedWords) {
-                wordFrequencies[word]++;
+            for (const auto& word : words) {
+            wordFrequencies[word]++;
             }
 
         return wordFrequencies;
-        }//end parseDocument
+        }//end parseDoc
 
 
 
