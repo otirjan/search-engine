@@ -10,8 +10,8 @@
 class IndexHandler{
     private:
         AvlTree<std::string, std::string> wordAVL;    //making an instance of avl for each type 
-        AvlTree<std::string, std::map<std::string, std::string>> personAVL;
-        AvlTree<std::string, std::map<std::string, std::string>> organizationAVL;
+        AvlTree<std::string, std::string > personAVL;
+        AvlTree<std::string, std::string> organizationAVL;
     
     public: 
         void addWord(std::string word, std::string filePath, size_t freq){
