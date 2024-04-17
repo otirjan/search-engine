@@ -169,11 +169,11 @@ public:
     /*
     *calls internal function to collapse AvlTree into a CSV file
     */
-    // void exportToCSV() const
-    // {
-    //     const std::string filename = "AVLTree.csv";
-    //     exportToCSV(root, filename);
-    // }
+    void exportToCSV() const
+    {
+        const std::string filename = "AVLTree.csv";
+        exportToCSV(root, filename);
+    }
 
 #ifdef DEBUG
     /**
@@ -320,31 +320,43 @@ private:
     /*
     * internal function to export the Avltree to a csv
     */
-    // void exportToCSV(const AvlTree& tree, const std::string& filename) const
-    // {
-    //     std::ofstream outputFile(filename);
-    //     //error message
-    //     //print header
-    //     //call inorderTraversal
-    //     inOrderTraversal(tree.root, outputFile);
-    //     //close output file
-    //     outputFile.close();
-    // }
+    void exportToCSV(const AvlTree& tree, const std::string& filename) const
+    {
+        std::ofstream outputFile(filename);
+        //error message
+        //print header
+        //call inorderTraversal
+        inOrderTraversal(tree.root, outputFile);
+        //close output file
+        outputFile.close();
+    }
 
     /*
     *internal function for in order tree traversal
     */
-    // void inOrderTraversal(AvlNode *t, std::ofstream& outputFile)
-    // {
-    //     //if null, return
-    //     if (t == nullptr)
-    //     {
-    //         return;
-    //     }
-    //     //traverse and print left subtree
-    //     //traverse and print right subtree
+    void inOrderTraversal(AvlNode *t, std::ofstream& outputFile)
+    {
+        //if null, return
+        if (t == nullptr)
+        {
+            return;
+        }
+        //traverse and print left subtree
+        inOrderTraversal(t->left, outputFile);
 
-    // }
+        //printing
+        outputFile << t->key;
+
+        for (const auto& pair : t->data)
+        {
+            outputFile << ", " << pair.first << ", " << pair.second;
+        }
+        outputFile << std::endl;
+
+
+        //traverse and print right subtree
+        inOrderTraversal(t->right, outputFile);
+    }
 
     /**
      * Internal method to make subtree empty.
