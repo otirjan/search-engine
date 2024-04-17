@@ -1,12 +1,13 @@
-#define CATCH_CONFIG_MAIN
-#include "catch2/catch.hpp"
-#include "util/hash.h"
-
 #include "DocParser.h"
 #include <iostream>
 
+int main() {
+    //  DocumentParser object
+    DocumentParser parser;
 
-TEST_CASE("Doc Parser")
-{
-   //when we are finished implementing doc parser put the tests here  
+    // test parsing a single document
+    std::string filePath = "sample_data/coll_1/news_0064567.json"; 
+    parser.parseDoc(filePath); 
+
+    return 0;
 }

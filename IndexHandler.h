@@ -14,17 +14,31 @@ class IndexHandler{
         AvlTree<std::string, std::string> organizationAVL;
     
     public: 
-        void addWord(std::string word, std::string filePath, size_t freq){
-           //call insert from avh.h  
+        void addWord(std::string word, std::string filePath, size_t freq){   //add word, filepath, and frequency using insert function 
+           wordAVL.insert(word, filePath, freq);
         }
 
-        void addPerson(std::string word, std::string filePath, size_t freq){
-            
+        void addPerson(std::string word, std::string filePath, size_t freq){    //if the word already exists, it wont make a new node but it will add the doc and its freq to the map 
+            personAVL.insert(word, filePath, freq);
         }
 
-        void addOrg(std::string word, std::string filePath, size_t freq){
-            
+        void addOrg(std::string word, std::string filePath, size_t freq){     
+            organizationAVL.insert(word, filePath, freq);
         }
+
+        std::map<std::string, size_t> searchWord(const string& word){      //search for word using avl find function, returns map of docs where word is found 
+            return wordAVL.find(word);
+        }
+
+         std::map<std::string, size_t> searchPerson(const string& word){
+            return personAVL.find(word);
+        }
+
+         std::map<std::string, size_t> searchOrg(const string& word){
+            return organizationAVL.find(word);
+        }
+
+
 
 
 };   //end of index handler class 

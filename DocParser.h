@@ -1,7 +1,5 @@
 #include <iostream>
 #include <filesystem>
-#include <fstream>
-#include <string>
 #include <iomanip>
 
 #include <fstream>
@@ -20,7 +18,7 @@
 #include "rapidjson/document.h"
 
 #include "porter2_stemmer.h"   //check why this is still swuiggly, i think something needs to be added in the CMAKE but idk what 
-
+#include "IndexHandler.h"
 
 using namespace rapidjson;
 using namespace std;
@@ -32,6 +30,8 @@ using namespace std;
 class DocumentParser {
     private:
         set<string> stopwords;
+
+        IndexHandler handler;
 
     public:
 
@@ -70,13 +70,12 @@ class DocumentParser {
         }
 
 
-        map<string, size_t> parseDoc(const string& filePath){
+        void parseDoc(const string& filePath){
         //go thru and take out stop words, stem words that need it, and exctact info for each document
-            map<string, size_t> wordFrequencies;
+            
             ifstream ifs(filePath);
             if (!ifs.is_open()) {
             cerr << "Could not open file: " << filePath << endl;
-            return wordFrequencies;
              }
 
             IStreamWrapper isw(ifs);
@@ -99,28 +98,67 @@ class DocumentParser {
 
                
             //extract people
-            if (document.HasMember("people") && document["people"].IsString()) {
-             string people = document["people"].GetString();
+            if (document.HasMember("persons") && document["persons"].IsArray()) {
+             //create array of ppl from json file, create ref to pplArray (so that we're not making copies)
+             rapidjson::Value& pplArray = document["persons"];
+             
+             for(rapidjson::SizeType i=0; i< pplArray.Size(); i++){    //for loop that goes through the array of ppl
+                rapidjson::Value& person = pplArray[i];                //reference to a person 
+
+                if (person.HasMember("name") && person["name"].IsString()){    //looks thru people array for names
+                    string name = person["name"].GetString();                 //extracts the name 
+                    handler.addPerson(name, filePath, calcFrequency(document, name));                //call the index handler to add each person to the AVl 
+                }
+             }
             } else {
             cerr << "Error: json file doesn't contain an person or it is not a string" << endl;
             }
 
             //extract orgs
-            if (document.HasMember("organization") && document["organization"].IsString()) {
-             string organization = document["organization"].GetString();
+            if (document.HasMember("organization") && document["organization"].IsArray()) {
+            //create array of orgs from json file, create ref to orgArray (so that we're not making copies)
+             rapidjson::Value& orgArray = document["organizations"];
+             
+             for(rapidjson::SizeType i=0; i< orgArray.Size(); i++){    //for loop that goes through the array of ppl
+                rapidjson::Value& org = orgArray[i];                //reference to a person 
+
+                if (org.HasMember("name") && org["name"].IsString()){    //looks thru people array for names
+                    string organization = org["name"].GetString();                 //extracts the name 
+                    handler.addOrg(organization, filePath, calcFrequency(document, organization));                //call the index handler to add each person to the AVl 
+                }
+             }
             } else {
-            cerr << "Error: json file doesn't contain an author or it is not a string" << endl;
+            cerr << "Error: json file doesn't contain an org or it is not a string" << endl;
             }
 
-
+            //go thru text, tokenize, add words to the word AVL
             string text = document["text"].GetString();
             auto words = tokenize(text);
-            for (const auto& word : words) {
-            wordFrequencies[word]++;
+            for (const auto& word : words){
+                handler.addWord(word, filePath, calcFrequency(document, word));     
             }
 
-        return wordFrequencies;
         }//end parseDoc
+
+
+        //function to calculate frequency, will be called when we pass word,doc,freq to add in the index handler 
+        size_t calcFrequency(const Document& document, const string& word){
+            size_t frequency = 0;           //initialize frequency variable 
+
+            //extract all of the text and tokenize it to read each word 
+            string contents = document["text"].GetString();
+            auto words = tokenize(contents);               //words is the collection of words extracted from the text
+
+            for(const auto& w: words){     //for loop that goes thru all the text, increases frequency if word appears 
+                if(w==word){
+                    frequency++;
+                }
+            }
+            return frequency;
+
+        }//end of calc frequency
+
+
           
           void testFileSystem(const string &path)  //this takes in the folder of data and gives us the filepath for each 
         {
