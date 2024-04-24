@@ -110,6 +110,23 @@ int main()
     here's what's in exampleTree: hello, world, fifteen, fourteen
     
     */
-   exampleTree.exportToCSV();
+  // exampleTree.exportToCSV();
+
+
+
+
+
+   AvlTree<int,std::string> numberTree;
+
+   numberTree.insert(6, "filepathEx", 300);
+   numberTree.insert(5, "filepathEx", 300);
+   numberTree.insert(4, "filepathEx", 300);
+   numberTree.insert(3, "filepathEx", 300);
+   numberTree.insert(2, "filepathEx", 300);
+   numberTree.insert(1, "filepathEx", 300);
+
+   numberTree.exportToCSV();
+
+
 
 }

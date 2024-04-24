@@ -332,7 +332,7 @@ private:
             return;
         }
         //print header
-        outputFile << "key, frequency, filepath" << std::endl;
+        outputFile << "key, filepath, frequency" << std::endl;
         //call inorderTraversal
         inOrderTraversal(root, outputFile);
         //close output file
