@@ -8,6 +8,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <fstream>
 
 using namespace std;
 
@@ -172,7 +173,7 @@ public:
     void exportToCSV() const
     {
         const std::string filename = "AVLTree.csv";
-        exportToCSV(root, filename);
+        exportToCSV(filename);
     }
 
 #ifdef DEBUG
@@ -320,13 +321,20 @@ private:
     /*
     * internal function to export the Avltree to a csv
     */
-    void exportToCSV(const AvlTree& tree, const std::string& filename) const
+    void exportToCSV(const std::string& filename) const
     {
         std::ofstream outputFile(filename);
         //error message
+
+        if(!outputFile.is_open())
+        {
+            std::cerr << "Error, failed to open file" << filename << std::endl;
+            return;
+        }
         //print header
+        outputFile << "key, frequency, filepath" << std::endl;
         //call inorderTraversal
-        inOrderTraversal(tree.root, outputFile);
+        inOrderTraversal(root, outputFile);
         //close output file
         outputFile.close();
     }
@@ -334,7 +342,7 @@ private:
     /*
     *internal function for in order tree traversal
     */
-    void inOrderTraversal(AvlNode *t, std::ofstream& outputFile)
+    void inOrderTraversal(AvlNode *t, std::ofstream& outputFile) const
     {
         //if null, return
         if (t == nullptr)

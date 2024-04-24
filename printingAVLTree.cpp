@@ -19,18 +19,18 @@ int main()
     exampleTree.insert("world", "filepathEx3", 8);
     exampleTree.insert("world", "filepathEx4", 1);
     //checking if the node with the key "hello" exists inside the AvlTree
-    if (exampleTree.contains("hello")) 
-    {
-        //saving the results of organize() into a variable called organizedMapHello
-        auto organizedMapHello = exampleTree.organize("hello");
-        std::cout << "Organized map for 'hello':" << std::endl;
-        //loop through the organized map
-        for (const auto& pair : organizedMapHello) 
-        {
-            //printing. output: Filepath:filepathEx2, Frequency: 6; Filepath: filepathEx, Frequency: 2. This is not how they were initalized 
-            std::cout << "Filepath: " << pair.first << ", Frequency: " << pair.second << std::endl;
-        }
-    }
+    // if (exampleTree.contains("hello")) 
+    // {
+    //     //saving the results of organize() into a variable called organizedMapHello
+    //     auto organizedMapHello = exampleTree.organize("hello");
+    //     std::cout << "Organized map for 'hello':" << std::endl;
+    //     //loop through the organized map
+    //     for (const auto& pair : organizedMapHello) 
+    //     {
+    //         //printing. output: Filepath:filepathEx2, Frequency: 6; Filepath: filepathEx, Frequency: 2. This is not how they were initalized 
+    //         std::cout << "Filepath: " << pair.first << ", Frequency: " << pair.second << std::endl;
+    //     }
+    // }
 
 
 
@@ -60,13 +60,13 @@ int main()
     exampleTree.insert("fifteen", "filepathEx220", 220);
 
     //saving the map returned from first15()
-    std::vector<std::pair<std::string, size_t>> fifteenMap = exampleTree.first15("fifteen");
+   // std::vector<std::pair<std::string, size_t>> fifteenMap = exampleTree.first15("fifteen");
     //iterating through the map of 15 elements
-    for (const auto& pair : fifteenMap)
-    {
-        //printing the key/value pairs in the map
-        std::cout << "Filepath: " << pair.first << ", frequency: " << pair.second << std::endl;
-    }
+    // for (const auto& pair : fifteenMap)
+    // {
+    //     //printing the key/value pairs in the map
+    //     std::cout << "Filepath: " << pair.first << ", frequency: " << pair.second << std::endl;
+    // }
 
 
     
@@ -95,15 +95,21 @@ int main()
     exampleTree.insert("fourteen", "filepathEx26", 28);
 
     //saving the map returned from first15()
-    std::vector<std::pair<std::string, size_t>> fourteenMap = exampleTree.first15("fourteen");
+   // std::vector<std::pair<std::string, size_t>> fourteenMap = exampleTree.first15("fourteen");
     //iterating through the map of 15 elements
-    for (const auto& pair : fourteenMap)
-    {
-        //printing the key/value pairs in the map
-        std::cout << "Filepath: " << pair.first << ", frequency: " << pair.second << std::endl;
-    }
+    // for (const auto& pair : fourteenMap)
+    // {
+    //     //printing the key/value pairs in the map
+    //     std::cout << "Filepath: " << pair.first << ", frequency: " << pair.second << std::endl;
+    // }
 
 
 
+    /*
+    testing for persistence
+    here's what's in exampleTree: hello, world, fifteen, fourteen
+    
+    */
+   exampleTree.exportToCSV();
 
 }
