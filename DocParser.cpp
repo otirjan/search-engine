@@ -67,16 +67,18 @@ using namespace std;
 
                
             //extract people
-            if (document.HasMember("persons") && document["persons"].IsArray()) {
+            if (document.HasMember("entities") && document["entities"].HasMember("persons") && document["entities"]["persons"].IsArray()) {
              //create array of ppl from json file, create ref to pplArray (so that we're not making copies)
-             rapidjson::Value& pplArray = document["persons"];
+             rapidjson::Value& pplArray = document["entities"]["persons"];
              
              for(rapidjson::SizeType i=0; i< pplArray.Size(); i++){    //for loop that goes through the array of ppl
                 rapidjson::Value& person = pplArray[i];                //reference to a person 
-
+                
+                cout << i << endl;
                 if (person.HasMember("name") && person["name"].IsString()){    //looks thru people array for names
                     string name = person["name"].GetString();                 //extracts the name 
                     handler.addPerson(name, filePath, calcFrequency(document, name));                //call the index handler to add each person to the AVl 
+                     cout <<" added person: " << name << endl;
                 }
              }
             } else {
@@ -84,16 +86,17 @@ using namespace std;
             }
 
             //extract orgs
-            if (document.HasMember("organization") && document["organization"].IsArray()) {
+            if (document.HasMember("entities") && document["entities"].HasMember("organizations") && document["entities"]["organizations"].IsArray()) {
             //create array of orgs from json file, create ref to orgArray (so that we're not making copies)
-             rapidjson::Value& orgArray = document["organizations"];
+             rapidjson::Value& orgArray = document["entities"]["organizations"];
              
              for(rapidjson::SizeType i=0; i< orgArray.Size(); i++){    //for loop that goes through the array of ppl
                 rapidjson::Value& org = orgArray[i];                //reference to a person 
 
                 if (org.HasMember("name") && org["name"].IsString()){    //looks thru people array for names
                     string organization = org["name"].GetString();                 //extracts the name 
-                    handler.addOrg(organization, filePath, calcFrequency(document, organization));                //call the index handler to add each person to the AVl 
+                    handler.addOrg(organization, filePath, calcFrequency(document, organization));   
+                    cout <<" added org: " << organization << endl;             //call the index handler to add each person to the AVl 
                 }
              }
             } else {
@@ -104,7 +107,8 @@ using namespace std;
             string text = document["text"].GetString();
             auto words = tokenize(text);
             for (const auto& word : words){
-                handler.addWord(word, filePath, calcFrequency(document, word));     
+                handler.addWord(word, filePath, calcFrequency(document, word)); 
+                // cout <<" added word: " << word << endl;
             }
 
         }//end parseDoc

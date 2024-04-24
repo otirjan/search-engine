@@ -4,6 +4,7 @@
 #include <iostream>
 #include "DocParser.h"
 
+//add test cases for testing errors like u did in doc parser 
 TEST_CASE("Tokenization Test") {
     DocumentParser parser;
     string text = "This is a test document for tokenization";
@@ -46,13 +47,15 @@ TEST_CASE("Stopword Removal Test") {
 }
 
 
-TEST_CASE("DocParse with File, Passing Correct words to Index Handler"){
+TEST_CASE("DocParse with File,Filling up AVLs and searching"){
+    //testing to make sure that doc parser can take in a file, fill the AVL maps, and then index handler can search for those words 
+    
     DocumentParser parser;   //make instance of the parser 
     
     std::string filePath = "sample_data/coll_1/news_0064567.json";    //manually read in file path 
     parser.parseDoc(filePath);               //call parsedoc on the file, should populate all the maps w/ words 
 
-    //use find or contains function to check if the names contains the name
+    //checking people map
     IndexHandler& handler = parser.getIndexHandler();
     
     std::map<std::string, size_t> personMap = handler.searchPerson("eric schweitzer");   //make a map that populates if berlin appears 
@@ -60,15 +63,18 @@ TEST_CASE("DocParse with File, Passing Correct words to Index Handler"){
 
     REQUIRE(containsName);
 
-    //check that author is Reuters Editorial
-    // std::map<std::string, size_t> wordMap = handler.searchWord("pessimistic");   //make a map that populates if berlin appears 
-    // bool containsWord = !wordMap.empty();   //return true if name appears (it should)
+    //checking organizations map
+    std::map<std::string, size_t> orgMap = handler.searchOrg("eu");   //make a map that populates if berlin appears 
+    bool containsOrg = !orgMap.empty();   //return true if name appears (it should)
 
-    // REQUIRE(containsWord);
+    REQUIRE(containsOrg);
 
     
-    //check that organizations is empty
-    
+    //checking word map
+    std::map<std::string, size_t> wordMap = handler.searchWord("german");   //make a map that populates if berlin appears 
+    bool containsWord = !wordMap.empty();   //return true if name appears (it should)
+
+    REQUIRE(containsWord);
+
+
 }
-
-// }

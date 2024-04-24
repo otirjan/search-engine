@@ -37,4 +37,33 @@ TEST_CASE("IndexHandler Tests") {
         REQUIRE(handler.searchOrg("Google") == std::map<std::string, size_t>{{"file2.txt", 8}});
         REQUIRE(handler.searchOrg("Dell").empty());
     }
+
+    SECTION("Error Handling"){
+        std::stringstream errorStream;
+        std::streambuf* oldCerrBuffer = std::cerr.rdbuf(errorStream.rdbuf());     //errors print to cerr, so we use this so we can read the contents of cerr
+
+        //adding a word with an empty string
+        std::string invalidWord = "";
+        handler.addWord(invalidWord, "file1.txt", 3);
+        REQUIRE(errorStream.str() == "Cannot add word. Must be a string.");
+
+        // Clear the error stream
+        errorStream.str("");
+
+        // Test adding a person with an empty string
+        std::string invalidPerson = "";
+        handler.addPerson(invalidPerson, "file1.txt", 2);
+        REQUIRE(errorStream.str() == "Cannot add Person. Must be a string.");
+
+        // Clear the error stream
+        errorStream.str("");
+
+        // Test adding an organization with an empty string
+        std::string invalidOrg = "";
+        handler.addOrg(invalidOrg, "file1.txt", 5);
+        REQUIRE(errorStream.str() == "Cannot add org. Must be a string.");
+
+        // Restore cerr
+        std::cerr.rdbuf(oldCerrBuffer);
+    }
 }

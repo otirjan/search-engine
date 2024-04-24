@@ -12,17 +12,30 @@ class IndexHandler{
         AvlTree<std::string, std::string> wordAVL;    //making an instance of avl for each type 
         AvlTree<std::string, std::string > personAVL;
         AvlTree<std::string, std::string> organizationAVL;
+
+        bool isValidString(const std::string& str) {
+        return !str.empty();
+    }
     
     public: 
         void addWord(std::string word, std::string filePath, size_t freq){   //add word, filepath, and frequency using insert function 
+          if (!isValidString(word)) {
+            cerr << "Cannot add word. Must be a string.";
+        }
            wordAVL.insert(word, filePath, freq);
         }
 
         void addPerson(std::string word, std::string filePath, size_t freq){    //if the word already exists, it wont make a new node but it will add the doc and its freq to the map 
+            if (!isValidString(word)) {
+            cerr << "Cannot add Person. Must be a string.";
+        }
             personAVL.insert(word, filePath, freq);
         }
 
         void addOrg(std::string word, std::string filePath, size_t freq){     
+            if (!isValidString(word)) {
+            cerr << "Cannot add org. Must be a string.";
+        }
             organizationAVL.insert(word, filePath, freq);
         }
 
