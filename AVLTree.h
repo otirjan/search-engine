@@ -9,6 +9,7 @@
 #include <map>
 #include <vector>
 #include <fstream>
+#include <sstream>
 
 using namespace std;
 
@@ -128,7 +129,7 @@ public:
     }
 
     /**
-     * Insert x into the tree; duplicates are ignored.
+     * Insert x into the tree
      */
     void insert(const Comparable& x,const Value& d, const size_t& f) 
     {
@@ -174,6 +175,59 @@ public:
     {
         const std::string filename = "AVLTree.csv";
         exportToCSV(filename);
+    }
+
+    /*
+    *calls function to build AvlTree from a CSV file
+    */
+    void AVLfromCSV(const std::string& filename) 
+    {
+        std::ifstream inputFile(filename);
+
+        if(!inputFile.is_open())
+        {
+            std::cerr << "Error, failed to open file" << filename << std::endl;
+            return;
+        }
+
+        //store the header
+        std::string header;
+        std::getline(inputFile, header);
+
+        //while not the end of the file
+        while(!inputFile.eof())
+        {
+            std::string line;
+            //while i can get a line
+            while (std::getline(inputFile, line))
+            {
+                //vector to hold it
+                std::vector<std::string> tokens;
+
+                //split into tokens based on commas
+                std::stringstream ss(line);
+                std::string token;
+                
+                //put all the individual words, split up based on commas, into a vector
+                while (std::getline(ss, token, ','))
+                {
+                    tokens.push_back(token);
+                }
+
+                //iterate through the vector
+                for (int i = 0; i < tokens.size()-3; i+=2)
+                {
+                    //call insert. key will be the 1st thing in the vector. doc andd freq needs to increase throughout the vector
+                    Comparable key = tokens[i];
+                    Value doc = tokens[i+1];
+                    size_t freq = std::stoi(tokens[i+2]);
+                    insert(key, doc, freq, root);
+
+                }
+            }
+        }
+        //close the file
+        inputFile.close();
     }
 
 #ifdef DEBUG
@@ -357,7 +411,7 @@ private:
 
         for (const auto& pair : t->data)
         {
-            outputFile << ", " << pair.first << ", " << pair.second;
+            outputFile << "," << pair.first << "," << pair.second;
         }
         outputFile << std::endl;
 
@@ -365,6 +419,54 @@ private:
         //traverse and print right subtree
         inOrderTraversal(t->right, outputFile);
     }
+
+    /*
+    *internal function to build an AVL tree from a csv file
+    */
+    // void AVLfromCSV(const std::string& filename)const
+    // {
+    //     std::ifstream inputFile(filename);
+
+    //     if(!inputFile.is_open())
+    //     {
+    //         std::cerr << "Error, failed to open file" << filename << std::endl;
+    //         return;
+    //     }
+
+    //     //store the header
+    //     std::string header;
+    //     std::getline(inputFile, header);
+
+    //     //while not the end of the file
+    //     while(!inputFile.eof())
+    //     {
+    //         std::string line;
+    //         //while i can get a line
+    //         while (std::getline(inputFile, line));
+    //         {
+    //             //vector to hold it
+    //             std::vector<std::string> tokens;
+
+    //             //split into tokens based on commas
+    //             std::stringstream ss(line);
+    //             std::string token;
+
+    //             //put all the individual words, split up based on commas, into a vector
+    //             while (std::getline(ss, token, ','))
+    //             {
+    //                 tokens.push_back(token);
+    //             }
+    //             //iterate through the vector
+    //             for (int i = 1; i < tokens.size()-1; i+=2)
+    //             {
+    //                 //call insert. key will be the 1st thing in the vector. doc andd freq needs to increase throughout the vector
+    //                 insert(tokens[0], tokens[i+1], std::stoi(tokens[i+2]));
+    //             }
+    //         }
+    //     }
+    //     //close the file
+    //     inputFile.close();
+    // }
 
     /**
      * Internal method to make subtree empty.
