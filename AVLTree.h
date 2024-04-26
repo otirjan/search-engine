@@ -216,11 +216,17 @@ public:
                     tokens.push_back(token);
                 }
 
+                // for (int i = 0; i < tokens.size(); i++)
+                // {
+                //     std::cout << tokens.at(i) << std::endl;
+                // }
+
                 //iterate through the vector
-                for (int i = 0; i < tokens.size(); i+=3)
+               // for (int i = 0; i < tokens.size(); i+=3)
+               for (int i = 0; i < tokens.size() - 2; i += 2)
                 {
                     //key will be the 1st thing in the vector, stays the same for the whole line
-                    Comparable key = tokens[i];
+                    Comparable key = tokens[0];
                     //doc is stored next
                     Value doc = tokens[i+1];
                     //freq is stored after doc(filepath)

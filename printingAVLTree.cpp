@@ -198,7 +198,7 @@ int main()
     for (const auto& pair : fifteenmap)
     {
       //printing the key/value pairs in the map
-      std::cout << "Apple. Filepath: " << pair.first << ", frequency: " << pair.second << std::endl;
+      std::cout << "Fifteen. Filepath: " << pair.first << ", frequency: " << pair.second << std::endl;
     }
 
 
