@@ -8,6 +8,8 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 
@@ -127,7 +129,7 @@ public:
     }
 
     /**
-     * Insert x into the tree; duplicates are ignored.
+     * Insert x into the tree
      */
     void insert(const Comparable& x,const Value& d, const size_t& f) 
     {
@@ -169,11 +171,68 @@ public:
     /*
     *calls internal function to collapse AvlTree into a CSV file
     */
-    // void exportToCSV() const
-    // {
-    //     const std::string filename = "AVLTree.csv";
-    //     exportToCSV(root, filename);
-    // }
+    void exportToCSV() const
+    {
+        const std::string filename = "AVLTree.csv";
+        exportToCSV(filename);
+    }
+
+    /*
+    *calls function to build AvlTree from a CSV file
+    */
+    void AVLfromCSV(const std::string& filename) 
+    {
+        //creates the inputFile from filename, opens it
+        std::ifstream inputFile(filename);
+        //error checking
+        if(!inputFile.is_open())
+        {
+            std::cerr << "Error, failed to open file" << filename << std::endl;
+            return;
+        }
+
+        //store the header
+        std::string header;
+        std::getline(inputFile, header);
+
+        //while not the end of the file
+        while(!inputFile.eof())
+        {
+            //grabs lines in the csv
+            std::string line;
+            //while i can get a line
+            while (std::getline(inputFile, line))
+            {
+                //vector to hold it
+                std::vector<std::string> tokens;
+
+                //split into tokens based on commas
+                std::stringstream ss(line);
+                std::string token;
+                
+                //put all the individual words, split up based on commas, into a vector
+                while (std::getline(ss, token, ','))
+                {
+                    tokens.push_back(token);
+                }
+
+                //iterate through the vector
+                for (int i = 0; i < tokens.size() - 2; i += 2)
+                {
+                    //key will be the 1st thing in the vector, stays the same for the whole line
+                    Comparable key = tokens[0];
+                    //doc is stored next
+                    Value doc = tokens[i+1];
+                    //freq is stored after doc(filepath)
+                    size_t freq = std::stoi(tokens[i+2]);
+                    //call insert with these variables. calling private insert to cut down on function calls
+                    insert(key, doc, freq, root);
+                }
+            }
+        }
+        //close the file
+        inputFile.close();
+    }
 
 #ifdef DEBUG
     /**
@@ -320,31 +379,50 @@ private:
     /*
     * internal function to export the Avltree to a csv
     */
-    // void exportToCSV(const AvlTree& tree, const std::string& filename) const
-    // {
-    //     std::ofstream outputFile(filename);
-    //     //error message
-    //     //print header
-    //     //call inorderTraversal
-    //     inOrderTraversal(tree.root, outputFile);
-    //     //close output file
-    //     outputFile.close();
-    // }
+    void exportToCSV(const std::string& filename) const
+    {
+        std::ofstream outputFile(filename);
+        //error message
+
+        if(!outputFile.is_open())
+        {
+            std::cerr << "Error, failed to open file" << filename << std::endl;
+            return;
+        }
+        //print header
+        outputFile << "key, filepath, frequency" << std::endl;
+        //call inorderTraversal
+        inOrderTraversal(root, outputFile);
+        //close output file
+        outputFile.close();
+    }
 
     /*
     *internal function for in order tree traversal
     */
-    // void inOrderTraversal(AvlNode *t, std::ofstream& outputFile)
-    // {
-    //     //if null, return
-    //     if (t == nullptr)
-    //     {
-    //         return;
-    //     }
-    //     //traverse and print left subtree
-    //     //traverse and print right subtree
+    void inOrderTraversal(AvlNode *t, std::ofstream& outputFile) const
+    {
+        //if null, return
+        if (t == nullptr)
+        {
+            return;
+        }
+        //traverse and print left subtree
+        inOrderTraversal(t->left, outputFile);
 
-    // }
+        //printing
+        outputFile << t->key;
+
+        for (const auto& pair : t->data)
+        {
+            outputFile << "," << pair.first << "," << pair.second;
+        }
+        outputFile << std::endl;
+
+
+        //traverse and print right subtree
+        inOrderTraversal(t->right, outputFile);
+    }
 
     /**
      * Internal method to make subtree empty.
