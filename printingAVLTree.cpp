@@ -19,18 +19,18 @@ int main()
     exampleTree.insert("world", "filepathEx3", 8);
     exampleTree.insert("world", "filepathEx4", 1);
     //checking if the node with the key "hello" exists inside the AvlTree
-    // if (exampleTree.contains("hello")) 
-    // {
-    //     //saving the results of organize() into a variable called organizedMapHello
-    //     auto organizedMapHello = exampleTree.organize("hello");
-    //     std::cout << "Organized map for 'hello':" << std::endl;
-    //     //loop through the organized map
-    //     for (const auto& pair : organizedMapHello) 
-    //     {
-    //         //printing. output: Filepath:filepathEx2, Frequency: 6; Filepath: filepathEx, Frequency: 2. This is not how they were initalized 
-    //         std::cout << "Filepath: " << pair.first << ", Frequency: " << pair.second << std::endl;
-    //     }
-    // }
+    if (exampleTree.contains("hello")) 
+    {
+        //saving the results of organize() into a variable called organizedMapHello
+        auto organizedMapHello = exampleTree.organize("hello");
+        std::cout << "Organized map for 'hello':" << std::endl;
+        //loop through the organized map
+        for (const auto& pair : organizedMapHello) 
+        {
+          //printing. output: Filepath:filepathEx2, Frequency: 6; Filepath: filepathEx, Frequency: 2. This is not how they were initalized 
+          std::cout << "Filepath: " << pair.first << ", Frequency: " << pair.second << std::endl;
+        }
+    }
 
 
 
@@ -60,13 +60,13 @@ int main()
     exampleTree.insert("fifteen", "filepathEx220", 220);
 
     //saving the map returned from first15()
-   // std::vector<std::pair<std::string, size_t>> fifteenMap = exampleTree.first15("fifteen");
+    std::vector<std::pair<std::string, size_t>> fifteenMap = exampleTree.first15("fifteen");
     //iterating through the map of 15 elements
-    // for (const auto& pair : fifteenMap)
-    // {
-    //     //printing the key/value pairs in the map
-    //     std::cout << "Filepath: " << pair.first << ", frequency: " << pair.second << std::endl;
-    // }
+    for (const auto& pair : fifteenMap)
+    {
+      //printing the key/value pairs in the map
+      std::cout << "Filepath: " << pair.first << ", frequency: " << pair.second << std::endl;
+    }
 
 
     
@@ -95,13 +95,13 @@ int main()
     exampleTree.insert("fourteen", "filepathEx26", 28);
 
     //saving the map returned from first15()
-   // std::vector<std::pair<std::string, size_t>> fourteenMap = exampleTree.first15("fourteen");
-    //iterating through the map of 15 elements
-    // for (const auto& pair : fourteenMap)
-    // {
-    //     //printing the key/value pairs in the map
-    //     std::cout << "Filepath: " << pair.first << ", frequency: " << pair.second << std::endl;
-    // }
+    std::vector<std::pair<std::string, size_t>> fourteenMap = exampleTree.first15("fourteen");
+   // iterating through the map of 15 elements
+    for (const auto& pair : fourteenMap)
+    {
+      //printing the key/value pairs in the map
+      std::cout << "Filepath: " << pair.first << ", frequency: " << pair.second << std::endl;
+    }
 
 
 
@@ -151,47 +151,47 @@ int main()
 
     //want to iterate through all the nodes and print their data to make sure its all correct
 
-    // std::map<std::string, size_t> applemap = fromCSVTree.find("apple");
-    // for (const auto& pair : applemap)
-    // {
-    //   //printing the key/value pairs in the map
-    //   std::cout << "Apple. Filepath: " << pair.first << ", frequency: " << pair.second << std::endl;
-    // }
+    std::map<std::string, size_t> applemap = fromCSVTree.find("apple");
+    for (const auto& pair : applemap)
+    {
+      //printing the key/value pairs in the map
+      std::cout << "Apple. Filepath: " << pair.first << ", frequency: " << pair.second << std::endl;
+    }
 
-    // std::vector<std::pair<std::string, size_t>> bananaMap = fromCSVTree.first15("banana");
-    // for (const auto& pair : bananaMap)
-    // {
-    //   //printing the key/value pairs in the map
-    //   std::cout << "Banana. Filepath: " << pair.first << ", frequency: " << pair.second << std::endl;
-    // }
+    std::vector<std::pair<std::string, size_t>> bananaMap = fromCSVTree.first15("banana");
+    for (const auto& pair : bananaMap)
+    {
+      //printing the key/value pairs in the map
+      std::cout << "Banana. Filepath: " << pair.first << ", frequency: " << pair.second << std::endl;
+    }
 
-    // std::vector<std::pair<std::string, size_t>> fourMap = fromCSVTree.first15("cat");
-    // for (const auto& pair : fourMap)
-    // {
-    //   //printing the key/value pairs in the map
-    //   std::cout << "Cat. Filepath: " << pair.first << ", frequency: " << pair.second << std::endl;
-    // }
+    std::vector<std::pair<std::string, size_t>> fourMap = fromCSVTree.first15("cat");
+    for (const auto& pair : fourMap)
+    {
+      //printing the key/value pairs in the map
+      std::cout << "Cat. Filepath: " << pair.first << ", frequency: " << pair.second << std::endl;
+    }
 
-    // std::vector<std::pair<std::string, size_t>> threeMap = fromCSVTree.first15("dog");
-    // for (const auto& pair : threeMap)
-    // {
-    //   //printing the key/value pairs in the map
-    //   std::cout << "Dog. Filepath: " << pair.first << ", frequency: " << pair.second << std::endl;
-    // }
+    std::vector<std::pair<std::string, size_t>> threeMap = fromCSVTree.first15("dog");
+    for (const auto& pair : threeMap)
+    {
+      //printing the key/value pairs in the map
+      std::cout << "Dog. Filepath: " << pair.first << ", frequency: " << pair.second << std::endl;
+    }
 
-    // std::vector<std::pair<std::string, size_t>> twoMap = fromCSVTree.first15("elephant");
-    // for (const auto& pair : twoMap)
-    // {
-    //   //printing the key/value pairs in the map
-    //   std::cout << "Elephant. Filepath: " << pair.first << ", frequency: " << pair.second << std::endl;
-    // }
+    std::vector<std::pair<std::string, size_t>> twoMap = fromCSVTree.first15("elephant");
+    for (const auto& pair : twoMap)
+    {
+      //printing the key/value pairs in the map
+      std::cout << "Elephant. Filepath: " << pair.first << ", frequency: " << pair.second << std::endl;
+    }
 
-    // std::vector<std::pair<std::string, size_t>> oneMap = fromCSVTree.first15("frog");
-    // for (const auto& pair : oneMap)
-    // {
-    //   //printing the key/value pairs in the map
-    //   std::cout << "Frog. Filepath: " << pair.first << ", frequency: " << pair.second << std::endl;
-    // }
+    std::vector<std::pair<std::string, size_t>> oneMap = fromCSVTree.first15("frog");
+    for (const auto& pair : oneMap)
+    {
+      //printing the key/value pairs in the map
+      std::cout << "Frog. Filepath: " << pair.first << ", frequency: " << pair.second << std::endl;
+    }
 
     //making sure it can do it correctly for a node with a lot of data in its map. this actually has 16 values bc i am a liar
     std::map<std::string, size_t> fifteenmap = fromCSVTree.find("fifteen");
@@ -200,9 +200,5 @@ int main()
       //printing the key/value pairs in the map
       std::cout << "Fifteen. Filepath: " << pair.first << ", frequency: " << pair.second << std::endl;
     }
-
-
-
-
 
 }
