@@ -182,8 +182,9 @@ public:
     */
     void AVLfromCSV(const std::string& filename) 
     {
+        //creates the inputFile from filename, opens it
         std::ifstream inputFile(filename);
-
+        //error checking
         if(!inputFile.is_open())
         {
             std::cerr << "Error, failed to open file" << filename << std::endl;
@@ -197,6 +198,7 @@ public:
         //while not the end of the file
         while(!inputFile.eof())
         {
+            //grabs lines in the csv
             std::string line;
             //while i can get a line
             while (std::getline(inputFile, line))
@@ -217,12 +219,14 @@ public:
                 //iterate through the vector
                 for (int i = 0; i < tokens.size(); i+=3)
                 {
-                    //call insert. key will be the 1st thing in the vector. doc andd freq needs to increase throughout the vector
+                    //key will be the 1st thing in the vector, stays the same for the whole line
                     Comparable key = tokens[i];
+                    //doc is stored next
                     Value doc = tokens[i+1];
+                    //freq is stored after doc(filepath)
                     size_t freq = std::stoi(tokens[i+2]);
+                    //call insert with these variables. calling private insert to cut down on function calls
                     insert(key, doc, freq, root);
-
                 }
             }
         }
@@ -419,54 +423,6 @@ private:
         //traverse and print right subtree
         inOrderTraversal(t->right, outputFile);
     }
-
-    /*
-    *internal function to build an AVL tree from a csv file
-    */
-    // void AVLfromCSV(const std::string& filename)const
-    // {
-    //     std::ifstream inputFile(filename);
-
-    //     if(!inputFile.is_open())
-    //     {
-    //         std::cerr << "Error, failed to open file" << filename << std::endl;
-    //         return;
-    //     }
-
-    //     //store the header
-    //     std::string header;
-    //     std::getline(inputFile, header);
-
-    //     //while not the end of the file
-    //     while(!inputFile.eof())
-    //     {
-    //         std::string line;
-    //         //while i can get a line
-    //         while (std::getline(inputFile, line));
-    //         {
-    //             //vector to hold it
-    //             std::vector<std::string> tokens;
-
-    //             //split into tokens based on commas
-    //             std::stringstream ss(line);
-    //             std::string token;
-
-    //             //put all the individual words, split up based on commas, into a vector
-    //             while (std::getline(ss, token, ','))
-    //             {
-    //                 tokens.push_back(token);
-    //             }
-    //             //iterate through the vector
-    //             for (int i = 1; i < tokens.size()-1; i+=2)
-    //             {
-    //                 //call insert. key will be the 1st thing in the vector. doc andd freq needs to increase throughout the vector
-    //                 insert(tokens[0], tokens[i+1], std::stoi(tokens[i+2]));
-    //             }
-    //         }
-    //     }
-    //     //close the file
-    //     inputFile.close();
-    // }
 
     /**
      * Internal method to make subtree empty.
