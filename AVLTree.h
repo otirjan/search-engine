@@ -215,7 +215,7 @@ public:
                 }
 
                 //iterate through the vector
-                for (int i = 0; i < tokens.size()-3; i+=2)
+                for (int i = 0; i < tokens.size(); i+=3)
                 {
                     //call insert. key will be the 1st thing in the vector. doc andd freq needs to increase throughout the vector
                     Comparable key = tokens[i];
