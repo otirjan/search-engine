@@ -13,7 +13,7 @@ std::vector <std::string> QueryProcessor::tokenize (const string& text)
     string word;
     while (stream >> word)
     {
-         if (word.find("PEOPLE:") == 0 || word.find("ORGANIZATION:") == 0) { //if the word starts w/ ppl or org, dont tokenize 
+         if (word.find("PERSON:") == 0 || word.find("ORG:") == 0) { //if the word starts w/ ppl or org, dont tokenize 
             words.push_back(word); // add the whole word without tokenizing
         } else 
         {
@@ -26,6 +26,7 @@ std::vector <std::string> QueryProcessor::tokenize (const string& text)
             //only add to the words vector if it is not a stop word
             if (!word.empty() && stopwords.find(word) == stopwords.end()) 
             {
+            std::string stemmed = stemWord(word);  //only stem non-ppl and non-orgs
             words.push_back(word); 
             }
 
@@ -70,10 +71,10 @@ void QueryProcessor::searchQuery(std::string& query)
 
     std::map<std::string, size_t> firstDocs;    //map with results from the first word in the query 
 
-    if(processedQuery[0].find("PEOPLE:")==0)   //if it starts with people, search the ppl map for the word (without the PEOPLE:)
+    if(processedQuery[0].find("PERSON:")==0)   //if it starts with people, search the ppl map for the word (without the PEOPLE:)
     {
         firstDocs = handler.searchPerson(processedQuery[0].substr(7));
-    } else if (processedQuery[0].find("ORGANIZATION:")==0)
+    } else if (processedQuery[0].find("ORG:")==0)
     {
         firstDocs = handler.searchOrg(processedQuery[0].substr(13));
     } else                                                              //if its not ppl or org, search the word map 
@@ -102,10 +103,10 @@ std::vector<std::string> QueryProcessor::rankResults (std::map<std::string, size
 
     std::map<std::string, size_t> nextDocs;    //map with results from the next word in the query 
 
-    if(remainingTerms[0].find("PEOPLE:")==0)   
+    if(remainingTerms[0].find("PERSON:")==0)   
     {
         nextDocs = handler.searchPerson(remainingTerms[0].substr(7));
-    } else if (remainingTerms[0].find("ORGANIZATION:")==0)
+    } else if (remainingTerms[0].find("ORG:")==0)
     {
         nextDocs = handler.searchOrg(remainingTerms[0].substr(13));
     } else 
