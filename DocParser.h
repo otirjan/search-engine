@@ -37,7 +37,6 @@ class DocumentParser {
         IndexHandler handler;
 
     public:
-
         DocumentParser();
         vector <string> tokenize (const string& text);
         string stemWord(string& word);
