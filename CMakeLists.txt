@@ -10,11 +10,17 @@ file(COPY sample_data/ DESTINATION sample_data/)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 add_compile_options(-Wall -Wextra -pedantic)
 
+add_executable(test_DocParser test_DocParser.cpp DocParser.cpp porter2_stemmer.cpp)
+
+add_executable(test_IndexHandler test_IndexHandler.cpp)
+
 add_executable(rapidJSONExample rapidJSONExample.cpp)
 add_executable(supersearch main.cpp)
 add_executable(test_AVLTree test_AVLTree.cpp)
 add_test(NAME TestAVL COMMAND test_AVLTree)
 add_executable(printingAVLTree printingAVLTree.cpp)
+
+
 
 # this makes sure we also link rapidjson
 target_include_directories(rapidJSONExample PRIVATE rapidjson/)

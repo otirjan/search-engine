@@ -1,9 +1,12 @@
 #include <iostream>
+#include "porter2_stemmer.h"
+#include "DocParser.h"
 
 using namespace std;
 
 int main()
 {
+
     //test commit
     cout << "Usage:\n"
          << "\tIndex all files in <directory> and store the index in one or several files:\n"
