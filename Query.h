@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <iostream>
 #include "IndexHandler.h"
 #include "DocParser.h"
 
@@ -22,6 +23,11 @@
                 std::vector<std::string> tokenize (const std::string& text);
                 std::string stemWord(std::string& word);
                 void initializeStopWords();
+
+                //take in the processed query, search for the words in the AVL trees, call rank results to rank 
+                void searchQuery(std::string& query);
+
+                std::vector<std::string> rankResults (std::map<std::string, size_t>& firstDocs,std::vector<std::string>& remainingTerms);
 
         };
 
