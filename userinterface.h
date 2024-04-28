@@ -23,12 +23,26 @@ needs to:
 - any other interesting stats
 - a menu
 
+added:
+- uniqueWords() in index handler
+- getTitle() in DocParser
+- getPublishDate() in DocParser
+- getPublications() in DocParser
+
+questions
+- collapse parseDoc? u extract things but never use them
+- all the words that are parsed go into the word avl yes? even the ones that are also people/orgs? see stats function
+- how does "publications" work i don't see that field anywhere in the .json file
+
+
 */
 
 class UI
 {
     private:
         QueryProcessor queryprocessor;
+        IndexHandler handler;
+        DocumentParser parser;
 
 
     public:
@@ -36,17 +50,25 @@ class UI
     UI()
     {
         queryprocessor(IndexHandler());
+        IndexHandler handler;
+        DocumentParser parser;
 
     }
 
     void index()
     {
-        //doc parser's test file system function?
+        std::string userpath;
+        std::cout << "Enter directory path: " << std::endl;
+        std::cin >> userpath;
+        //check with cameron if this is what this function is used for. i think so but idk
+        parser.testFileSystem(userpath);
 
     }
 
     void indexFromFile()
     {
+        //on all 3 trees?
+        //i hard coded the csv name. if i have to do all 3 this is a problem yes?
 
     }
 
@@ -56,7 +78,7 @@ class UI
         std::vector<std::string> input;
         std::string line;
 
-        std::cout << "input query (press enter to finish): " << std::endl;
+        std::cout << "Input query (press enter to finish): " << std::endl;
 
         while(true)
         {
@@ -79,18 +101,31 @@ class UI
         //call query processor and give it the user input
         queryprocessor.processQuery(input);
 
-        //with the results i get back from the query processor
+        //with the results i get back from the query processor. these should be filepaths
         std::vector<std::string> final = queryprocessor.getResults();
         //i need to go through the vector
         for (int i = 0; i < final.size(); i++)
         {
-            //get the title, publication, date published
-
+            //get the title, date published, publication
+            std::cout << "#" << i << " : " << parser.getTitle(final.at(i)) << ", " << parser.getPublishDate(final.at(i)) << ", " << parser.getPublication(final.at(i)) << std::endl;
         }
-        std::cout << "Would you like to read an article?" << std::endl;
-        //give them the option of yes/no. then i need to ask which article they want to read, pass that to fullArticle()
-        //i need to display article title, publication, and date published
-        //if they would like to choose an article, then call fullArticle() and pass the article as a parameter
+        std::cout << "Would you like to read an article? Y/N" << std::endl;
+
+        char choice;
+
+        std::cin >> choice;
+
+        if (choice == 'Y' || choice == 'y')
+        {
+            int selection = 0;
+            std::cout << "Which article would you like to read? Enter the article number: " << std::endl;
+            std::cin >> selection;
+            fullArticle(final.at(selection));
+        }
+        else
+        {
+            menu();
+        }
     }
 
     void fullArticle(const std::string& filePath)
@@ -99,18 +134,13 @@ class UI
 
     }
 
-    void totalArticles()
-    {
-        //return the total articles in the current index
-
-    }
-
     void stats()
     {
         //time for indexing
         //time for queries
-        //total articles in the current index
+        //total articles in the current index. if we put EVERY word into the word avl, even words that are people/orgs, then i can increment this value every time we add to wordAVL in the docParser
         //total amount of nodes in the word avl
+        int totalUnique = handler.uniqueWords();
     }
 
     void menu()

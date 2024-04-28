@@ -46,6 +46,9 @@ class DocumentParser {
         void testFileSystem(const string &path);  
         void initializeStopWords();
         IndexHandler& getIndexHandler();
+        string getTitle(const string& filePath);
+        string getPublishDate(const string& filePath);
+        string getPublication(const string& filePath);
 
 
 };//end of doc parser 

@@ -50,6 +50,11 @@ class IndexHandler{
          std::map<std::string, size_t> searchOrg(const string& word){
             return organizationAVL.find(word);
         }
+        //returns the total unique words in the wordAVL, which will be used in UI
+        int uniqueWords()
+        {
+            return wordAVL.getTotal();
+        }
 
 
 

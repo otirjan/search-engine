@@ -114,6 +114,92 @@ using namespace std;
         }//end parseDoc
 
 
+
+        string DocumentParser::getTitle(const string& filePath)
+        {
+            ifstream ifs(filePath);
+            if (!ifs.is_open()) 
+            {
+                cerr << "Could not open file: " << filePath << endl;
+            }
+
+            IStreamWrapper isw(ifs);
+            Document document;
+            document.ParseStream(isw);
+
+            std::string title;
+
+            if (document.HasMember("title") && document["title"].IsString())
+            {
+                title = document["title"].GetString();
+            }
+            else
+            {
+                cerr << "Error: json file doesn't contain a title or it is not a string" << endl;
+            }
+
+            return title;
+        }
+
+
+        string DocumentParser::getPublishDate(const string& filePath)
+        {
+            ifstream ifs(filePath);
+            if (!ifs.is_open()) 
+            {
+                cerr << "Could not open file: " << filePath << endl;
+            }
+
+            IStreamWrapper isw(ifs);
+            Document document;
+            document.ParseStream(isw);
+
+            std::string publishDate;
+            std::string temp;
+
+            //i think i have to trim it a bit
+
+            if(document.HasMember("published") && document["published"].IsString())
+            {
+               // publishDate = document["published"].GetString();
+                temp = document["published"].GetString();
+            }
+            else
+            {
+                cerr << "Error: json file doesn't contain a publication date or it is not a string" << endl;
+            }
+
+            publishDate = temp.substr(0, 'T');
+
+            return publishDate;
+        }
+
+        string DocumentParser::getPublication(const string& filePath)
+        {
+            ifstream ifs(filePath);
+            if (!ifs.is_open()) 
+            {
+                cerr << "Could not open file: " << filePath << endl;
+            }
+
+            IStreamWrapper isw(ifs);
+            Document document;
+            document.ParseStream(isw);
+
+            std::string publication;
+
+            if (document.HasMember("publication") && document["publication"].IsString()) 
+            {
+                publication = document["publication"].GetString();
+            } 
+            else 
+            {
+                cerr << "Error: json file doesn't contain a publication or it is not a string" << endl;
+            }
+
+            return publication;
+        }
+
         //function to calculate frequency, will be called when we pass word,doc,freq to add in the index handler 
         size_t DocumentParser::calcFrequency(const Document& document, const string& word){
             size_t frequency = 0;           //initialize frequency variable 
