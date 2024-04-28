@@ -38,7 +38,6 @@ class DocumentParser {
         int count;
 
     public:
-
         DocumentParser();
         vector <string> tokenize (const string& text);
         string stemWord(string& word);

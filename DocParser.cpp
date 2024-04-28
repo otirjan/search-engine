@@ -95,6 +95,7 @@ using namespace std;
             for (const auto& word : words){
                 handler.addWord(word, filePath, calcFrequency(document, word)); 
                 count++;
+
                 // cout <<" added word: " << word << endl;
             }
 
