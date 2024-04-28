@@ -8,7 +8,9 @@
 #include "AVLTree.h"
 
 class IndexHandler{
-    private:
+
+    public:
+
         AvlTree<std::string, std::string> wordAVL;    //making an instance of avl for each type 
         AvlTree<std::string, std::string > personAVL;
         AvlTree<std::string, std::string> organizationAVL;
@@ -16,8 +18,7 @@ class IndexHandler{
         bool isValidString(const std::string& str) {
         return !str.empty();
     }
-    
-    public: 
+
         void addWord(std::string word, std::string filePath, size_t freq){   //add word, filepath, and frequency using insert function 
           if (!isValidString(word)) {
             cerr << "Cannot add word. Must be a string.";
@@ -53,6 +54,12 @@ class IndexHandler{
          std::map<std::string, size_t> searchOrg(const string& word){
             return organizationAVL.find(word);
         }
+        //returns the total unique words in the wordAVL, which will be used in UI
+        int uniqueWords()
+        {
+            return wordAVL.getTotal();
+        }
+
 
 
 
