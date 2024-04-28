@@ -6,34 +6,31 @@ QueryProcessor::QueryProcessor(IndexHandler& indHandler) : handler(indHandler)
    initializeStopWords();  
 }
 
-std::vector <std::string> QueryProcessor::tokenize (const string& text)
+std::vector <std::string> QueryProcessor::tokenize (std::vector<std::string>& text)
 {
     std::vector<std::string> words;
-    istringstream stream(text);
-    string word;
-    while (stream >> word)
-    {
-         if (word.find("PERSON:") == 0 || word.find("ORG:") == 0) { //if the word starts w/ ppl or org, dont tokenize 
-            words.push_back(word); // add the whole word without tokenizing
-        } else 
-        {
-            //remove punctuation (does not remove quotation marks)
-            word.erase(remove_if(word.begin(), word.end(), ::ispunct), word.end());
-            //lowercase the word
-            transform(word.begin(), word.end(), word.begin(), ::tolower);
-            //stem the word
-            word = stemWord(word); 
-            //only add to the words vector if it is not a stop word
-            if (!word.empty() && stopwords.find(word) == stopwords.end()) 
+   
+   for (const auto& word: text)
+   {
+    if (word.find("PERSON:") == 0 || word.find("ORG:") == 0) { //if the word starts w/ ppl or org, dont tokenize 
+             words.push_back(word); // add the whole word without tokenizing
+         } else 
+         {
+            // remove punctuation (does not remove quotation marks)
+            std::string processedWord = word;
+            processedWord.erase(std::remove_if(processedWord.begin(), processedWord.end(), ::ispunct), processedWord.end());
+            // lowercase the word
+            std::transform(processedWord.begin(), processedWord.end(), processedWord.begin(), ::tolower);
+            // stem the word
+            processedWord = stemWord(processedWord);
+            // only add to the processed words vector if it is not a stop word
+            if (!processedWord.empty() && stopwords.find(processedWord) == stopwords.end()) 
             {
-            std::string stemmed = stemWord(word);  //only stem non-ppl and non-orgs
-            words.push_back(word); 
+                words.push_back(processedWord);
             }
-
-        }
-    }
-            
-        return words;
+         }
+   }  
+        return words;    //return vector of tokenized/stemmed words 
 }
 
 string QueryProcessor::stemWord(string& word)
@@ -46,24 +43,28 @@ string QueryProcessor::stemWord(string& word)
             return stemWord; 
 }
 
-std::vector<std::string> QueryProcessor::processQuery(const std::string& query)
+void QueryProcessor::processQuery(std::vector<std::string>& query)
 {
     std::vector<std::string> tokens = tokenize(query);     //tokenize the query 
 
     std::vector<std::string> processedQuery;    //make a vector of the query terms thta have been stemmed
-    for(int i=0; i<tokens.size(); i++){
-        std::string stemmed = stemWord(tokens[i]);
-        processedQuery.push_back(stemmed);
+
+    for(auto& word : query) {
+       if(word[0]== '-'){                   //add words preceeded by "-" to excluded words
+        excludedWords.push_back(word);      //docs that contain excluded words will be removed from results 
+       }else{
+        std::string stemmed = stemWord(word); // stem each word in the query
+        processedQuery.push_back(stemmed);    // add the stemmed word to the processed query
+       }
+       
     }
-    return processedQuery;     //this should just return the query without stop words and stuff 
+   searchQuery(processedQuery);     //pass the tokenized query 
 }
 
 
-void QueryProcessor::searchQuery(std::string& query)
+//takes in a vector of words already processed (unsure if we need to tokenize in this, i dont think so bc it shoudl be taking in processed query already)
+void QueryProcessor::searchQuery(std::vector<std::string>& processedQuery)
 {
-
-    std::vector<std::string> processedQuery;  //to hold tokenized query
-
     if(processedQuery.empty())  //after removing stopwords, if theres nothing to search for 
     {     
         throw std::runtime_error(" No key words to search. Try again with another query.");
@@ -73,7 +74,7 @@ void QueryProcessor::searchQuery(std::string& query)
 
     if(processedQuery[0].find("PERSON:")==0)   //if it starts with people, search the ppl map for the word (without the PEOPLE:)
     {
-        firstDocs = handler.searchPerson(processedQuery[0].substr(7));
+        firstDocs = handler.searchPerson(processedQuery[0].substr(7));   //add the results (docs+freq) to firstDocs
     } else if (processedQuery[0].find("ORG:")==0)
     {
         firstDocs = handler.searchOrg(processedQuery[0].substr(13));
@@ -88,17 +89,15 @@ void QueryProcessor::searchQuery(std::string& query)
 }
 
 
-std::vector<std::string> QueryProcessor::rankResults (std::map<std::string, size_t>& firstDocs,std::vector<std::string>& remainingTerms)
+void QueryProcessor::rankResults (std::map<std::string, size_t>& firstDocs,std::vector<std::string>& remainingTerms)
 {
-    std::vector<std::string> results;    //vector to hold the resulting documents 
 
     if(remainingTerms.empty())
-    {    //if there are no more words in the query, just return the 1st map generated 
+    {    //if there are no more words in the query, just return the last map generated 
         for (const auto& doc: firstDocs ) //this map is already sorted by frequency
         {  
-            results.push_back(doc.first);
+            rankedResults.push_back(doc.first);
         }
-        return results; 
     }
 
     std::map<std::string, size_t> nextDocs;    //map with results from the next word in the query 
@@ -124,19 +123,45 @@ std::vector<std::string> QueryProcessor::rankResults (std::map<std::string, size
         combinedFreq[doc.first] += doc.second;   // add the document and its freq(of next word) to the map
     }
 
-    std::vector<std::pair<std::string, size_t>> sortedDocs(combinedFreq.begin(), combinedFreq.end());
-    std::sort(sortedDocs.begin(), sortedDocs.end(), [](const auto& a, const auto& b) {
-        return a.second > b.second; // highest frequency on top 
-    });
+    //docs that contain excluded words will be removed from results 
+    for (auto it = combinedFreq.begin(); it != combinedFreq.end();){  //go thru map of combined frequencies 
+        bool exclude = false;      //set a flag 
+        for (const auto& word: excludedWords){         //go thru excluded words
+            if(it->first.find(word) != std::string::npos){  //if one of the excluded words exists within a document in combinedfreq
+                exclude = true;                             //set exclude to true 
+                break;
+            }
+        }
+        if(exclude){
+            it = combinedFreq.erase(it);                //and erase it from the map
+        }else{
+            it++;                                       //move to the next document 
+        }
+    }//end of for 
+     
+     std::vector<std::pair<std::string, size_t>> sortedDocs(combinedFreq.begin(), combinedFreq.end());
+     std::sort(sortedDocs.begin(), sortedDocs.end(), [](const auto& a, const auto& b) {
+         return a.second > b.second; // highest frequency on top 
+     });
+
 
     for (const auto& doc: sortedDocs){
-        results.push_back(doc.first);  //push the document names w/ highest added freq to the results 
+        rankedResults.push_back(doc.first);  //push the document names w/ highest added freq to the results 
     }
 
 
-    return rankResults(combinedFreq, remainingTerms); //recursivley search for the remaining terms 
+    rankResults(combinedFreq, remainingTerms); //recursivley search for the remaining terms 
 
 }
+
+std::vector<std::string> QueryProcessor::getResults() {  //returns the top 15 results with the highest accumulated frequency 
+        if(rankedResults.size() > 15){
+            rankedResults.resize(15);  //if results are longer than 15, only return the first 15 
+        } 
+        return rankedResults;
+    }
+
+
 
 void QueryProcessor::initializeStopWords()
 {
