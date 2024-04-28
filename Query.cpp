@@ -86,17 +86,15 @@ void QueryProcessor::searchQuery(const std::vector<std::string>& query)
 }
 
 
-std::vector<std::string> QueryProcessor::rankResults (std::map<std::string, size_t>& firstDocs,std::vector<std::string>& remainingTerms)
+void QueryProcessor::rankResults (std::map<std::string, size_t>& firstDocs,std::vector<std::string>& remainingTerms)
 {
-    std::vector<std::string> results;    //vector to hold the resulting documents 
 
     if(remainingTerms.empty())
     {    //if there are no more words in the query, just return the 1st map generated 
         for (const auto& doc: firstDocs ) //this map is already sorted by frequency
         {  
-            results.push_back(doc.first);
+            rankedResults.push_back(doc.first);
         }
-        return results; 
     }
 
     std::map<std::string, size_t> nextDocs;    //map with results from the next word in the query 
@@ -122,19 +120,29 @@ std::vector<std::string> QueryProcessor::rankResults (std::map<std::string, size
         combinedFreq[doc.first] += doc.second;   // add the document and its freq(of next word) to the map
     }
 
-    std::vector<std::pair<std::string, size_t>> sortedDocs(combinedFreq.begin(), combinedFreq.end());
-    std::sort(sortedDocs.begin(), sortedDocs.end(), [](const auto& a, const auto& b) {
-        return a.second > b.second; // highest frequency on top 
-    });
+     std::vector<std::pair<std::string, size_t>> sortedDocs(combinedFreq.begin(), combinedFreq.end());
+     std::sort(sortedDocs.begin(), sortedDocs.end(), [](const auto& a, const auto& b) {
+         return a.second > b.second; // highest frequency on top 
+     });
+
 
     for (const auto& doc: sortedDocs){
-        results.push_back(doc.first);  //push the document names w/ highest added freq to the results 
+        rankedResults.push_back(doc.first);  //push the document names w/ highest added freq to the results 
     }
 
 
-    return rankResults(combinedFreq, remainingTerms); //recursivley search for the remaining terms 
+    rankResults(combinedFreq, remainingTerms); //recursivley search for the remaining terms 
 
 }
+
+std::vector<std::string> QueryProcessor::getResults() {  //returns the top 15 results with the highest accumulated frequency 
+        if(rankedResults.size() > 15){
+            rankedResults.resize(15);  //if results are longer than 15, only return the first 15 
+        } 
+        return rankedResults;
+    }
+
+
 
 void QueryProcessor::initializeStopWords()
 {

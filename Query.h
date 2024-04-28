@@ -12,6 +12,7 @@
             private:
                 IndexHandler& handler;
                 set<string> stopwords;
+                std::vector<std::string> rankedResults;
             
             public:
                 //take in the users string, breaks it into what terms are people/orgs/words, gets results from avl trees, ranks them on relevancy
@@ -27,7 +28,9 @@
                 //take in the processed query, search for the words in the AVL trees, call rank results to rank 
                 void searchQuery(const std::vector<std::string>& query);
 
-                std::vector<std::string> rankResults (std::map<std::string, size_t>& firstDocs,std::vector<std::string>& remainingTerms);
+                void rankResults (std::map<std::string, size_t>& firstDocs,std::vector<std::string>& remainingTerms);
+
+                std::vector<std::string> getResults();
 
         };
 
