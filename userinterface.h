@@ -60,16 +60,27 @@ class UI
         std::string userpath;
         std::cout << "Enter directory path: " << std::endl;
         std::cin >> userpath;
-        //check with cameron if this is what this function is used for. i think so but idk
+        //its gonna loop over all the json files in the directory and then parse them all
         parser.testFileSystem(userpath);
+        menu();
 
     }
 
     void indexFromFile()
     {
-        //on all 3 trees?
-        //i hard coded the csv name. if i have to do all 3 this is a problem yes?
+        handler.wordAVL.exportToCSV("wordAVL.csv");
+        handler.personAVL.exportToCSV("personAVL.csv");
+        handler.organizationAVL.exportToCSV("orgAVL.csv");
+        menu();
 
+    }
+
+    void AVLfromFile()
+    {
+        handler.wordAVL.AVLfromCSV("wordAVl.csv");
+        handler.personAVL.AVLfromCSV("personAVL.csv");
+        handler.organizationAVL.AVLfromCSV("orgAVL.csv");
+        menu();
     }
 
     void query()
@@ -130,8 +141,10 @@ class UI
 
     void fullArticle(const std::string& filePath)
     {
-        //output the full article 
-
+        //output the full article
+        std::string fullArticle = parser.fullArticle(filePath);
+        std::cout << fullArticle << std::endl; 
+        menu();
     }
 
     void stats()
@@ -148,10 +161,10 @@ class UI
         while (true)
         {
             std::cout << 
-            "1. Index documents\n"
-                     "2. Read index from file\n"
-                     "3. Query\n"
-                     "4. View full article\n"
+                    "1. Index documents\n"
+                     "2. Write index to file\n"
+                     "3. Read index from file\n"
+                     "4. Query\n"
                      "5. Output statistics\n"
                      "6. Exit\n"
                      "Enter your choice: ";
@@ -168,10 +181,10 @@ class UI
                     indexFromFile();
                     break;
                 case 3:
-                    query();
-                    break;
+                    AVLfromFile();
+                    break; 
                 case 4:
-                    fullArticle();
+                    query();
                     break;
                 case 5:
                     stats();

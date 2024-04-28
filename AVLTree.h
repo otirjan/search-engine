@@ -171,10 +171,23 @@ public:
     /*
     *calls internal function to collapse AvlTree into a CSV file
     */
-    void exportToCSV() const
+    void exportToCSV(const std::string& filename) const
     {
-        const std::string filename = "AVLTree.csv";
-        exportToCSV(filename);
+
+        std::ofstream outputFile(filename);
+        //error message
+
+        if(!outputFile.is_open())
+        {
+            std::cerr << "Error, failed to open file" << filename << std::endl;
+            return;
+        }
+        //print header
+        outputFile << "key, filepath, frequency" << std::endl;
+        //call inorderTraversal
+        inOrderTraversal(root, outputFile);
+        //close output file
+        outputFile.close();
     }
 
     /*
@@ -379,23 +392,23 @@ private:
     /*
     * internal function to export the Avltree to a csv
     */
-    void exportToCSV(const std::string& filename) const
-    {
-        std::ofstream outputFile(filename);
-        //error message
+    // void exportToCSV(const std::string& filename) const
+    // {
+    //     std::ofstream outputFile(filename);
+    //     //error message
 
-        if(!outputFile.is_open())
-        {
-            std::cerr << "Error, failed to open file" << filename << std::endl;
-            return;
-        }
-        //print header
-        outputFile << "key, filepath, frequency" << std::endl;
-        //call inorderTraversal
-        inOrderTraversal(root, outputFile);
-        //close output file
-        outputFile.close();
-    }
+    //     if(!outputFile.is_open())
+    //     {
+    //         std::cerr << "Error, failed to open file" << filename << std::endl;
+    //         return;
+    //     }
+    //     //print header
+    //     outputFile << "key, filepath, frequency" << std::endl;
+    //     //call inorderTraversal
+    //     inOrderTraversal(root, outputFile);
+    //     //close output file
+    //     outputFile.close();
+    // }
 
     /*
     *internal function for in order tree traversal

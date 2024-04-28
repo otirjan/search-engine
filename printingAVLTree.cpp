@@ -136,7 +136,7 @@ int main()
     testingTree.insert("fifteen", "filepathEx28", 30);
     testingTree.insert("fifteen", "filepathEx220", 220);
     //csv is in the build folder
-    testingTree.exportToCSV();
+    testingTree.exportToCSV("AVLTree.csv");
 
 
 
