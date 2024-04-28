@@ -41,6 +41,7 @@ class UI
 
     void index()
     {
+        //doc parser's test file system function?
 
     }
 
@@ -77,28 +78,39 @@ class UI
         }
         //call query processor and give it the user input
         queryprocessor.processQuery(input);
+
+        //with the results i get back from the query processor
+        std::vector<std::string> final = queryprocessor.getResults();
+        //i need to go through the vector
+        for (int i = 0; i < final.size(); i++)
+        {
+            //get the title, publication, date published
+
+        }
+        std::cout << "Would you like to read an article?" << std::endl;
+        //give them the option of yes/no. then i need to ask which article they want to read, pass that to fullArticle()
+        //i need to display article title, publication, and date published
+        //if they would like to choose an article, then call fullArticle() and pass the article as a parameter
     }
 
-    void fullArticle()
+    void fullArticle(const std::string& filePath)
     {
-
-    }
-
-    void time()
-    {
-        //time for indexing and for queries
+        //output the full article 
 
     }
 
     void totalArticles()
     {
+        //return the total articles in the current index
 
     }
 
     void stats()
     {
-        //unique words
-
+        //time for indexing
+        //time for queries
+        //total articles in the current index
+        //total amount of nodes in the word avl
     }
 
     void menu()
