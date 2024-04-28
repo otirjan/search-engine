@@ -23,16 +23,7 @@ needs to:
 - any other interesting stats
 - a menu
 
-added:
-- uniqueWords() in index handler
-- getTitle() in DocParser
-- getPublishDate() in DocParser
-- getPublications() in DocParser
 
-questions
-- collapse parseDoc? u extract things but never use them
-- all the words that are parsed go into the word avl yes? even the ones that are also people/orgs? see stats function
-- how does "publications" work i don't see that field anywhere in the .json file
 
 
 */
@@ -43,6 +34,10 @@ class UI
         QueryProcessor queryprocessor;
         IndexHandler handler;
         DocumentParser parser;
+        std::chrono::steady_clock::time_point indexStartTime;
+        std::chrono::steady_clock::time_point indexEndTime;
+        std::chrono::steady_clock::time_point queryStartTime;
+        std::chrono::steady_clock::time_point queryEndTime;
 
 
     public:
@@ -57,22 +52,25 @@ class UI
 
     void index()
     {
+        indexStartTime = std::chrono::steady_clock::now();
         std::string userpath;
         std::cout << "Enter directory path: " << std::endl;
         std::cin >> userpath;
         //its gonna loop over all the json files in the directory and then parse them all
         parser.testFileSystem(userpath);
+        indexEndTime = std::chrono::steady_clock::now();
+        std::chrono::duration<double> indexDuration = indexEndTime - indexStartTime;
+        std::cout << "Time taken for indexing: " << indexDuration.count() << " seconds" << std::endl;
         menu();
 
     }
 
-    void indexFromFile()
+    void indexToFile()
     {
         handler.wordAVL.exportToCSV("wordAVL.csv");
         handler.personAVL.exportToCSV("personAVL.csv");
         handler.organizationAVL.exportToCSV("orgAVL.csv");
         menu();
-
     }
 
     void AVLfromFile()
@@ -85,6 +83,8 @@ class UI
 
     void query()
     {
+        queryStartTime = std::chrono::steady_clock::now();
+
         //im putting input into a vector in case there is a "-" i want to preserve it. also bc i want to get all the words in the query
         std::vector<std::string> input;
         std::string line;
@@ -120,6 +120,10 @@ class UI
             //get the title, date published, publication
             std::cout << "#" << i << " : " << parser.getTitle(final.at(i)) << ", " << parser.getPublishDate(final.at(i)) << ", " << parser.getPublication(final.at(i)) << std::endl;
         }
+        queryEndTime = std::chrono::steady_clock::now();
+        std::chrono::duration<double> queryDuration = queryEndTime - queryStartTime;
+        std::cout << "Time taken for querying: " << queryDuration.count() << " seconds" << std::endl;
+
         std::cout << "Would you like to read an article? Y/N" << std::endl;
 
         char choice;
@@ -149,11 +153,13 @@ class UI
 
     void stats()
     {
-        //time for indexing
-        //time for queries
-        //total articles in the current index. if we put EVERY word into the word avl, even words that are people/orgs, then i can increment this value every time we add to wordAVL in the docParser
+        //this value is incremented in DocParser every time we add to the wordAVL
+        int articles = parser.getCount();
+        std::cout << "Total number of individual articles in the current index: " << articles << std::endl;
         //total amount of nodes in the word avl
         int totalUnique = handler.uniqueWords();
+        std::cout << "Total number of unique words indexed: " << totalUnique << std::endl;
+        menu();
     }
 
     void menu()
@@ -178,7 +184,7 @@ class UI
                     index();
                     break;
                 case 2:
-                    indexFromFile();
+                    indexToFile();
                     break;
                 case 3:
                     AVLfromFile();

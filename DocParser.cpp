@@ -6,6 +6,7 @@ using namespace std;
 
         DocumentParser::DocumentParser(){
             initializeStopWords();
+            count = 0;
         }
 
         vector <string> DocumentParser::tokenize (const string& text){
@@ -108,12 +109,16 @@ using namespace std;
             auto words = tokenize(text);
             for (const auto& word : words){
                 handler.addWord(word, filePath, calcFrequency(document, word)); 
+                count++;
                 // cout <<" added word: " << word << endl;
             }
 
         }//end parseDoc
 
-
+        int DocumentParser::getCount()
+        {
+            return count;
+        }
 
         string DocumentParser::getTitle(const string& filePath)
         {

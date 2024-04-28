@@ -35,6 +35,7 @@ class DocumentParser {
     private:
         set<string> stopwords;
         IndexHandler handler;
+        int count;
 
     public:
 
@@ -50,6 +51,7 @@ class DocumentParser {
         string getPublishDate(const string& filePath);
         string getPublication(const string& filePath);
         string fullArticle(const string& filePath);
+        int getCount();
 
 
 };//end of doc parser 
