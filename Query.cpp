@@ -43,25 +43,28 @@ string QueryProcessor::stemWord(string& word)
             return stemWord; 
 }
 
-std::vector<std::string> QueryProcessor::processQuery(std::vector<std::string>& query)
+void QueryProcessor::processQuery(std::vector<std::string>& query)
 {
     std::vector<std::string> tokens = tokenize(query);     //tokenize the query 
 
     std::vector<std::string> processedQuery;    //make a vector of the query terms thta have been stemmed
-   for(auto& word : query) {
+
+    for(auto& word : query) {
+       if(word[0]== '-'){                   //add words preceeded by "-" to excluded words
+        excludedWords.push_back(word);      //docs that contain excluded words will be removed from results 
+       }else{
         std::string stemmed = stemWord(word); // stem each word in the query
         processedQuery.push_back(stemmed);    // add the stemmed word to the processed query
+       }
+       
     }
-    return processedQuery;     //this should just return the query without stop words and stuff 
+   searchQuery(processedQuery);     //pass the tokenized query 
 }
 
 
-//takes in a vector of words already processed 
-void QueryProcessor::searchQuery(const std::vector<std::string>& query)
+//takes in a vector of words already processed (unsure if we need to tokenize in this, i dont think so bc it shoudl be taking in processed query already)
+void QueryProcessor::searchQuery(std::vector<std::string>& processedQuery)
 {
-
-    std::vector<std::string> processedQuery;  //to hold tokenized query
-
     if(processedQuery.empty())  //after removing stopwords, if theres nothing to search for 
     {     
         throw std::runtime_error(" No key words to search. Try again with another query.");
@@ -90,7 +93,7 @@ void QueryProcessor::rankResults (std::map<std::string, size_t>& firstDocs,std::
 {
 
     if(remainingTerms.empty())
-    {    //if there are no more words in the query, just return the 1st map generated 
+    {    //if there are no more words in the query, just return the last map generated 
         for (const auto& doc: firstDocs ) //this map is already sorted by frequency
         {  
             rankedResults.push_back(doc.first);
@@ -120,6 +123,22 @@ void QueryProcessor::rankResults (std::map<std::string, size_t>& firstDocs,std::
         combinedFreq[doc.first] += doc.second;   // add the document and its freq(of next word) to the map
     }
 
+    //docs that contain excluded words will be removed from results 
+    for (auto it = combinedFreq.begin(); it != combinedFreq.end();){  //go thru map of combined frequencies 
+        bool exclude = false;      //set a flag 
+        for (const auto& word: excludedWords){         //go thru excluded words
+            if(it->first.find(word) != std::string::npos){  //if one of the excluded words exists within a document in combinedfreq
+                exclude = true;                             //set exclude to true 
+                break;
+            }
+        }
+        if(exclude){
+            it = combinedFreq.erase(it);                //and erase it from the map
+        }else{
+            it++;                                       //move to the next document 
+        }
+    }//end of for 
+     
      std::vector<std::pair<std::string, size_t>> sortedDocs(combinedFreq.begin(), combinedFreq.end());
      std::sort(sortedDocs.begin(), sortedDocs.end(), [](const auto& a, const auto& b) {
          return a.second > b.second; // highest frequency on top 
