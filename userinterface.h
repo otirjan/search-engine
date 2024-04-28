@@ -7,7 +7,7 @@
 #include "AVLTree.h"
 #include "DocParser.h"
 #include "IndexHandler.h"
-#include "Query.h"
+//#include "Query.h"
 #include <vector>
 #include <sstream>
 
@@ -31,7 +31,7 @@ needs to:
 class UI
 {
     private:
-        QueryProcessor queryprocessor;
+        //QueryProcessor queryprocessor;
         IndexHandler handler;
         DocumentParser parser;
         std::chrono::steady_clock::time_point indexStartTime;
@@ -44,7 +44,7 @@ class UI
     // default constructor
     UI()
     {
-        queryprocessor(IndexHandler());
+        //queryprocessor(IndexHandler());
         IndexHandler handler;
         DocumentParser parser;
 
@@ -61,8 +61,11 @@ class UI
         indexEndTime = std::chrono::steady_clock::now();
         std::chrono::duration<double> indexDuration = indexEndTime - indexStartTime;
         std::cout << "Time taken for indexing: " << indexDuration.count() << " seconds" << std::endl;
-        menu();
-
+        //testing purposes
+        std::cout << "words in wordAVL: " << handler.uniqueWords() << std::endl;
+        //okay so i think i need a better way to keep track of the articles instead of incrementing every time i push a word
+        //also why is wordAVL blank when getCount() isn't, they should be the same yes?
+        std::cout << "articles indexed(should be 3) : " << parser.getCount() << std::endl;
     }
 
     void indexToFile()
@@ -70,7 +73,6 @@ class UI
         handler.wordAVL.exportToCSV("wordAVL.csv");
         handler.personAVL.exportToCSV("personAVL.csv");
         handler.organizationAVL.exportToCSV("orgAVL.csv");
-        menu();
     }
 
     void AVLfromFile()
@@ -78,77 +80,75 @@ class UI
         handler.wordAVL.AVLfromCSV("wordAVl.csv");
         handler.personAVL.AVLfromCSV("personAVL.csv");
         handler.organizationAVL.AVLfromCSV("orgAVL.csv");
-        menu();
     }
 
-    void query()
-    {
-        queryStartTime = std::chrono::steady_clock::now();
+    // void query()
+    // {
+    //     queryStartTime = std::chrono::steady_clock::now();
 
-        //im putting input into a vector in case there is a "-" i want to preserve it. also bc i want to get all the words in the query
-        std::vector<std::string> input;
-        std::string line;
+    //     //im putting input into a vector in case there is a "-" i want to preserve it. also bc i want to get all the words in the query
+    //     std::vector<std::string> input;
+    //     std::string line;
 
-        std::cout << "Input query (press enter to finish): " << std::endl;
+    //     std::cout << "Input query (press enter to finish): " << std::endl;
 
-        while(true)
-        {
-            //get input until the line is empty ("enter" is pressed)
-            std::getline(std::cin, line);
+    //     while(true)
+    //     {
+    //         //get input until the line is empty ("enter" is pressed)
+    //         std::getline(std::cin, line);
 
-            if (line.empty())
-            {
-                break;
-            }
-            //tokenizes
-            std::istringstream ss(line);
-            std::string word;
-            //puts the input into a vector
-            while (ss >> word)
-            {
-                input.push_back(word);
-            }
-        }
-        //call query processor and give it the user input
-        queryprocessor.processQuery(input);
+    //         if (line.empty())
+    //         {
+    //             break;
+    //         }
+    //         //tokenizes
+    //         std::istringstream ss(line);
+    //         std::string word;
+    //         //puts the input into a vector
+    //         while (ss >> word)
+    //         {
+    //             input.push_back(word);
+    //         }
+    //     }
+    //     //call query processor and give it the user input
+    //     //queryprocessor.processQuery(input);
 
-        //with the results i get back from the query processor. these should be filepaths
-        std::vector<std::string> final = queryprocessor.getResults();
-        //i need to go through the vector
-        for (int i = 0; i < final.size(); i++)
-        {
-            //get the title, date published, publication
-            std::cout << "#" << i << " : " << parser.getTitle(final.at(i)) << ", " << parser.getPublishDate(final.at(i)) << ", " << parser.getPublication(final.at(i)) << std::endl;
-        }
-        queryEndTime = std::chrono::steady_clock::now();
-        std::chrono::duration<double> queryDuration = queryEndTime - queryStartTime;
-        std::cout << "Time taken for querying: " << queryDuration.count() << " seconds" << std::endl;
+    //     //with the results i get back from the query processor. these should be filepaths
+    //     //std::vector<std::string> final = queryprocessor.getResults();
+    //     //i need to go through the vector
+    //     for (int i = 0; i < final.size(); i++)
+    //     {
+    //         //get the title, date published, publication
+    //         std::cout << "#" << i << " : " << parser.getTitle(final.at(i)) << ", " << parser.getPublishDate(final.at(i)) << ", " << parser.getPublication(final.at(i)) << std::endl;
+    //     }
+    //     queryEndTime = std::chrono::steady_clock::now();
+    //     std::chrono::duration<double> queryDuration = queryEndTime - queryStartTime;
+    //     std::cout << "Time taken for querying: " << queryDuration.count() << " seconds" << std::endl;
 
-        std::cout << "Would you like to read an article? Y/N" << std::endl;
+    //     std::cout << "Would you like to read an article? Y/N" << std::endl;
 
-        char choice;
+    //     char choice;
 
-        std::cin >> choice;
+    //     std::cin >> choice;
 
-        if (choice == 'Y' || choice == 'y')
-        {
-            int selection = 0;
-            std::cout << "Which article would you like to read? Enter the article number: " << std::endl;
-            std::cin >> selection;
-            fullArticle(final.at(selection));
-        }
-        else
-        {
-            menu();
-        }
-    }
+    //     if (choice == 'Y' || choice == 'y')
+    //     {
+    //         int selection = 0;
+    //         std::cout << "Which article would you like to read? Enter the article number: " << std::endl;
+    //         std::cin >> selection;
+    //         fullArticle(final.at(selection));
+    //     }
+    //     else
+    //     {
+    //         menu();
+    //     }
+    // }
 
     void fullArticle(const std::string& filePath)
     {
         //output the full article
         std::string fullArticle = parser.fullArticle(filePath);
         std::cout << fullArticle << std::endl; 
-        menu();
     }
 
     void stats()
@@ -159,7 +159,6 @@ class UI
         //total amount of nodes in the word avl
         int totalUnique = handler.uniqueWords();
         std::cout << "Total number of unique words indexed: " << totalUnique << std::endl;
-        menu();
     }
 
     void menu()
@@ -190,7 +189,7 @@ class UI
                     AVLfromFile();
                     break; 
                 case 4:
-                    query();
+                   // query();
                     break;
                 case 5:
                     stats();

@@ -51,21 +51,6 @@ using namespace std;
             IStreamWrapper isw(ifs);
             Document document;
             document.ParseStream(isw);
-
-            //extract author
-            if (document.HasMember("author") && document["author"].IsString()) {
-             string author = document["author"].GetString();
-            } else {
-            cerr << "Error: json file doesn't contain an author or it is not a string" << endl;
-            }
-
-            //extract the publication 
-            if (document.HasMember("publication") && document["publication"].IsString()) {
-             string publication = document["publication"].GetString();
-            } else {
-            cerr << "Error: json file doesn't contain a publication or it is not a string" << endl;
-            }
-
                
             //extract people
             if (document.HasMember("entities") && document["entities"].HasMember("persons") && document["entities"]["persons"].IsArray()) {
