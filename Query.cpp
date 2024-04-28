@@ -6,34 +6,31 @@ QueryProcessor::QueryProcessor(IndexHandler& indHandler) : handler(indHandler)
    initializeStopWords();  
 }
 
-std::vector <std::string> QueryProcessor::tokenize (const string& text)
+std::vector <std::string> QueryProcessor::tokenize (std::vector<std::string>& text)
 {
     std::vector<std::string> words;
-    istringstream stream(text);
-    string word;
-    while (stream >> word)
-    {
-         if (word.find("PERSON:") == 0 || word.find("ORG:") == 0) { //if the word starts w/ ppl or org, dont tokenize 
-            words.push_back(word); // add the whole word without tokenizing
-        } else 
-        {
-            //remove punctuation (does not remove quotation marks)
-            word.erase(remove_if(word.begin(), word.end(), ::ispunct), word.end());
-            //lowercase the word
-            transform(word.begin(), word.end(), word.begin(), ::tolower);
-            //stem the word
-            word = stemWord(word); 
-            //only add to the words vector if it is not a stop word
-            if (!word.empty() && stopwords.find(word) == stopwords.end()) 
+   
+   for (const auto& word: text)
+   {
+    if (word.find("PERSON:") == 0 || word.find("ORG:") == 0) { //if the word starts w/ ppl or org, dont tokenize 
+             words.push_back(word); // add the whole word without tokenizing
+         } else 
+         {
+            // remove punctuation (does not remove quotation marks)
+            std::string processedWord = word;
+            processedWord.erase(std::remove_if(processedWord.begin(), processedWord.end(), ::ispunct), processedWord.end());
+            // lowercase the word
+            std::transform(processedWord.begin(), processedWord.end(), processedWord.begin(), ::tolower);
+            // stem the word
+            processedWord = stemWord(processedWord);
+            // only add to the processed words vector if it is not a stop word
+            if (!processedWord.empty() && stopwords.find(processedWord) == stopwords.end()) 
             {
-            std::string stemmed = stemWord(word);  //only stem non-ppl and non-orgs
-            words.push_back(word); 
+                words.push_back(processedWord);
             }
-
-        }
-    }
-            
-        return words;
+         }
+   }  
+        return words;    //return vector of tokenized/stemmed words 
 }
 
 string QueryProcessor::stemWord(string& word)
@@ -46,20 +43,21 @@ string QueryProcessor::stemWord(string& word)
             return stemWord; 
 }
 
-std::vector<std::string> QueryProcessor::processQuery(const std::string& query)
+std::vector<std::string> QueryProcessor::processQuery(std::vector<std::string>& query)
 {
     std::vector<std::string> tokens = tokenize(query);     //tokenize the query 
 
     std::vector<std::string> processedQuery;    //make a vector of the query terms thta have been stemmed
-    for(int i=0; i<tokens.size(); i++){
-        std::string stemmed = stemWord(tokens[i]);
-        processedQuery.push_back(stemmed);
+   for(auto& word : query) {
+        std::string stemmed = stemWord(word); // stem each word in the query
+        processedQuery.push_back(stemmed);    // add the stemmed word to the processed query
     }
     return processedQuery;     //this should just return the query without stop words and stuff 
 }
 
 
-void QueryProcessor::searchQuery(std::string& query)
+//takes in a vector of words already processed 
+void QueryProcessor::searchQuery(const std::vector<std::string>& query)
 {
 
     std::vector<std::string> processedQuery;  //to hold tokenized query
@@ -73,7 +71,7 @@ void QueryProcessor::searchQuery(std::string& query)
 
     if(processedQuery[0].find("PERSON:")==0)   //if it starts with people, search the ppl map for the word (without the PEOPLE:)
     {
-        firstDocs = handler.searchPerson(processedQuery[0].substr(7));
+        firstDocs = handler.searchPerson(processedQuery[0].substr(7));   //add the results (docs+freq) to firstDocs
     } else if (processedQuery[0].find("ORG:")==0)
     {
         firstDocs = handler.searchOrg(processedQuery[0].substr(13));
