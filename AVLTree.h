@@ -171,10 +171,23 @@ public:
     /*
     *calls internal function to collapse AvlTree into a CSV file
     */
-    void exportToCSV() const
+    void exportToCSV(const std::string& filename) const
     {
-        const std::string filename = "AVLTree.csv";
-        exportToCSV(filename);
+
+        std::ofstream outputFile(filename);
+        //error message
+
+        if(!outputFile.is_open())
+        {
+            std::cerr << "Error, failed to open file" << filename << std::endl;
+            return;
+        }
+        //print header
+        outputFile << "key, filepath, frequency" << std::endl;
+        //call inorderTraversal
+        inOrderTraversal(root, outputFile);
+        //close output file
+        outputFile.close();
     }
 
     /*
@@ -217,7 +230,7 @@ public:
                 }
 
                 //iterate through the vector
-                for (int i = 0; i < tokens.size() - 2; i += 2)
+                for (long unsigned int i = 0; i < tokens.size() - 2; i += 2)
                 {
                     //key will be the 1st thing in the vector, stays the same for the whole line
                     Comparable key = tokens[0];
@@ -341,7 +354,7 @@ private:
     std::vector<std::pair<Value, size_t>> organize(const Comparable x, AvlNode *t) const
     {
         //get the node's data using the find function
-        std::map<Value, size_t> OGdata = find(x, root);
+        std::map<Value, size_t> OGdata = find(x, t); //find(x, root)
         //created a vector, organizedData, which is the node's data but in descending order; the keys are still the filepaths
         std::vector<std::pair<Value, size_t>> organizedData(OGdata.begin(), OGdata.end());
         //sort based on frequency
@@ -379,23 +392,23 @@ private:
     /*
     * internal function to export the Avltree to a csv
     */
-    void exportToCSV(const std::string& filename) const
-    {
-        std::ofstream outputFile(filename);
-        //error message
+    // void exportToCSV(const std::string& filename) const
+    // {
+    //     std::ofstream outputFile(filename);
+    //     //error message
 
-        if(!outputFile.is_open())
-        {
-            std::cerr << "Error, failed to open file" << filename << std::endl;
-            return;
-        }
-        //print header
-        outputFile << "key, filepath, frequency" << std::endl;
-        //call inorderTraversal
-        inOrderTraversal(root, outputFile);
-        //close output file
-        outputFile.close();
-    }
+    //     if(!outputFile.is_open())
+    //     {
+    //         std::cerr << "Error, failed to open file" << filename << std::endl;
+    //         return;
+    //     }
+    //     //print header
+    //     outputFile << "key, filepath, frequency" << std::endl;
+    //     //call inorderTraversal
+    //     inOrderTraversal(root, outputFile);
+    //     //close output file
+    //     outputFile.close();
+    // }
 
     /*
     *internal function for in order tree traversal

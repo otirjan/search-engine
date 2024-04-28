@@ -6,6 +6,7 @@ using namespace std;
 
         DocumentParser::DocumentParser(){
             initializeStopWords();
+            count = 0;
         }
 
         vector <string> DocumentParser::tokenize (const string& text){
@@ -50,21 +51,6 @@ using namespace std;
             IStreamWrapper isw(ifs);
             Document document;
             document.ParseStream(isw);
-
-            //extract author
-            if (document.HasMember("author") && document["author"].IsString()) {
-             string author = document["author"].GetString();
-            } else {
-            cerr << "Error: json file doesn't contain an author or it is not a string" << endl;
-            }
-
-            //extract the publication 
-            if (document.HasMember("publication") && document["publication"].IsString()) {
-             string publication = document["publication"].GetString();
-            } else {
-            cerr << "Error: json file doesn't contain a publication or it is not a string" << endl;
-            }
-
                
             //extract people
             if (document.HasMember("entities") && document["entities"].HasMember("persons") && document["entities"]["persons"].IsArray()) {
@@ -108,11 +94,121 @@ using namespace std;
             auto words = tokenize(text);
             for (const auto& word : words){
                 handler.addWord(word, filePath, calcFrequency(document, word)); 
+                count++;
+
                 // cout <<" added word: " << word << endl;
             }
 
         }//end parseDoc
 
+        int DocumentParser::getCount()
+        {
+            return count;
+        }
+
+        string DocumentParser::getTitle(const string& filePath)
+        {
+            ifstream ifs(filePath);
+            if (!ifs.is_open()) 
+            {
+                cerr << "Could not open file: " << filePath << endl;
+            }
+
+            IStreamWrapper isw(ifs);
+            Document document;
+            document.ParseStream(isw);
+
+            std::string title;
+
+            if (document.HasMember("thread") && document["thread"].HasMember("title") && document["thread"]["title"].IsString()) 
+            {
+                title = document["thread"]["title"].GetString();
+            }
+            else
+            {
+                cerr << "Error: json file doesn't contain a title or it is not a string" << endl;
+            }
+            return title;
+        }
+
+
+        string DocumentParser::getPublishDate(const string& filePath)
+        {
+            ifstream ifs(filePath);
+            if (!ifs.is_open()) 
+            {
+                cerr << "Could not open file: " << filePath << endl;
+            }
+
+            IStreamWrapper isw(ifs);
+            Document document;
+            document.ParseStream(isw);
+
+            std::string publishDate;
+            std::string temp;
+
+            //this is nested in thread
+            if (document.HasMember("thread") && document["thread"].HasMember("published") && document["thread"]["published"].IsString())
+            {
+                temp = document["thread"]["published"].GetString();
+            }
+            else
+            {
+                cerr << "Error: json file doesn't contain a publication date or it is not a string" << endl;
+            }
+            //ex format: "2018-02-27T20:09:00.000+02:00"
+            publishDate = temp.substr(0, 'T');
+
+            return publishDate;
+        }
+
+        string DocumentParser::getPublication(const string& filePath)
+        {
+            ifstream ifs(filePath);
+            if (!ifs.is_open()) 
+            {
+                cerr << "Could not open file: " << filePath << endl;
+            }
+
+            IStreamWrapper isw(ifs);
+            Document document;
+            document.ParseStream(isw);
+
+            std::string publication;
+
+            if (document.HasMember("thread") && document["thread"].HasMember("site") && document["thread"]["site"].IsString()) 
+            {
+                publication = document["thread"]["site"].GetString();
+            } 
+            else 
+            {
+                cerr << "Error: json file doesn't contain a publication or it is not a string" << endl;
+            }
+
+            return publication;
+        }
+
+        string DocumentParser::fullArticle(const string& filePath)
+        {
+            ifstream ifs(filePath);
+            if (!ifs.is_open()) 
+            {
+                cerr << "Could not open file: " << filePath << endl;
+            }
+
+            IStreamWrapper isw(ifs);
+            Document document;
+            document.ParseStream(isw);
+
+            std::string articleText;
+
+            if (document.HasMember("text") && document["text"].IsString())
+            {
+                articleText = document["text"].GetString();
+            }
+
+            return articleText;
+        }
 
         //function to calculate frequency, will be called when we pass word,doc,freq to add in the index handler 
         size_t DocumentParser::calcFrequency(const Document& document, const string& word){
