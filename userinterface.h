@@ -43,20 +43,7 @@ class UI
 
     public:
     // default constructor
-    // UI() : handler(), queryprocessor(handler), parser() 
-    // {
-    //     IndexHandler handler;
-    //     DocumentParser parser;
-    // }
-
-
-    // UI() : queryprocessor(handler), parser() 
-    // {
-    //     handler = parser.getIndexHandler();
-    // }
-
-
-    //so that the handler is the same for the parser and the query processor
+    //the handler is the same for the parser and the query processor
     UI() : parser(), queryprocessor(parser.getIndexHandler())
     {
 
@@ -74,7 +61,7 @@ class UI
         std::chrono::duration<double> indexDuration = indexEndTime - indexStartTime;
         std::cout << "Time taken for indexing: " << indexDuration.count() << " seconds" << std::endl;
         //testing purposes
-        //std::cout << "words in wordAVL: " << queryprocessor.handler.uniqueWords() << std::endl;
+        std::cout << "words in wordAVL: " << queryprocessor.getHandler().uniqueWords() << std::endl;
         std::cout << "articles indexed(should be 3) : " << parser.getCount() << std::endl;
     }
 
@@ -164,11 +151,9 @@ class UI
     void stats()
     {
         //this value is incremented in DocParser every time we add to the wordAVL
-        int articles = parser.getCount();
-        std::cout << "Total number of individual articles in the current index: " << articles << std::endl;
+        std::cout << "Total number of individual articles in the current index: " << parser.getCount() << std::endl;
         //total amount of nodes in the word avl
-        int totalUnique = handler.uniqueWords();
-        std::cout << "Total number of unique words indexed: " << totalUnique << std::endl;
+        std::cout << "Total number of unique words indexed: " << queryprocessor.getHandler().uniqueWords() << std::endl;
     }
 
     void menu()

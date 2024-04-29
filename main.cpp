@@ -29,8 +29,8 @@ int main()
     cout << "supersearch not implemented yet." << endl; 
 
 
-    UI search;
-    search.menu();
+    // UI search;
+    // search.menu();
 
 
     return 0;

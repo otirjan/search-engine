@@ -16,7 +16,8 @@
                 std::vector<std::string> excludedWords;
             
             public:
-               // IndexHandler& handler;
+
+                IndexHandler& getHandler();
                 //take in the users string, breaks it into what terms are people/orgs/words, gets results from avl trees, ranks them on relevancy
                 QueryProcessor(IndexHandler& handler); 
                
