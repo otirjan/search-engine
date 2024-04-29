@@ -6,7 +6,6 @@ Names of all team members: Makayla Alston, Cameron Tofani, Liv Tirjan
 
 
 
-
 Used free extension: [ ] 24 hrs or [ ] 48 hrs
 
 [ ] Early submission (48 hrs)
@@ -119,9 +118,12 @@ Prefix a term with - to exclude documents containing that term.
 Viewing Results: After submitting the query, the results will be displayed in order of relevance. Each result will provide a document title, a snippet containing the query terms, and a link or method to access the full document.
 
 - Some example queries with the results.
+** TODO: fill this out whenever code is finalized & properly run
+
 
 ### Performance
 - Provide statistics (word counts, timing, etc) for indexing all documents (or as many as you can in a reasonable amount of time).
+***TODO: fill out when code is finalized 
 
 ### Bonus Work
 Did you attempt any bonuses? If so, please give a brief description of what you did.
