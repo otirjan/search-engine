@@ -11,6 +11,7 @@
         class QueryProcessor{
             private:
                 IndexHandler& handler;
+                 DocumentParser docParser; //needed for extracting text 
                 set<string> stopwords;
                 std::vector<std::string> rankedResults;
                 std::vector<std::string> excludedWords;
@@ -33,7 +34,10 @@
 
                 void rankResults (std::map<std::string, size_t>& firstDocs,std::vector<std::string>& remainingTerms);
 
+                void removeNegResults();
                 std::vector<std::string> getResults();
+
+            
 
         };
 
