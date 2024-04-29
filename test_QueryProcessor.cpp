@@ -86,8 +86,56 @@ void testQueryProcessing5(IndexHandler& indexHandler) {
         }
 }//PASSED 
 
+void testPersonQuery(IndexHandler& indexHandler) {
+     QueryProcessor queryProcessor(indexHandler);
+    std::cout << "Testing PERSON: " << std::endl;
 
+    // sample query with "PERSON:" prefix
+    std::vector<std::string> PERSONquery = {"PERSON:schweitzer"};
 
+    try {
+        // Process the query
+        queryProcessor.processQuery(PERSONquery);
+
+        // Get the results
+        std::vector<std::string> results = queryProcessor.getResults();
+
+        // Display the results
+        std::cout << "Results:" << std::endl;
+        for (const auto& result : results) {
+            std::cout << result << std::endl;
+        }
+    } catch (const std::runtime_error& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+
+    std::cout << "End of PERSON:" << std::endl;
+}
+
+void testOrgQuery(IndexHandler& indexHandler) {
+     QueryProcessor queryProcessor(indexHandler);
+    std::cout << "Testing ORG: " << std::endl;
+
+    std::vector<std::string> ORGquery = {"ORG:reuters"};
+
+    try {
+        // Process the query
+        queryProcessor.processQuery(ORGquery);
+
+        // Get the results
+        std::vector<std::string> results = queryProcessor.getResults();
+
+        // Display the results
+        std::cout << "Results:" << std::endl;
+        for (const auto& result : results) {
+            std::cout << result << std::endl;
+        }
+    } catch (const std::runtime_error& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+
+    std::cout << "End of ORG:" << std::endl;
+}
 
 
 
@@ -113,6 +161,10 @@ int main() {
     //testQueryProcessing3(handler);     //should return empty 
     //testQueryProcessing4(handler);     //should be 4568
     //testQueryProcessing5(handler);     //should be empty
+
+    //testPersonQuery(handler);
+
+    testOrgQuery(handler);
 
 
     return 0;
