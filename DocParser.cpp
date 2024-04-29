@@ -60,11 +60,11 @@ using namespace std;
              for(rapidjson::SizeType i=0; i< pplArray.Size(); i++){    //for loop that goes through the array of ppl
                 rapidjson::Value& person = pplArray[i];                //reference to a person 
                 
-                cout << i << endl;
+                //cout << i << endl; //for testing 
                 if (person.HasMember("name") && person["name"].IsString()){    //looks thru people array for names
                     string name = person["name"].GetString();                 //extracts the name 
                     handler.addPerson(name, filePath, calcFrequency(document, name));                //call the index handler to add each person to the AVl 
-                     cout <<" added person: " << name << endl;
+                    // cout <<" added person: " << name << endl; //testing 
                 }
              }
             } else {
@@ -81,8 +81,8 @@ using namespace std;
 
                 if (org.HasMember("name") && org["name"].IsString()){    //looks thru people array for names
                     string organization = org["name"].GetString();                 //extracts the name 
-                    handler.addOrg(organization, filePath, calcFrequency(document, organization));   
-                    cout <<" added org: " << organization << endl;             //call the index handler to add each person to the AVl 
+                    handler.addOrg(organization, filePath, calcFrequency(document, organization));   //call the index handler to add each person to the AVl
+                    //cout <<" added org: " << organization << endl;   //testing           
                 }
              }
             } else {
@@ -243,7 +243,7 @@ using namespace std;
             for (const auto &entry : it)
             {
 
-                cout << "--- " << setw(60) << left << entry.path().c_str() << " ---" << endl;
+               // cout << "--- " << setw(60) << left << entry.path().c_str() << " ---" << endl;
 
                 // We only want to attempt to parse files that end with .json...
                 if (entry.is_regular_file() && entry.path().extension().string() == ".json")

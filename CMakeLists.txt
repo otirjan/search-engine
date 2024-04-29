@@ -20,6 +20,9 @@ add_executable(test_AVLTree test_AVLTree.cpp)
 add_test(NAME TestAVL COMMAND test_AVLTree)
 add_executable(printingAVLTree printingAVLTree.cpp)
 add_executable(UITests UITests.cpp DocParser.cpp porter2_stemmer.cpp)
+add_executable(test_QueryProcessor test_QueryProcessor.cpp Query.cpp DocParser.cpp porter2_stemmer.cpp)
+#do we need DocParser.cpp and porter2 here? i think so but unsure 
+
 
 
 
