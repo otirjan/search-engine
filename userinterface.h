@@ -44,7 +44,7 @@ class UI
     public:
     // default constructor
     //the handler is the same for the parser and the query processor
-    UI() : parser(), queryprocessor(parser.getIndexHandler())
+    UI() : parser(), queryprocessor(parser.getIndexHandler()) 
     {
 
     }
@@ -67,16 +67,16 @@ class UI
 
     void indexToFile()
     {
-        handler.wordAVL.exportToCSV("wordAVL.csv");
-        handler.personAVL.exportToCSV("personAVL.csv");
-        handler.organizationAVL.exportToCSV("orgAVL.csv");
+        queryprocessor.getHandler().wordAVL.exportToCSV("wordAVL.csv");
+        queryprocessor.getHandler().personAVL.exportToCSV("personAVL.csv");
+        queryprocessor.getHandler().organizationAVL.exportToCSV("orgAVL.csv");
     }
 
     void AVLfromFile()
     {
-        handler.wordAVL.AVLfromCSV("wordAVl.csv");
-        handler.personAVL.AVLfromCSV("personAVL.csv");
-        handler.organizationAVL.AVLfromCSV("orgAVL.csv");
+        queryprocessor.getHandler().wordAVL.AVLfromCSV("wordAVL.csv");
+        queryprocessor.getHandler().personAVL.AVLfromCSV("personAVL.csv");
+        queryprocessor.getHandler().organizationAVL.AVLfromCSV("orgAVL.csv");
     }
 
     void query()
