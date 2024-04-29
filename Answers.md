@@ -40,6 +40,7 @@ Weekly milestones/tasks. Set out a plan at the beginning and then record when yo
 
 - Add a UML class diagram, etc.
 - High-level pseudo code for each component.
+For pseudocode, see "pseudocode.md" file
 
 ### Used Data Structures
 Explanation of what data structures are used where. For each, state
