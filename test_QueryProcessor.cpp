@@ -5,8 +5,6 @@
 
 namespace fs = std::filesystem;
 
-//VERY TENTATIVE, QUERY NOT WORKING 100% BUT SOMETHINGS WORKING!!!
-
 void testQueryProcessing1(IndexHandler& indexHandler) {
 
     std::cout << "Testing query processing...\n";
@@ -58,7 +56,7 @@ void testQueryProcessing3(IndexHandler& indexHandler) {
     if(minusWordsResults.empty()){
             cout<<"results are empty";
         }
-}
+} //PASSEDDD
 
 void testQueryProcessing4(IndexHandler& indexHandler) { 
     QueryProcessor queryProcessor(indexHandler);
@@ -76,7 +74,7 @@ void testQueryProcessing4(IndexHandler& indexHandler) {
 
 void testQueryProcessing5(IndexHandler& indexHandler) { 
     QueryProcessor queryProcessor(indexHandler);
-    std::vector<std::string> uncommonWordQuery = {"cryptocurrency"};
+    std::vector<std::string> uncommonWordQuery = {"unicorns"};
     queryProcessor.processQuery(uncommonWordQuery);
     std::vector<std::string> uncommonWordResults = queryProcessor.getResults();
     std::cout << "Search results with uncommon word query:\n";
@@ -108,11 +106,13 @@ int main() {
 
     std::cout << "Parsing complete." << std::endl;
 
-    //testQueryProcessing1(handler);
-    // testQueryProcessing2(handler);
-    //testQueryProcessing3(handler);
-    //testQueryProcessing4(handler);
-    testQueryProcessing5(handler);
+   //test one of these at a time for convenience
+   
+    //testQueryProcessing1(handler);      //(should return 4567)
+    //testQueryProcessing2(handler);    //should return 4567 
+    //testQueryProcessing3(handler);     //should return empty 
+    //testQueryProcessing4(handler);     //should be 4568
+    //testQueryProcessing5(handler);     //should be empty
 
 
     return 0;
