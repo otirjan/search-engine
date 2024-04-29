@@ -97,13 +97,24 @@ Query Processor:
         Map: could use unordered map for faster average-case performance, but without the benefit of sorted keys.
         Set: could use unordered set but would have higher space consumption
 
- 
-
 
 
 ### User Documentation
 - What are the features of your software?
+Advanced Text Processing: Utilizes tokenization, stemming, and stopword removal to prepare text data for efficient searching.
+Entity Recognition: Distinguishes between general terms, names of people, and names of organizations in queries to provide more focused search results.
+Relevancy Ranking: Implements term frequency for ranking documents based on the relevance of the search terms to provide the most pertinent results at the top.
+AVL Tree Indexing: Utilizes AVL trees for maintaining a balanced search index, ensuring quick insertions and searches.
+Robust Data Handling: Capable of handling large datasets and complex queries efficiently through optimized data structures.
+
 - Describe how to use the software.
+Starting the Software: Launch the application from the terminal or command line interface by running the executable file. 
+Entering Queries: Use the search bar to type in your query. Queries can be plain text for simple searches or include special operators for advanced searches:
+Use PERSON:<name> to look for documents mentioning a specific person.
+Use ORG:<organization> to find documents that reference a particular organization.
+Prefix a term with - to exclude documents containing that term.
+Viewing Results: After submitting the query, the results will be displayed in order of relevance. Each result will provide a document title, a snippet containing the query terms, and a link or method to access the full document.
+
 - Some example queries with the results.
 
 ### Performance
