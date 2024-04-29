@@ -89,9 +89,15 @@ class UI
 
         std::cout << "Input query (press enter to finish): " << std::endl;
 
+        //std::cin >> line;
         std::getline(std::cin, line);
 
-        while(std::getline(std::cin, line))
+        std::cout << "this is line: " << line << std::endl;
+
+      //  std::getline(std::cin, line);
+
+        //while (std::getline(std::cin, line))
+        while (!line.empty())
         {
             //get input until the line is empty ("enter" is pressed)
           //  std::getline(std::cin, line);
@@ -99,15 +105,16 @@ class UI
 
             if (line.empty())
             {
-                if (input.empty())
-                {
-                    std::cout << "At least one keyword is required. Please enter a query." << std::endl;
-                    continue;  // Prompt the user to enter a query again
-                }
-                else
-                {
-                    break;
-                }
+                // if (input.empty())
+                // {
+                //     std::cout << "At least one keyword is required. Please enter a query." << std::endl;
+                //     continue;  // Prompt the user to enter a query again
+                // }
+                // else
+                // {
+                   // break;
+                    continue;
+               // }
             }
             std::cout << "hi" << std::endl;
             std::cout << "this is line, grabbed from the user: " << line << std::endl;
@@ -130,7 +137,13 @@ class UI
                 std::cout << input.at(i) << std::endl;
             }
 
-            std::getline(std::cin, line);
+            std::cout << "this is the end of the vector." << std::endl;
+
+            //trying this?
+            line.clear();
+           // input.clear();
+
+            //std::getline(std::cin, line);
         }
         std::cout << "testing the vector of input: " << std::endl;
         std::cout << "input size is: " << input.size() << std::endl;
