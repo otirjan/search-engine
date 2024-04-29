@@ -1,6 +1,16 @@
 #include <iostream>
 #include "porter2_stemmer.h"
 #include "DocParser.h"
+#include "userinterface.h"
+#include "Query.h"
+#include "IndexHandler.h"
+#include "AVLTree.h"
+#include <chrono>
+#include <map>
+#include <vector>
+#include <iostream>
+#include <sstream>
+
 
 using namespace std;
 
@@ -17,5 +27,11 @@ int main()
          << "\tsupersearch ui\n\n";
 
     cout << "supersearch not implemented yet." << endl; 
+
+
+    UI search;
+    search.menu();
+
+
     return 0;
 }

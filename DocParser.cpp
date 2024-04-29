@@ -4,10 +4,17 @@ using namespace rapidjson;
 using namespace std;
 
 
-        DocumentParser::DocumentParser(){
+        // DocumentParser::DocumentParser(){
+        //     initializeStopWords();
+        //     count = 0;
+        //     IndexHandler handler();
+        // }
+
+        DocumentParser::DocumentParser() : handler(), count(0) 
+        {
             initializeStopWords();
-            count = 0;
         }
+
 
         vector <string> DocumentParser::tokenize (const string& text){
             vector<string> words;
@@ -51,6 +58,8 @@ using namespace std;
             IStreamWrapper isw(ifs);
             Document document;
             document.ParseStream(isw);
+
+            count++;
                
             //extract people
             if (document.HasMember("entities") && document["entities"].HasMember("persons") && document["entities"]["persons"].IsArray()) {
@@ -60,11 +69,9 @@ using namespace std;
              for(rapidjson::SizeType i=0; i< pplArray.Size(); i++){    //for loop that goes through the array of ppl
                 rapidjson::Value& person = pplArray[i];                //reference to a person 
                 
-                //cout << i << endl; //for testing 
                 if (person.HasMember("name") && person["name"].IsString()){    //looks thru people array for names
                     string name = person["name"].GetString();                 //extracts the name 
                     handler.addPerson(name, filePath, calcFrequency(document, name));                //call the index handler to add each person to the AVl 
-                    // cout <<" added person: " << name << endl; //testing 
                 }
              }
             } else {
@@ -81,8 +88,7 @@ using namespace std;
 
                 if (org.HasMember("name") && org["name"].IsString()){    //looks thru people array for names
                     string organization = org["name"].GetString();                 //extracts the name 
-                    handler.addOrg(organization, filePath, calcFrequency(document, organization));   //call the index handler to add each person to the AVl
-                    //cout <<" added org: " << organization << endl;   //testing           
+                    handler.addOrg(organization, filePath, calcFrequency(document, organization));   //call the index handler to add each person to the AVl          
                 }
              }
             } else {
@@ -94,9 +100,6 @@ using namespace std;
             auto words = tokenize(text);
             for (const auto& word : words){
                 handler.addWord(word, filePath, calcFrequency(document, word)); 
-                count++;
-
-                // cout <<" added word: " << word << endl;
             }
 
         }//end parseDoc

@@ -15,6 +15,11 @@ class IndexHandler{
         AvlTree<std::string, std::string > personAVL;
         AvlTree<std::string, std::string> organizationAVL;
 
+        IndexHandler()
+        {
+            
+        }
+
         bool isValidString(const std::string& str) {
         return !str.empty();
     }
