@@ -98,6 +98,7 @@ void QueryProcessor::rankResults (std::map<std::string, size_t>& firstDocs,std::
         {  
             rankedResults.push_back(doc.first);
         }
+        return;  //stop when there are no more words left in the query
     }
 
     std::map<std::string, size_t> nextDocs;    //map with results from the next word in the query 
