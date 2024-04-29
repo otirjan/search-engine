@@ -3,13 +3,7 @@
 using namespace rapidjson;
 using namespace std;
 
-
-        // DocumentParser::DocumentParser(){
-        //     initializeStopWords();
-        //     count = 0;
-        //     IndexHandler handler();
-        // }
-
+        //default constructor
         DocumentParser::DocumentParser() : handler(), count(0) 
         {
             initializeStopWords();
@@ -48,17 +42,22 @@ using namespace std;
 
 
         void DocumentParser::parseDoc(const string& filePath){
-        //go thru and take out stop words, stem words that need it, and exctact info for each document
-            
+            //go thru and take out stop words, stem words that need it, and exctact info for each document
+            //opens a file for reading using an ifstream object
             ifstream ifs(filePath);
+            //error handling; if file doesn't open, print error message
             if (!ifs.is_open()) {
             cerr << "Could not open file: " << filePath << endl;
              }
 
+            //wraps an input stream to be used as a JSON input stream
             IStreamWrapper isw(ifs);
+            //empty Document object named document to represent a JSON document
             Document document;
+            //parses JSON document from isw into the Document object document
             document.ParseStream(isw);
 
+            //increment variable keeping track of how many articles the DocParser is parsing
             count++;
                
             //extract people
@@ -104,114 +103,165 @@ using namespace std;
 
         }//end parseDoc
 
+
+        //function which returns the total number of articles processed by the doc parser
         int DocumentParser::getCount()
         {
             return count;
         }
 
+        /*
+        *internal function that extracts an article's title
+        *const string& filePath: specifies the path to the article
+        */
         string DocumentParser::getTitle(const string& filePath)
         {
+            //opens a file for reading using an ifstream object
             ifstream ifs(filePath);
+            //error handling; if file doesn't open, print error message
             if (!ifs.is_open()) 
             {
                 cerr << "Could not open file: " << filePath << endl;
             }
 
+            //wraps an input stream to be used as a JSON input stream
             IStreamWrapper isw(ifs);
+            //empty Document object named document to represent a JSON document
             Document document;
+            //parses JSON document from isw into the Document object document
             document.ParseStream(isw);
-
+            //declares a string variable called title
             std::string title;
 
+            //if the document finds title in the JSON document, and if title is a string
             if (document.HasMember("thread") && document["thread"].HasMember("title") && document["thread"]["title"].IsString()) 
             {
+                //sets the variable title equal to the string extracted from the document
                 title = document["thread"]["title"].GetString();
             }
             else
             {
+                //error handling; alerts that there is an issue accessing the article title
                 cerr << "Error: json file doesn't contain a title or it is not a string" << endl;
             }
+            //returns the title variable
             return title;
         }
 
-
+        /*
+        *internal function that extracts an article's publication date
+        *const string& filePath:specifies the path to the article
+        */
         string DocumentParser::getPublishDate(const string& filePath)
         {
+            //opens a file for reading using an ifstream object
             ifstream ifs(filePath);
+            //error handling; if file doesn't open, print error message
             if (!ifs.is_open()) 
             {
                 cerr << "Could not open file: " << filePath << endl;
             }
 
+            //wraps an input stream to be used as a JSON input stream
             IStreamWrapper isw(ifs);
+            //empty Document object named document to represent a JSON document
             Document document;
+            //parses JSON document from isw into the Document object document
             document.ParseStream(isw);
-
+            //declares a string variable called publishDate
             std::string publishDate;
+            //declares a string variable called temp
             std::string temp;
 
-            //this is nested in thread
+            //if the document finds "published" in the JSON document, and if "published" is a string
             if (document.HasMember("thread") && document["thread"].HasMember("published") && document["thread"]["published"].IsString())
             {
+                //sets the temp variable equal to the string extracted from the document
                 temp = document["thread"]["published"].GetString();
             }
             else
             {
+                //error handling; alerts that there is an issue accessing the article publication field
                 cerr << "Error: json file doesn't contain a publication date or it is not a string" << endl;
             }
 
+            //declares a size_t value which is the index of the character 'T' in the string temp
             size_t position = temp.find('T');
-            //ex format: "2018-02-27T20:09:00.000+02:00"
+            //sets the variable publishDate equal to a trimmed string which contains the year, month and date of publication
             publishDate = temp.substr(0, position);
-
+            //returns the publishDate variable
             return publishDate;
         }
 
+
+        /*
+        *internal function that extracts an article's publication 
+        *const string& filePath:specifies the path to the article
+        */
         string DocumentParser::getPublication(const string& filePath)
         {
+            //opens a file for reading using an ifstream object
             ifstream ifs(filePath);
+            //error handling; if file doesn't open, print error message
             if (!ifs.is_open()) 
             {
                 cerr << "Could not open file: " << filePath << endl;
             }
 
+            //wraps an input stream to be used as a JSON input stream
             IStreamWrapper isw(ifs);
+            //empty Document object named document to represent a JSON document
             Document document;
+            //parses JSON document from isw into the Document object document
             document.ParseStream(isw);
-
+            //declares a string variable called publication
             std::string publication;
 
+            //if the document finds "site" in the JSON document, and if "site" is a string
             if (document.HasMember("thread") && document["thread"].HasMember("site") && document["thread"]["site"].IsString()) 
             {
+                //sets the publication variable equal to the string extracted from the document
                 publication = document["thread"]["site"].GetString();
             } 
             else 
             {
+                //error handling; alerts that there is an issue accessing the article site field
                 cerr << "Error: json file doesn't contain a publication or it is not a string" << endl;
             }
-
+            //returns the publication variable
             return publication;
         }
 
+        /*
+        *internal function that extracts an article's text 
+        *const string& filePath:specifies the path to the article
+        */
         string DocumentParser::fullArticle(const string& filePath)
         {
+            //opens a file for reading using an ifstream object
             ifstream ifs(filePath);
+            //error handling; if file doesn't open, print error message
             if (!ifs.is_open()) 
             {
                 cerr << "Could not open file: " << filePath << endl;
             }
 
+            //wraps an input stream to be used as a JSON input stream
             IStreamWrapper isw(ifs);
+            //empty Document object named document to represent a JSON document
             Document document;
+            //parses JSON document from isw into the Document object document
             document.ParseStream(isw);
-
+            //declares a string variable called articleText
             std::string articleText;
 
+            //if the document finds "text" in the JSON document, and if "text" is a string
             if (document.HasMember("text") && document["text"].IsString())
             {
+                //sets the articleText variable equal to the string extracted from the document
                 articleText = document["text"].GetString();
             }
-
+            //returns the articleText variable
             return articleText;
         }
 
@@ -232,6 +282,7 @@ using namespace std;
 
         }//end of calc frequency
 
+        //returns a reference to the index handler object that belongs to DocParser as a private variable
         IndexHandler& DocumentParser::getIndexHandler(){
             return handler;
         }
@@ -247,9 +298,6 @@ using namespace std;
             // loop over all the entries.
             for (const auto &entry : it)
             {
-
-               // cout << "--- " << setw(60) << left << entry.path().c_str() << " ---" << endl;
-
                 // We only want to attempt to parse files that end with .json...
                 if (entry.is_regular_file() && entry.path().extension().string() == ".json")
                 {
@@ -259,6 +307,7 @@ using namespace std;
             }
         }
 
+        //words that will be extracted from the documents we parse
         void DocumentParser::initializeStopWords(){
             stopwords = {"a","able", "about", "above", "abroad", "according", "accordingly", "across", "actually", "adj", "after",
         "afterwards", "again", "against", "ago", "ahead", "ain't", "all", "allow", "allows", "almost", "alone",

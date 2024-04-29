@@ -10,15 +10,10 @@
 class IndexHandler{
 
     public:
-
-        AvlTree<std::string, std::string> wordAVL;    //making an instance of avl for each type 
+        //making an instance of avl for each type 
+        AvlTree<std::string, std::string> wordAVL;    
         AvlTree<std::string, std::string > personAVL;
         AvlTree<std::string, std::string> organizationAVL;
-
-        // IndexHandler()
-        // {
-            
-        // }
 
         bool isValidString(const std::string& str) {
         return !str.empty();
@@ -59,16 +54,12 @@ class IndexHandler{
          std::map<std::string, size_t> searchOrg(const string& word){
             return organizationAVL.find(word);
         }
+
         //returns the total unique words in the wordAVL, which will be used in UI
         int uniqueWords()
         {
             return wordAVL.getTotal();
         }
-
-
-
-
-
 };   //end of index handler class 
 
 

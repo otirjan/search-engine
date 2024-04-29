@@ -1,4 +1,3 @@
-
 #ifndef DOC_PARSER_H
 #define DOC_PARSER_H
 
@@ -21,15 +20,11 @@
 #include "rapidjson/istreamwrapper.h"
 #include "rapidjson/document.h"
 
-#include "porter2_stemmer.h"   //check why this is still swuiggly, i think something needs to be added in the CMAKE but idk what 
+#include "porter2_stemmer.h"
 #include "IndexHandler.h"
 
 using namespace rapidjson;
 using namespace std;
-
-// void testReadJsonFile(const string &fileName);
-// void testFileSystem(const string &path);   idk what these are i think supposed to read in from file 
-
 
 class DocumentParser {
     private:
