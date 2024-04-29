@@ -12,9 +12,15 @@ std::vector <std::string> QueryProcessor::tokenize (std::vector<std::string>& te
    
    for (const auto& word: text)
    {
-    if (word.find("PERSON:") == 0 || word.find("ORG:") == 0) { //if the word starts w/ ppl or org, dont tokenize 
-             words.push_back(word); // add the whole word without tokenizing
-         } else 
+
+    if (word.find("PERSON:") == 0) { //if the word starts w/ ppl or org, dont stem
+             std::string processedWord = word.substr(7);
+             words.push_back(processedWord); 
+         } else if (word.find("ORG:") == 0){
+            std::string processedWord = word.substr(4);
+             words.push_back(processedWord);
+         }
+         else 
          {
             // remove punctuation (does not remove quotation marks)
             std::string processedWord = word;
@@ -54,11 +60,15 @@ void QueryProcessor::processQuery(std::vector<std::string>& query)
     for(auto& word : query) {
        if(word[0]== '-'){                   //add words preceeded by "-" to excluded words (add them without the '-')
         excludedWords.push_back(word.substr(1));      //docs that contain excluded words will be removed from results 
-       }else{
+       }else if (word.find("PERSON:") == 0 || word.find("ORG:") == 0) { //if the word starts w/ ppl or org, dont stem
+              processedQuery.push_back(word);
+         } else
+       {
         std::string stemmed = stemWord(word); // stem each word in the query
         processedQuery.push_back(stemmed);    // add the stemmed word to the processed query
        }
     }
+    
 
     // std::cout << "Excluded words: ";
     // for(const auto& word : excludedWords) {
@@ -84,7 +94,7 @@ void QueryProcessor::searchQuery(std::vector<std::string>& processedQuery)
         firstDocs = handler.searchPerson(processedQuery[0].substr(7));   //add the results (docs+freq) to firstDocs
     } else if (processedQuery[0].find("ORG:")==0)
     {
-        firstDocs = handler.searchOrg(processedQuery[0].substr(13));
+        firstDocs = handler.searchOrg(processedQuery[0].substr(4));
     } else                                                              //if its not ppl or org, search the word map 
     {
          firstDocs = handler.searchWord(processedQuery[0]);
@@ -93,7 +103,6 @@ void QueryProcessor::searchQuery(std::vector<std::string>& processedQuery)
     processedQuery.erase(processedQuery.begin());  //remove first term we just looked for 
 
     rankResults(firstDocs, processedQuery);   //pass the map of first docs to rank results and have it compare w rest of query
-    //PLACE FUNCTION CALL HERE 
     removeNegResults();
 }
 
