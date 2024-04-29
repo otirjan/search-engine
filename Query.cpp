@@ -45,6 +45,8 @@ string QueryProcessor::stemWord(string& word)
 
 void QueryProcessor::processQuery(std::vector<std::string>& query)
 {
+    rankedResults.clear();
+    
     std::vector<std::string> tokens = tokenize(query);     //tokenize the query 
 
     std::vector<std::string> processedQuery;    //make a vector of the query terms thta have been stemmed
@@ -116,38 +118,67 @@ void QueryProcessor::rankResults (std::map<std::string, size_t>& firstDocs,std::
 
     remainingTerms.erase(remainingTerms.begin());  //like before, erase the word we just searched for 
 
-    std::map<std::string, size_t> combinedFreq;   //map to store the documents + total freq of all seacrhed woeds 
+    std::cout << "Contents of firstDocs:" << std::endl;
+        for (const auto& doc : firstDocs) {
+            std::cout << "Document: " << doc.first << ", Frequency: " << doc.second << std::endl;
+        }
+        std::cout << std::endl;
+
+        std::cout << "Contents of nextDocs:" << std::endl;
+        for (const auto& doc : nextDocs) {
+        std::cout << "Document: " << doc.first << ", Frequency: " << doc.second << std::endl;
+        }
+        std::cout << std::endl;
+
+    std::map<std::string, size_t> combinedFreq;   //map to store the documents + total freq of all seacrhed words 
     for (const auto& doc : firstDocs){
-        combinedFreq[doc.first] += doc.second;   // add the document and its freq(of word 1) to the mao
+        combinedFreq[doc.first] += doc.second;   // add the document and its freq(of word 1) to the map
     }
     for (const auto& doc : nextDocs){
         combinedFreq[doc.first] += doc.second;   // add the document and its freq(of next word) to the map
     }
 
-    //docs that contain excluded words will be removed from results 
-    for (auto it = combinedFreq.begin(); it != combinedFreq.end();){  //go thru map of combined frequencies 
+    std::cout << "Contents of combinedFreq:" << std::endl;
+for (const auto& doc : combinedFreq) {
+    std::cout << "Document: " << doc.first << ", Combined Frequency: " << doc.second << std::endl;
+}
+std::cout << std::endl;
+     
+     std::vector<std::pair<std::string, size_t>> sortedDocs(combinedFreq.begin(), combinedFreq.end());
+     std::sort(sortedDocs.begin(), sortedDocs.end(), [](const auto& a, const auto& b) {
+         return a.second > b.second; // sort so that highest frequency on top 
+     });
+
+     //docs that contain excluded words will be removed from results 
+    for (auto it = sortedDocs.begin(); it != sortedDocs.end();){  //go thru map of combined frequencies 
         bool exclude = false;      //set a flag 
+        std::cout << "Checking document: " << it->first << std::endl;
+        
         for (const auto& word: excludedWords){         //go thru excluded words
+           std::cout << "Checking excluded word: " << word << std::endl;
             if(it->first.find(word) != std::string::npos){  //if one of the excluded words exists within a document in combinedfreq
                 exclude = true;                             //set exclude to true 
+                 std::cout << "Excluding document: " << it->first << std::endl;
                 break;
             }
         }
         if(exclude){
-            it = combinedFreq.erase(it);                //and erase it from the map
+            std::cout << "Document excluded. Erasing from combinedFreq." << std::endl;
+            it = sortedDocs.erase(it);                //and erase it from the map
         }else{
+            std::cout << "Document not excluded. Moving to the next document." << std::endl;
             it++;                                       //move to the next document 
         }
     }//end of for 
-     
-     std::vector<std::pair<std::string, size_t>> sortedDocs(combinedFreq.begin(), combinedFreq.end());
-     std::sort(sortedDocs.begin(), sortedDocs.end(), [](const auto& a, const auto& b) {
-         return a.second > b.second; // highest frequency on top 
-     });
 
+     std::cout << "Contents of sortedDocs:" << std::endl;
+        for (const auto& doc : sortedDocs) {
+            std::cout << "Document: " << doc.first << ", Frequency: " << doc.second << std::endl;
+        }
 
-    for (const auto& doc: sortedDocs){
-        rankedResults.push_back(doc.first);  //push the document names w/ highest added freq to the results 
+    std::cout << "Contents of rankedResults:" << std::endl;
+    for (const auto& result : rankedResults) {
+        std::cout << result << std::endl;
     }
 
 
