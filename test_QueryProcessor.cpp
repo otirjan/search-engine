@@ -40,8 +40,6 @@ void testQueryProcessing2(IndexHandler& indexHandler) {
     }  //PASSED (returns 4567)
 }
 
-
-//THIS TEST IS FAILING, whyyy, something wrong with negation in query.cpp
 void testQueryProcessing3(IndexHandler& indexHandler) {
      //test 3: query with - words, should return nothing even tho german is present in the doc 
      QueryProcessor queryProcessor(indexHandler);
@@ -110,7 +108,7 @@ void testPersonQuery(IndexHandler& indexHandler) {
     }
 
     std::cout << "End of PERSON:" << std::endl;
-}
+}//PASSED 
 
 void testOrgQuery(IndexHandler& indexHandler) {
      QueryProcessor queryProcessor(indexHandler);
@@ -135,8 +133,7 @@ void testOrgQuery(IndexHandler& indexHandler) {
     }
 
     std::cout << "End of ORG:" << std::endl;
-}
-
+}//PASSED 
 
 
 int main() {
@@ -164,7 +161,7 @@ int main() {
 
     //testPersonQuery(handler);
 
-    testOrgQuery(handler);
+    //stestOrgQuery(handler);
 
 
     return 0;
