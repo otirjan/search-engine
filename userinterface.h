@@ -89,10 +89,13 @@ class UI
 
         std::cout << "Input query (press enter to finish): " << std::endl;
 
-        while(true)
+        std::getline(std::cin, line);
+
+        while(std::getline(std::cin, line))
         {
             //get input until the line is empty ("enter" is pressed)
-            std::getline(std::cin, line);
+          //  std::getline(std::cin, line);
+           // std::getline(std::cin, line);
 
             if (line.empty())
             {
@@ -106,16 +109,31 @@ class UI
                     break;
                 }
             }
+            std::cout << "hi" << std::endl;
+            std::cout << "this is line, grabbed from the user: " << line << std::endl;
             //tokenizes
-            std::istringstream ss(line);
-            std::string word;
+            // std::istringstream ss(line);
+            // std::string word;
+
+            //change to all lowercase
+
             //puts the input into a vector
-            while (ss >> word)
+            // while (ss >> word)
+            // {
+            //     input.push_back(word);
+            // }
+
+            input.push_back(line);
+
+            for (int i = 0; i < input.size(); i++)
             {
-                input.push_back(word);
+                std::cout << input.at(i) << std::endl;
             }
+
+            std::getline(std::cin, line);
         }
         std::cout << "testing the vector of input: " << std::endl;
+        std::cout << "input size is: " << input.size() << std::endl;
         for (int i = 0; i < input.size(); i++)
         {
             std::cout << input.at(i) << std::endl;
