@@ -39,8 +39,10 @@ Weekly milestones/tasks. Set out a plan at the beginning and then record when yo
 ### High-level Design of Solution
 
 - Add a UML class diagram, etc.
+![UML Diagram](UMLSearchEngine.png)
 - High-level pseudo code for each component.
 For pseudocode, see "pseudocode.md" file
+[pseudocode](pseudocode.md)
 
 ### Used Data Structures
 Explanation of what data structures are used where. For each, state
