@@ -2,7 +2,7 @@
 
 **Complete this document, commit your changes to Github and submit the repository URL to Canvas.** Keep your answers short and precise.
 
-Names of all team members:
+Names of all team members: Makayla Alston, Cameron Tofani, Liv Tirjan
 
 
 
@@ -27,8 +27,13 @@ coding!
 Weekly milestones/tasks. Set out a plan at the beginning and then record when you got it done.
 
 | Task        | Planned completion | Actual completion | Time spent in hrs by X | Time spent in hrs by Y |
-| ----------- | :-----------------:| :---------------: | :--------------------: | :--------------------: |
-| x           | Nov 3              | Nov 6             | 8.5                    | 0                      |
+| AVL Tree & tests| April 14th| April 13th | took 12 hrs (prob more bc continued to update it throughout) | 
+| Doc Parser & tests| April 16th| April 14th | took 12 hrs | 
+| Index Handler & tests| April 19th| April 22nd | took 4 hrs | 
+| Query Processor & tests| April 28th| April 27th | took 6 hrs | 
+| UI & tests| April 28th| April 26th | took 7 hrs | 
+| Answers.md| April 29th|  | so far 1.5 hrs | 
+
 
 
 ### High-level Design of Solution
@@ -40,6 +45,61 @@ Weekly milestones/tasks. Set out a plan at the beginning and then record when yo
 Explanation of what data structures are used where. For each, state
     - time and space complexity (Big-Oh),
     - why it is the appropriate data structure and what other data structure could have been used.
+
+DocParser
+    Data structures used: vector & set
+    Time Complexity:
+        Vector: O(1) for adding elements at the end, O(n) for accessing randomly or inserting/deleting in the middle.
+        Set: O(log n) for insertions, deletions, and lookups
+    Space Complexity:
+        Vector: O(n) 
+        Set: O(n) 
+    Why they are appropriate data structures:
+        Vector: ideal for storing words because vectors provide fast access to data and are efficient in terms of memory when elements are added at the end.
+        Set: Perfect for stopwords because it offers efficient search, insertion, and deletion operations. The log(n) complexity for these operations ensures performance remains manageable even as the set size grows, which is important for checking stopwords frequently during parsing.
+    What other data structure could've been used:
+        Vector: we could've used a list instead, but they don't provide as efficient random access. 
+        Set: we could've used an unordered set since the order of the stopwords isn't important for faster performance, but it would cost us higher memory consumption and worse worst-case performance. 
+
+Node
+    Data structures used: inside of the Node struct in the AVLTree we implemented a map to associate document file paths with their respective frequencies of the keyword (key of the node).
+    Time Complexity: search, insert, and delete are O(log n)
+    Space Complexity: O(n)
+    Why it's an appropriate data structure: 
+        - keeps its keys sorted, which is beneficial for data traversal
+        - efficiently associates two pieces of data (document path and frequency) which is essential for the indexing/retrieval
+        - maps can dynamically grow as documents are added to the index
+    Alternative data structures: we could've used a vector or array, but this would lose the quick search and insertion benefits of a map and resizing the array is costly
+
+IndexHandler
+    Data structure used: AvlTree instance-- Each tree associates a key (word, person, or organization name) with a map that tracks document file paths and the frequencies of occurrences.
+    Time Complexity: insert/search/delete is O(log n) and balancing is O(1)
+    Space Complexity: O(n)
+    Why it's appropriate: self-balancing, ordered access, dynamic data handling
+    Alternatives: hash tables offer fast access times but they lack the order and efficient range of query capabilities provided by the AVL tree
+
+Query Processor:
+    Data structures used: vector to store tokenized and processed query terms, map used to rank ndocument paths based on their frequencies, set used for stop words
+    Time Complexity:
+        Vector:  tokenization is O(n)
+        Map: O(log n) for insertions, deletions, and lookup
+        Set: O(log n) for stop word checking
+    Space Complexity:
+        Vector: O(n)
+        Map: O(n)
+        Set: O(n)
+    Why it's appropriate: 
+        Vector: vectors are ideal since size changes as words are added/removed during processing
+        Map: maps provide sorted order and efficient lookups, inserts, and deletions, which are essential for ranking and aggregating document data based on search relevance
+        Set: ensures that each stopword is stored only once and provides efficient lookups, which is critical for the quick processing of query terms against a list of stopwords.
+    Alternatives: 
+        Vector: could use a list, but it would have slower random access
+        Map: could use unordered map for faster average-case performance, but without the benefit of sorted keys.
+        Set: could use unordered set but would have higher space consumption
+
+ 
+
+
 
 ### User Documentation
 - What are the features of your software?
