@@ -270,6 +270,10 @@ void QueryProcessor::initializeStopWords()
         "yourselves", "you've", "zero"};
         }
 
+        IndexHandler& QueryProcessor::getHandler()
+        {
+            return handler;
+        }
 
             
     // //go through the docs returned from first doc, check if there are any matching w docs returned from the next word 

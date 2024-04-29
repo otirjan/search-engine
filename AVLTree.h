@@ -51,7 +51,7 @@ private:
 
     };
 
-    AvlNode *root;
+    AvlNode *root = nullptr;
 
     size_t total = 0;
 
@@ -269,7 +269,6 @@ private:
      * Set the new root of the subtree.
      */
     void insert(const Comparable& x, const Value& document, const size_t& freq, AvlNode *&t)
-    //void insert(const Comparable &x, std::map<Value, size_t>& d, AvlNode *&t)
     {
         //if its not found, the word does NOT already exist inside the map
         if (t == nullptr)
@@ -388,27 +387,6 @@ private:
        //return the map of 15 (or less) elements
        return results;
     }
-
-    /*
-    * internal function to export the Avltree to a csv
-    */
-    // void exportToCSV(const std::string& filename) const
-    // {
-    //     std::ofstream outputFile(filename);
-    //     //error message
-
-    //     if(!outputFile.is_open())
-    //     {
-    //         std::cerr << "Error, failed to open file" << filename << std::endl;
-    //         return;
-    //     }
-    //     //print header
-    //     outputFile << "key, filepath, frequency" << std::endl;
-    //     //call inorderTraversal
-    //     inOrderTraversal(root, outputFile);
-    //     //close output file
-    //     outputFile.close();
-    // }
 
     /*
     *internal function for in order tree traversal
