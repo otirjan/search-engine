@@ -159,8 +159,10 @@ using namespace std;
             {
                 cerr << "Error: json file doesn't contain a publication date or it is not a string" << endl;
             }
+
+            size_t position = temp.find('T');
             //ex format: "2018-02-27T20:09:00.000+02:00"
-            publishDate = temp.substr(0, 'T');
+            publishDate = temp.substr(0, position);
 
             return publishDate;
         }

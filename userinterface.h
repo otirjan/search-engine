@@ -10,6 +10,7 @@
 #include "Query.h"
 #include <vector>
 #include <sstream>
+#include <cctype>
 
 
 /*
@@ -89,46 +90,24 @@ class UI
 
         std::cout << "Input query (press enter to finish): " << std::endl;
 
-        //std::cin >> line;
+        std::getline(std::cin, line);
         std::getline(std::cin, line);
 
         std::cout << "this is line: " << line << std::endl;
 
-      //  std::getline(std::cin, line);
-
-        //while (std::getline(std::cin, line))
         while (!line.empty())
         {
-            //get input until the line is empty ("enter" is pressed)
-          //  std::getline(std::cin, line);
-           // std::getline(std::cin, line);
-
             if (line.empty())
             {
-                // if (input.empty())
-                // {
-                //     std::cout << "At least one keyword is required. Please enter a query." << std::endl;
-                //     continue;  // Prompt the user to enter a query again
-                // }
-                // else
-                // {
-                   // break;
-                    continue;
-               // }
+                std::cout << "At least one keyword is required. Please enter a query." << std::endl;
+                continue;  // Prompt the user to enter a query again
             }
             std::cout << "hi" << std::endl;
             std::cout << "this is line, grabbed from the user: " << line << std::endl;
-            //tokenizes
-            // std::istringstream ss(line);
-            // std::string word;
 
-            //change to all lowercase
+           // line.tolower();
 
-            //puts the input into a vector
-            // while (ss >> word)
-            // {
-            //     input.push_back(word);
-            // }
+           //i need to split the strings i get from the user; when i do "german" "reuters" the size of the input vector should be 2, not 1
 
             input.push_back(line);
 
@@ -139,11 +118,7 @@ class UI
 
             std::cout << "this is the end of the vector." << std::endl;
 
-            //trying this?
             line.clear();
-           // input.clear();
-
-            //std::getline(std::cin, line);
         }
         std::cout << "testing the vector of input: " << std::endl;
         std::cout << "input size is: " << input.size() << std::endl;
@@ -159,10 +134,12 @@ class UI
         //with the results i get back from the query processor. these should be filepaths
         std::vector<std::string> final = queryprocessor.getResults();
         //i need to go through the vector
+        std::cout << "this is the size of final, the vector returned from the query processor: " << final.size() << std::endl;
+
         for (long unsigned int i = 0; i < final.size(); i++)
         {
             //get the title, date published, publication
-            std::cout << "#" << i << " : " << parser.getTitle(final.at(i)) << ", " << parser.getPublishDate(final.at(i)) << ", " << parser.getPublication(final.at(i)) << std::endl;
+            std::cout << " # " << i << ": " << parser.getTitle(final.at(i)) << ", " << parser.getPublishDate(final.at(i)) << ", " << parser.getPublication(final.at(i)) << std::endl;
         }
         queryEndTime = std::chrono::steady_clock::now();
         std::chrono::duration<double> queryDuration = queryEndTime - queryStartTime;
@@ -177,7 +154,7 @@ class UI
         if (choice == 'Y' || choice == 'y')
         {
             int selection = 0;
-            std::cout << "Which article would you like to read? Enter the article number: " << std::endl;
+            std::cout << "Which article would you like to read? Enter the number(#) that corresponds to the article's position in the results list: " << std::endl;
             std::cin >> selection;
             fullArticle(final.at(selection));
         }
