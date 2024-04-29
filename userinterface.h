@@ -96,7 +96,15 @@ class UI
 
             if (line.empty())
             {
-                break;
+                if (input.empty())
+                {
+                    std::cout << "At least one keyword is required. Please enter a query." << std::endl;
+                    continue;  // Prompt the user to enter a query again
+                }
+                else
+                {
+                    break;
+                }
             }
             //tokenizes
             std::istringstream ss(line);
@@ -107,9 +115,16 @@ class UI
                 input.push_back(word);
             }
         }
+        std::cout << "testing the vector of input: " << std::endl;
+        for (int i = 0; i < input.size(); i++)
+        {
+            std::cout << input.at(i) << std::endl;
+        }
         //call query processor and give it the user input
         queryprocessor.processQuery(input);
 
+        std::cout << "done with process query" << std::endl;
+        
         //with the results i get back from the query processor. these should be filepaths
         std::vector<std::string> final = queryprocessor.getResults();
         //i need to go through the vector
@@ -134,10 +149,6 @@ class UI
             std::cout << "Which article would you like to read? Enter the article number: " << std::endl;
             std::cin >> selection;
             fullArticle(final.at(selection));
-        }
-        else
-        {
-            menu();
         }
     }
 
