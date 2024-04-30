@@ -19,8 +19,6 @@ using namespace std;
                 word.erase(remove_if(word.begin(), word.end(), ::ispunct), word.end());
                 //lowercase the word
                 transform(word.begin(), word.end(), word.begin(), ::tolower);
-                //stem the word
-                word = stemWord(word); 
                 //only add to the words vector if it is not a stop word
                 if (!word.empty() && stopwords.find(word) == stopwords.end()) {
                 words.push_back(word); 
@@ -30,19 +28,8 @@ using namespace std;
         }
 
 
-        string DocumentParser::stemWord(string& word){   //just takes in one word, returns that word stemmed
-
-            string stemWord = word;
-
-            Porter2Stemmer::trim(stemWord);
-            Porter2Stemmer::stem(stemWord);  
-
-            return stemWord; 
-        }
-
-
         void DocumentParser::parseDoc(const string& filePath){
-            //go thru and take out stop words, stem words that need it, and exctact info for each document
+            //go thru and take out stop words, extract info for each document
             //opens a file for reading using an ifstream object
             ifstream ifs(filePath);
             //error handling; if file doesn't open, print error message
@@ -295,12 +282,22 @@ using namespace std;
             // see: https://en.cppreference.com/w/cpp/filesystem/recursive_directory_iterator
             auto it = filesystem::recursive_directory_iterator(path);
 
+            int docCount = 0;
             // loop over all the entries.
             for (const auto &entry : it)
             {
                 // We only want to attempt to parse files that end with .json...
                 if (entry.is_regular_file() && entry.path().extension().string() == ".json")
                 {
+                    docCount++;
+                    if (docCount%30 ==0)
+                    {
+                        auto now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+                        std::string timeStr = std::ctime(&now);
+                        // Remove the newline character at the end
+                        timeStr.pop_back();
+                        std::cout << "parsed: " << docCount <<" at " << timeStr << std::endl;
+                    }
                     parseDoc(entry.path().string());   //call parsedoc and pass the file path 
 
                 }
