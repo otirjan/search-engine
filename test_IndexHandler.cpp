@@ -35,7 +35,7 @@ TEST_CASE("IndexHandler Tests") {
 
         REQUIRE(handler.searchOrg("Apple") == std::map<std::string, size_t>{{"file1.txt", 10}, {"file3.txt", 6}});
         REQUIRE(handler.searchOrg("Google") == std::map<std::string, size_t>{{"file2.txt", 8}});
-        REQUIRE(handler.searchOrg("Dell").empty());
+        REQUIRE(handler.searchOrg("Mac").empty());
     }
 
     SECTION("Error Handling"){
@@ -65,5 +65,17 @@ TEST_CASE("IndexHandler Tests") {
 
         // Restore cerr
         std::cerr.rdbuf(oldCerrBuffer);
+    }
+
+    SECTION("lowercasing"){ //PASSED 
+        IndexHandler handler; 
+        
+        std::string word1 = "HAPPY"; 
+
+        std::string lowerWord1 = handler.toLower(word1);
+
+        REQUIRE(lowerWord1 == "happy");
+
+        //std::cout << "Original: " << word1 << ", Lowercased: " << lowerWord1 << std::endl;
     }
 }
