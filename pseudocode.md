@@ -269,30 +269,92 @@ Class DocumentParser
 
 
 Template Class AvlTree
+    struct Avlnode
     AvlNode root
+    size_t total
+    static const int ALLOWED_IMBALANCE
 
-    Function insert(key, document, freq)
-        if key not present
-            create new node
+    Function insert(x, document, freq, t)
+        if t is not found
+            create new node, passing x, document, and freq
+            increment total
+            return
+        if x is less than t->key
+            recursive call with t->left
+        else if t->key is less than x
+            recursive call with t->right
         else
-            update node data
+            update t's map by inserting with document, freq
         balance tree
 
-    Function find(key)
-        locate node with key
-        return data map
+    Function find(x, t)
+        if t is null
+            return empty map
+        if x equals t->key
+            return t's data
+        else if x is less than t->key
+            recursive call with t->left
+        else
+            recursive call with t->right
 
-    Function organize(key)
-        retrieve and sort data by frequency
-
-    Function balance()
-        apply rotations as necessary to maintain balance
-
-    Function makeEmpty()
-        clear the tree recursively
+    Function organize(x, t)
+        initalize map OGData with map returned from find function
+        create vector of pairs organizedData which is the copied data of OGData
+        sort organizedData based on pair.second (the frequency)
+        return organizedData
 
     Function getTotal()
         return count of unique keys
+
+    Function contains(x, t)
+        if t is null
+            return false
+        if t is encountered
+            return true
+        else if x is less than t->key
+            recursive call with t->left
+        else
+            recursive call with t->right
+
+    Function first15(x, t)
+        initalize vector of pairs called nodeData with the map returned from organize
+        intialize empty vector of pairs results
+        intialize count with 0
+        iterate through nodeData
+            if not at the end and count is not 15
+                add the pair to results
+                increment count
+        return results
+
+    Function exportToCSV(filename)
+        creates outputFile stream outputFile
+        if outputFile does not open
+            print error message
+            return
+        print header to outputFile
+        calls inOrderTraversal with root, outputFile
+        close outputFile
+        
+    Function AVLfromCSV(filename)
+        creates inputFile from filename
+        if inputFile does not open
+            prints error message
+            return
+        inia
+
+
+
+
+
+    Function inOrderTraversal(t, outputFile)
+        if t is null
+            return
+        recursive call with t->left
+        print t->key to outputFile
+        for every pair in t's map (data)
+            print comma, print pair.first (filepath), print comma, print pair.second(frequency)
+        print endl
+        recursive call with t->right
 
 Class UserInterface
     Set stopwords
