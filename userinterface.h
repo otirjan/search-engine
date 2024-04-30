@@ -242,8 +242,6 @@ class UI
             }
         }
     }
-    
-
 };
 
 #endif

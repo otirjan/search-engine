@@ -340,11 +340,20 @@ Template Class AvlTree
         if inputFile does not open
             prints error message
             return
-        inia
-
-
-
-
+        inialize string header
+        getline to store header at top of csv
+        while not end of file
+            initalize string line
+            while function can grab line from inputFile
+                initalize vector tokens
+                split line into tokens
+                push tokens into tokens vector
+                iterate through tokens vector
+                    variable key set to first entry in tokens
+                    variable doc set to tokens at index + 1
+                    variable freq set to tokens at index + 2, casts this ch to int
+                    calls insert with key, doc, freq and root
+        close inputFile
 
     Function inOrderTraversal(t, outputFile)
         if t is null
@@ -357,14 +366,85 @@ Template Class AvlTree
         recursive call with t->right
 
 Class UserInterface
-    Set stopwords
+    Documentparser parser
+    QueryProcessor queryprocessor
+    indexStartTime
+    indexEndTime
+    queryStartTime
+    queryEndTime
 
-    Function parseDoc(filePath)
-        read document
-        if author or publication exists
-            extract and store
-        tokenize and process text
-        add each word to IndexHandler with calculated frequency
+    Function index()
+        starts time
+        initalizes string userPath
+        prompts user for directory path
+        reads in input
+        calls parser's testFileSystem with input
+        ends time
+        calculates duration
+        prints duration to terminal
+
+    Function indexToFile()
+        calls exportToCSV on wordAVl using queryprocessor's handler, passing in a csv
+        calls exportToCSV on personAVl using queryprocessor's handler, passing in a csv
+        calls exportToCSV on organizationdAVl using queryprocessor's handler, passing in a csv
+
+    Function AVLfromFile()
+        calls AVLfromCSV on wordAVl using queryprocessor's handler, passing in a csv
+        calls AVLfromCSV on personAVl using queryprocessor's handler, passing in a csv
+        calls AVLfromCSV on organizationAVl using queryprocessor's handler, passing in a csv
+
+    Function query()
+        starts time
+        initalizes vector of strings input
+        initalizes string line
+        prompts user for query
+        reads in user's query
+        while line is not empty
+            split user's query into tokens
+            push each token into input
+            clear line
+        call processQuery and pass in input as parameter
+        initalize vector final with vector returned from queryprocessor's getResults
+        if final is empty
+            print "no results found"
+            exit function
+        iterate through final
+            in each loop, print index, article title, article publication date, article publication, endl
+        stop time
+        calculate elapsed time
+        print elapsed time to terminal
+        ask user if they would like to view an article's full text
+        initalize char choice
+        retrieve user input and store in choice
+        if user indicates yes
+            initalize int selection as 0
+            prompt user to specify which article text they would like to see by inputting the article's corresponding number
+            retrieve user input
+            call UI's fullArticle function and pass article's filepath
+
+
+    Function fullArticle(filepath)
+        initalizes string fullArticle with the result of parser's fullArticle function, passing parser's fullArticle the filepath passed in as a parameter
+        prints fullArticle to terminal
+
+    Function stats()
+        prints total amount of articles in index by calling parser's getCount function
+        prints total amount of nodes in wordAVL by calling queryprocessor's handler's uniqueWords function
+
+    Function menu()
+        while true
+            prints menu options
+            initalizes int choice as 0
+            saves user input in choice variable
+            if input is not an int
+                print error message
+                clears input
+                ignore input buffer
+                continue
+            switch
+                calls corresponding function according to the value of choice
+
+
 
 
 
