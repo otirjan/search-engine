@@ -204,6 +204,14 @@ class UI
             int choice = 0;
             //retrieves the user's input and stores the answer in the choice variable
             std::cin >> choice;
+
+            if (std::cin.fail()) { //since cin is expecting an int, if its not an int it will fail
+                std::cout<<"Error: Please enter a valid choice! Must enter number 1-6." << std::endl;
+                std::cin.clear(); //clear cin so a valid number can be entered 
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // get rid of input buffer
+                continue;   //let user enter a num 
+            }
+          
             //calls the corresponding function according to the value of choice
             switch(choice)
             {
