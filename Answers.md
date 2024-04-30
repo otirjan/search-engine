@@ -6,7 +6,7 @@ Names of all team members: Makayla Alston, Cameron Tofani, Liv Tirjan
 
 
 
-Used free extension: [x] 24 hrs or [ ] 48 hrs
+Used free extension: [] 24 hrs or [x] 48 hrs
 
 [ ] Early submission (48 hrs)
 

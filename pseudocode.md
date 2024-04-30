@@ -1,5 +1,24 @@
 Project Pseudocode for Answers.md
 
+Workflow:
+    1. press 1 to create index
+    2. pass in directory filepath
+    3. iterate through directory, check  if they are .json files
+    4. tokenize, lowercase, etc
+    5. add to correspending AVL (to personAVL if person, orgAVL if org, all words to wordAVL)
+    6. return time taken to create index
+    7. query
+    8. enter input, tokenize input, put into vector
+    9. 
+    1(). print results
+    11. offer option to read article text, print if desired
+
+
+
+
+
+
+
 Class IndexHandler:
         AvlTree wordAVL, personAVL, organizationAVL
 
