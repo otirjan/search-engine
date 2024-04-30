@@ -11,8 +11,8 @@
    //std::string toLower(const std::string& word);
 class IndexHandler{
     public:
-
-        AvlTree<std::string, std::string> wordAVL;    //making an instance of avl for each type 
+        //making an instance of avl for each type 
+        AvlTree<std::string, std::string> wordAVL;    
         AvlTree<std::string, std::string > personAVL;
         AvlTree<std::string, std::string> organizationAVL;
 
@@ -61,6 +61,7 @@ class IndexHandler{
              std::string lowercaseWord = toLower(word);
             return organizationAVL.find(lowercaseWord);
         }
+
         //returns the total unique words in the wordAVL, which will be used in UI
         int uniqueWords()
         {
@@ -74,7 +75,6 @@ class IndexHandler{
         }
         return result;
     }
-
 };   //end of index handler class 
 
 #endif // INDEX_HANDLER_H
