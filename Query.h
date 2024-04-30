@@ -12,7 +12,7 @@
             private:
                 IndexHandler& handler;
                  DocumentParser docParser; //needed for extracting text 
-                set<string> stopwords;
+                std::unordered_set<string> stopwords;
                 std::vector<std::string> rankedResults;
                 std::vector<std::string> excludedWords;
             
@@ -26,7 +26,6 @@
                 void processQuery(std::vector<std::string>& query);
 
                 std::vector<std::string> tokenize (std::vector<std::string>& text);
-                std::string stemWord(std::string& word);
                 void initializeStopWords();
 
                 //take in the processed query, search for the words in the AVL trees, call rank results to rank 

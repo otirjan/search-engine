@@ -1,5 +1,4 @@
 #include <iostream>
-#include "porter2_stemmer.h"
 #include "DocParser.h"
 #include "userinterface.h"
 #include "Query.h"
