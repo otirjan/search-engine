@@ -6,7 +6,7 @@ Names of all team members: Makayla Alston, Cameron Tofani, Liv Tirjan
 
 
 
-Used free extension: [ ] 24 hrs or [ ] 48 hrs
+Used free extension: [x] 24 hrs or [ ] 48 hrs
 
 [ ] Early submission (48 hrs)
 
@@ -25,20 +25,13 @@ coding!
 
 Weekly milestones/tasks. Set out a plan at the beginning and then record when you got it done.
 
-| Task        | Planned completion | Actual completion | Time spent in hrs by X | Time spent in hrs by Y |
-| AVL Tree & tests| April 14th| April 13th | took 12 hrs (prob more bc continued to update it throughout) | 
-| Doc Parser & tests| April 16th| April 14th | took 12 hrs | 
-| Index Handler & tests| April 19th| April 22nd | took 4 hrs | 
-| Query Processor & tests| April 28th| April 27th | took 6 hrs | 
-| UI & tests| April 28th| April 26th | took 7 hrs | 
-| Answers.md| April 29th|  | so far 1.5 hrs | 
-
+![Weekly Tasks](table.png)
 
 
 ### High-level Design of Solution
 
 - Add a UML class diagram, etc.
-![UML Diagram](UMLSearchEngine.png)
+![UML Diagram](UMLEngine.png)
 - High-level pseudo code for each component.
 For pseudocode, see "pseudocode.md" file
 [pseudocode](pseudocode.md)
