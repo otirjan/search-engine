@@ -112,6 +112,19 @@ Viewing Results: After submitting the query, the results will be displayed in or
 
 - Some example queries with the results.
 ** TODO: fill this out whenever code is finalized & properly run
+![Query Test 1](querytest1.png)
+![Query Test 2](querytest2.png)
+![Query Test 3](querytest3.png)
+![Query Test 4](querytest4.png)
+![Query Test 5](querytest5.png)
+![Query Test 6](querytest6.png)
+![Query Test 7](querytest7.png)
+
+
+
+
+
+
 
 
 ### Performance
