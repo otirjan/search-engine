@@ -89,12 +89,12 @@ class UI
 
         std::cout << "Input query (press enter to finish): " << std::endl;
 
-        //std::cin >> line;
-        std::getline(std::cin, line);
+        std::cin >> line;
+        //std::getline(std::cin, line);
 
         std::cout << "this is line: " << line << std::endl;
 
-      //  std::getline(std::cin, line);
+       //std::getline(std::cin, line);
 
         //while (std::getline(std::cin, line))
         while (!line.empty())
