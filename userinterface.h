@@ -177,7 +177,7 @@ class UI
         if (choice == 'Y' || choice == 'y')
         {
             int selection = 0;
-            std::cout << "Which article would you like to read? Enter the article number: " << std::endl;
+            std::cout << "Which article would you like to read? Enter the article number(the number after #): " << std::endl;
             std::cin >> selection;
             fullArticle(final.at(selection));
         }
@@ -213,6 +213,13 @@ class UI
 
             int choice = 0;
             std::cin >> choice;
+
+            if (std::cin.fail()) { //since cin is expecting an int, if its not an int it will fail
+                std::cout<<"Error: Please enter a valid choice! Must enter number 1-6." << std::endl;
+                std::cin.clear(); //clear cin so a valid number can be entered 
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // get rid of input buffer
+                continue;   //let user enter a num 
+            }
 
             switch(choice)
             {

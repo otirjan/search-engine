@@ -11,7 +11,7 @@ void testQueryProcessing1(IndexHandler& indexHandler) {
     QueryProcessor queryProcessor(indexHandler);
 
     //test 1: should return only one document 
-    std::vector<std::string> query = {"german", "business", "trade"};  //should return doc 1 in sample
+    std::vector<std::string> query = {"german", "business", "trade"}; 
     queryProcessor.processQuery(query);
     std::vector<std::string> results = queryProcessor.getResults();
     std::cout << "Search results:\n";
@@ -20,7 +20,7 @@ void testQueryProcessing1(IndexHandler& indexHandler) {
         if(result.empty()){
             cout<<"results are empty";
         }
-    } //PASSED  (should return 4567)
+    } //PASSED  (should return 4567 only)
     
 }
 
@@ -37,24 +37,24 @@ void testQueryProcessing2(IndexHandler& indexHandler) {
         if(result.empty()){
             cout<<"results are empty";
         }
-    }  //PASSED (returns 4567)
+    }  //PASSED (returns 4567 only)
 }
 
 void testQueryProcessing3(IndexHandler& indexHandler) {
      //test 3: query with - words, should return nothing even tho german is present in the doc 
      QueryProcessor queryProcessor(indexHandler);
     
-     std::vector<std::string> minusWordsquery = {"german","-businesses"};  //should return doc 1 in sample
+     std::vector<std::string> minusWordsquery = {"german","-businesses"}; 
      queryProcessor.processQuery(minusWordsquery);
      std::vector<std::string> minusWordsResults = queryProcessor.getResults();
      std::cout << "Search results:\n";
     for (const auto& result : minusWordsResults) {
-        std::cout << result << std::endl;   //should be empty
+        std::cout << result << std::endl;   //should be empty, business should negate results from german
     }
     if(minusWordsResults.empty()){
             cout<<"results are empty";
         }
-} //PASSEDDD
+} //PASSEDDD (should return empty results)
 
 void testQueryProcessing4(IndexHandler& indexHandler) { 
     QueryProcessor queryProcessor(indexHandler);
@@ -63,12 +63,12 @@ void testQueryProcessing4(IndexHandler& indexHandler) {
     std::vector<std::string> singleWordResults = queryProcessor.getResults();
     std::cout << "Search results with single word query:\n";
     for (const auto& result : singleWordResults) {
-        std::cout << result << std::endl;  //should be 4568 
+        std::cout << result << std::endl;  
     }
     if(singleWordResults.empty()){
             cout<<"results are empty";
         }
-} //PASSED
+} //PASSED (should return 4568)
 
 void testQueryProcessing5(IndexHandler& indexHandler) { 
     QueryProcessor queryProcessor(indexHandler);
@@ -82,7 +82,7 @@ void testQueryProcessing5(IndexHandler& indexHandler) {
     if(uncommonWordResults.empty()){
             cout<<"results are empty";
         }
-}//PASSED 
+}//PASSED (should return empty)
 
 void testPersonQuery(IndexHandler& indexHandler) {
      QueryProcessor queryProcessor(indexHandler);
@@ -92,13 +92,10 @@ void testPersonQuery(IndexHandler& indexHandler) {
     std::vector<std::string> PERSONquery = {"PERSON:schweitzer"};
 
     try {
-        // Process the query
         queryProcessor.processQuery(PERSONquery);
 
-        // Get the results
         std::vector<std::string> results = queryProcessor.getResults();
 
-        // Display the results
         std::cout << "Results:" << std::endl;
         for (const auto& result : results) {
             std::cout << result << std::endl;
@@ -108,7 +105,7 @@ void testPersonQuery(IndexHandler& indexHandler) {
     }
 
     std::cout << "End of PERSON:" << std::endl;
-}//PASSED 
+}//PASSED (should return 4567 only)
 
 void testOrgQuery(IndexHandler& indexHandler) {
      QueryProcessor queryProcessor(indexHandler);
@@ -117,13 +114,10 @@ void testOrgQuery(IndexHandler& indexHandler) {
     std::vector<std::string> ORGquery = {"ORG:reuters"};
 
     try {
-        // Process the query
         queryProcessor.processQuery(ORGquery);
 
-        // Get the results
         std::vector<std::string> results = queryProcessor.getResults();
 
-        // Display the results
         std::cout << "Results:" << std::endl;
         for (const auto& result : results) {
             std::cout << result << std::endl;
@@ -133,7 +127,7 @@ void testOrgQuery(IndexHandler& indexHandler) {
     }
 
     std::cout << "End of ORG:" << std::endl;
-}//PASSED 
+}//PASSED (should return 4567 and 4568)
 
 
 int main() {
