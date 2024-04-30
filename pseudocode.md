@@ -1,7 +1,7 @@
 Project Pseudocode for Answers.md
 
-Class IndexHandler
-    AvlTree wordAVL, personAVL, organizationAVL
+Class IndexHandler:
+        AvlTree wordAVL, personAVL, organizationAVL
 
     Function isValidString(str)
         returns true or false depending on whether or not the string is empty
@@ -41,9 +41,9 @@ Class IndexHandler
 
 
 
-Class QueryProcessor
-    IndexHandler handler
-    Set stopwords
+Class QueryProcessor:
+        IndexHandler handler
+        Set stopwords
 
     Function processQuery(query)
         tokens = tokenize(query)
@@ -142,10 +142,10 @@ Class QueryProcessor
         returns reference to query processor's handler
 
 
-Class DocumentParser
-    Set stopwords
-    int count
-    IndexHandler handler
+Class DocumentParser:
+        Set stopwords
+        int count
+        IndexHandler handler
 
     Function parseDoc(filePath)
         opens file for reading using ifstream object
@@ -268,11 +268,11 @@ Class DocumentParser
 
 
 
-Template Class AvlTree
-    struct Avlnode
-    AvlNode root
-    size_t total
-    static const int ALLOWED_IMBALANCE
+Template Class AvlTree:
+        struct Avlnode
+        AvlNode root
+        size_t total
+        static const int ALLOWED_IMBALANCE
 
     Function insert(x, document, freq, t)
         if t is not found
@@ -365,13 +365,13 @@ Template Class AvlTree
         print endl
         recursive call with t->right
 
-Class UserInterface
-    Documentparser parser
-    QueryProcessor queryprocessor
-    indexStartTime
-    indexEndTime
-    queryStartTime
-    queryEndTime
+Class UserInterface:
+        Documentparser parser
+        QueryProcessor queryprocessor
+        indexStartTime
+        indexEndTime
+        queryStartTime
+        queryEndTime
 
     Function index()
         starts time
