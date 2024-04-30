@@ -68,12 +68,6 @@ void QueryProcessor::processQuery(std::vector<std::string>& query)
         processedQuery.push_back(stemmed);    // add the stemmed word to the processed query
        }
     }
-    
-
-    // std::cout << "Excluded words: ";
-    // for(const auto& word : excludedWords) {
-    // std::cout << word << " ";
-    // }
 
    searchQuery(processedQuery);     //pass the tokenized query 
 }
@@ -134,19 +128,6 @@ void QueryProcessor::rankResults (std::map<std::string, size_t>& firstDocs,std::
 
     remainingTerms.erase(remainingTerms.begin());  //like before, erase the word we just searched for 
 
-    //std::cout << "Contents of firstDocs:" << std::endl; just for testing 
-
-        // for (const auto& doc : firstDocs) {
-        //     std::cout << "Document: " << doc.first << ", Frequency: " << doc.second << std::endl;
-        // }
-        // std::cout << std::endl;
-
-        // std::cout << "Contents of nextDocs:" << std::endl;
-        // for (const auto& doc : nextDocs) {
-        // std::cout << "Document: " << doc.first << ", Frequency: " << doc.second << std::endl;
-        // }
-        // std::cout << std::endl;
-
     std::map<std::string, size_t> combinedFreq;   //map to store the documents + total freq of all seacrhed words 
     for (const auto& doc : firstDocs){
         combinedFreq[doc.first] += doc.second;   // add the document and its freq(of word 1) to the map
@@ -154,25 +135,6 @@ void QueryProcessor::rankResults (std::map<std::string, size_t>& firstDocs,std::
     for (const auto& doc : nextDocs){
         combinedFreq[doc.first] += doc.second;   // add the document and its freq(of next word) to the map
     }
-     
-    //   //docs that contain excluded words will be removed from results 
-    // for (auto it = combinedFreq.begin(); it != combinedFreq.end();){  //go thru map of combined frequencies 
-    //     bool exclude = false;      //set a flag 
-        
-    //     for (const auto& word: excludedWords){         //go thru excluded words
-         
-    //         if(it->first.find(word) != std::string::npos){  //if one of the excluded words exists within a document in combinedfreq
-    //             exclude = true;                             //set exclude to true 
-    //             break;
-    //         }
-    //     }
-    //     if(exclude){
-    //         it = combinedFreq.erase(it);                //and erase it from the map
-    //     }else{
-    //         it++;                                       //move to the next document 
-    //     }
-    // }//end of for 
-     
      
      std::vector<std::pair<std::string, size_t>> sortedDocs(combinedFreq.begin(), combinedFreq.end());
      std::sort(sortedDocs.begin(), sortedDocs.end(), [](const auto& a, const auto& b) {
@@ -283,15 +245,5 @@ void QueryProcessor::initializeStopWords()
         {
             return handler;
         }
-
-            
-    // //go through the docs returned from first doc, check if there are any matching w docs returned from the next word 
-    // for(const auto& firstDoc : firstDocs)
-    // {
-    //     if (nextDocs.find(firstDoc.first) != nextDocs.end()) //if it finds it before reaching the end 
-    //     {  
-    //         results.push_back(firstDoc.first);  //add to results if it appears in both 
-    //     }
-    // }//check for no overlapping
 
 
