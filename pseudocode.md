@@ -145,18 +145,41 @@ Class QueryProcessor
 Class DocumentParser
     Set stopwords
     int count
+    IndexHandler handler
 
     Function parseDoc(filePath)
-        read document
-        if author or publication exists
-            extract and store
-        tokenize and process text
-        add each word to IndexHandler with calculated frequency
+        opens file for reading using ifstream object
+        if file doesn't open
+            print error message
+        wraps an input stream to be used as a JSON input stream
+        empty Document object named document to represent a JSON document
+        parses JSON document from isw into the Document object document
+        increment count
+        if document has member "entities" and "entities" has member "persons" and "persons" is an array
+            iterate over each person in the array
+                adds to personAVl with filepath and frequency (calls calcFrequency)
+        else
+            prints error message
+        if document has member "entities" and "entities" has member "organizatiosn" and "organizations" is an array
+            iterate over each org in the array
+                adds to orgAVL with filepath and frequency (calls calcFrequency)
+        else
+            prints error message
+        creates a string text from the article's text
+        tokenizes text
+        for every word
+            adds to wordAVL with filepath and frequency (calls calcFrequency)
 
     Function tokenize(text)
-        split text into words
-        for each word
-            clean, stem, and remove stopwords
+        initalize empty vector words
+        use istringstream to stream input word by word
+        for every word
+            remove punctuation
+            converts word to lowercase
+            stems word
+            if word is not a stop word
+                push word to words vector
+        return vector words
 
     Function stemWord(word)
         apply stemming algorithm
@@ -164,6 +187,84 @@ Class DocumentParser
 
     Function initializeStopWords()
         load stopwords into set
+    
+    Function caclFrequency(document, word)
+        intializes size_t variable frequency to 0
+        creates a string variable contents from the document's text
+        tokenizes contents
+        for every word
+            if current word matches the word for which frequency is being counted
+                increment frequency
+        return frequency
+
+    Function testFileSystem(path)
+        traverse through all files and directories within specified path
+        for every entry encountered
+            if entry is a regular file and if the extension ends is .json
+                calls parseDoc
+
+    Function getIndexHandler()
+        return reference to doc parser's handler
+
+    Function getTitle(path)
+        opens file for reading using an ifstream object
+        if file doesn't open
+            print error message
+        wraps input stream to be used as a JSON input stream
+        empty Document object named document to represent a JSON document
+        parses JSON document from isw into the Document object document
+        declares a string variable title
+        if the document has member "thread" and "thread" has member "title" and "title" is a string
+            sets title equal to the string extracted from the document
+        else
+            prints error message
+        return title
+
+    Function getPublishDate(path)
+        opens file for reading using an ifstream object
+        if file doesn't open
+            print error message
+        wraps input stream to be used as a JSON input stream
+        empty Document object named document to represent a JSON document
+        parses JSON document from isw into the Document object document
+        declares a string variable publishDate
+        declares string variable temp
+        if the document has member "thread" and "thread" has member "published" and "published" is a string
+            sets temp equal to the string extracted from the document
+        else
+            prints error message
+        sets size_t variable equal to the position of the char 'T' in the string temp
+        trims temp and sets its result as publishDate
+        return publishDate
+
+    Function getPublication(path)
+        opens file for reading using an ifstream object
+        if file doesn't open
+            print error message
+        wraps input stream to be used as a JSON input stream
+        empty Document object named document to represent a JSON document
+        parses JSON document from isw into the Document object document
+        declares a string variable publication
+        if the document has member "thread" and "thread" has member "site" and "site" is a string
+            sets publication equal to the string extracted from the document
+        else
+            prints error message
+        return publication
+
+    Function fullArticle(path)
+        opens file for reading using an ifstream object
+        if file doesn't open
+            print error message
+        wraps input stream to be used as a JSON input stream
+        empty Document object named document to represent a JSON document
+        parses JSON document from isw into the Document object document
+        declares a string variable called articleText
+        if the document finds "text" in the JSON document, and if "text" is a string
+            sets the articleText variable equal to the string extracted from the document
+        return articleText
+
+    Function getCount()
+        returns count, private class variable keeping track of total articles parsed
 
 
 
