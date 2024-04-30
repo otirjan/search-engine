@@ -6,19 +6,11 @@
 
 using namespace std;
 
-
-//cannot test query rn
-
 int main()
 {
-    //instance
+    //instance of UI. testing (compare output to Cameron's test_QueryProcessor.cpp)
     UI testUI;
     testUI.menu();
-
-
-
-
-
 
     return 0;
 }

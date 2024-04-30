@@ -23,26 +23,31 @@ class AvlTree
 {
 private:
 
+    //struct for the nodes in the AVL tree, private, belongs to the AVL tree
     struct AvlNode
     {
         //the word stored in each node
         Comparable key;
         //map that will associate frequency values with filepaths; this is the node's data
         std::map<Value, size_t> data;
-        //std::map<size_t, Value, MapComparator> data;
         //pointer to the node's left child
         AvlNode *left;
         //pointer to the node's right child
         AvlNode *right;
         //height of the node, used for balancing
-        int height; // Height of the node used for balancing
+        int height;
         //default constructor for an AVL node
         AvlNode(const Comparable& k, const Value& d, const size_t& f)
         {
+            //sets key equal to the word passed into the constructor
             key = k;
+            //insert the filepath and frequency into the node's data map
             data.insert({d, f});
+            //set left pointer to null
             left = nullptr;
+            //set right pointer to null
             right = nullptr;
+            //initalize height as 0
             height = 0;
         }
         //constructor for the clone function/for internal functions
@@ -51,8 +56,9 @@ private:
 
     };
 
+    //intialize the AVLTree's root node to nullptr
     AvlNode *root = nullptr;
-
+    //variable that keeps track of the amount of nodes in the AVLTree; intialize to 0
     size_t total = 0;
 
     // Allowed imbalance in the AVL tree. A higher value will make balancing cheaper
@@ -60,43 +66,56 @@ private:
     static const int ALLOWED_IMBALANCE = 1;
 
 public:
-    // Default constructor
-    //edited to also initalized total to 0
+    /*
+    *default constructor for an AvlTree
+    *root: "base" of Avl tree structure; set to nullptr
+    *total: size_t keeping track of the amount of nodes in the Avl Tree, initalized as 0
+    */
     AvlTree() : root{nullptr}, total{0}
     {
     }
 
     // Rule-of-3 Part 1: Copy constructor
-    //edited to set the new tree's total to the old tree's total when the copy constructor is called
+    /*
+    *copy constructor for an AvlTree
+    *root: "base" of Avl tree structure; set to nullptr
+    *total: size_t keeping track of the amount of nodes in the Avl Tree; set to the same value as rhs
+    */
     AvlTree(const AvlTree &rhs) : root{nullptr}, total{rhs.total}
     {
+        //clones AVL tree starting from rhs's root node
         root = clone(rhs.root);
     }
 
     // Rule-of-3 Part 2: Destructor
     ~AvlTree()
     {
+        //empties AVL tree
         makeEmpty();
     }
 
-    // Rule-of-3 Part 3: Copy assignment operator
+    /*
+    *copy assignment operator
+    *const Avltree& rhs: reference to an Avl tree that will be copied
+    */
     AvlTree &operator=(const AvlTree &rhs)
     {
+        //if the trees are not the same
         if (this != &rhs)
         {
             makeEmpty();
+            //clone the tree starting with the root
             root = clone(rhs.root);
-            //modified to set the new tree's total to the old tree's total when the copy assignment operator is called
+            //set the total equal to rhs's total
             total = rhs.total;
         }
-
+        //return AVl tree object
         return *this;
     }
 
-    // Move semantics could be implemented here.
-
     /**
-     * Returns true if x is found in the tree.
+     * public function that calls private AVL Tree function contains; returns true if x is found in the tree.
+     * const Comparable& x: the key of a node (a word)
      */
     bool contains(const Comparable &x) const
     {
@@ -129,7 +148,10 @@ public:
     }
 
     /**
-     * Insert x into the tree
+     * public function that calls private AVL tree function insert function; inserts x into the AVL Tree
+     * const Comparable& x: the key of a node (a word)
+     * const Value& d: filepath to a given article
+     * const size_t& f: frequency associated with a given article
      */
     void insert(const Comparable& x,const Value& d, const size_t& f) 
     {
@@ -138,6 +160,7 @@ public:
 
     /**
     *call to an internal recursive function that locates a given node in the AvlTree and returns the map that constitutes its values
+    *const Comparable& x:  the key of a node (a word)
     */
     std::map<Value, size_t> find(const Comparable &x) const
     {
@@ -146,6 +169,7 @@ public:
 
     /*
     *call to an internal recursive function that takes a node's map (its data) and organizes the map from highest frequency to lowest
+    *const Comparable& x: the key of a node(a word)
     */
     std::vector<std::pair<Value, size_t>> organize(const Comparable x) const
     {
@@ -161,7 +185,8 @@ public:
     }
 
     /*
-    *returns a map that consists of the first 15 keys in a node's data (its map of keys(frequencies) and values(filepaths))
+    *returns a map that consists of the first 15 keys in a node's data (its map of keys(filepaths) and values(frequencies))
+    *const Comparable& x: the key of a node(a word)
     */
     std::vector<std::pair<Value, size_t>> first15(const Comparable& x) const
     {
@@ -169,43 +194,47 @@ public:
     }
 
     /*
-    *calls internal function to collapse AvlTree into a CSV file
+    *public AvlTree function to collapse AvlTree into a CSV file
+    *const std::string& filename: the name the file which the AvlTree will be written to
     */
     void exportToCSV(const std::string& filename) const
     {
-
+        //creates an outputFile stream called outputFile and associates it with a file passed in through the filename parameter
         std::ofstream outputFile(filename);
-        //error message
 
+        //error handling; prints if there is an issue with opening the outputFile
         if(!outputFile.is_open())
         {
             std::cerr << "Error, failed to open file" << filename << std::endl;
+            //exits function, returns
             return;
         }
-        //print header
+        //print header at the top of the CSV
         outputFile << "key, filepath, frequency" << std::endl;
-        //call inorderTraversal
+        //calls inorderTraversal, a private function of the AVltree
         inOrderTraversal(root, outputFile);
         //close output file
         outputFile.close();
     }
 
     /*
-    *calls function to build AvlTree from a CSV file
+    *public AvlTree function to build AvlTree from a CSV file
+    *const std::string& filename: the name the file which the AvlTree will be written to
     */
     void AVLfromCSV(const std::string& filename) 
     {
         //creates the inputFile from filename, opens it
         std::ifstream inputFile(filename);
-        //error checking
+        //error handling; prints if there is an issue with opening the inputFile
         if(!inputFile.is_open())
         {
             std::cerr << "Error, failed to open file" << filename << std::endl;
             return;
         }
 
-        //store the header
+        //initalized string variable called header
         std::string header;
+        //grabs and stores the header at the top of the csv file
         std::getline(inputFile, header);
 
         //while not the end of the file
@@ -264,13 +293,14 @@ public:
 private:
     /**
      * Internal method to insert into a subtree.
-     * x is the item to insert.
-     * t is the node that roots the subtree.
-     * Set the new root of the subtree.
+     * const Comparable& x: the key of a node (a word); the item to insert.
+     * const Value& document: the filepath to a given article
+     * const size_t& freq: the frequency associated with a given article
+     * AvlNode *&t: the node that roots the subtree
      */
     void insert(const Comparable& x, const Value& document, const size_t& freq, AvlNode *&t)
     {
-        //if its not found, the word does NOT already exist inside the map
+        //if its not found, the word does NOT already exist inside the map, so insert it
         if (t == nullptr)
         {
             //call the node constructor, give it its key, document and freq into the map
@@ -280,9 +310,6 @@ private:
             // a single node is always balanced
             return; 
         }
-
-        //potentially add a statement to check. if we find the node and the document matches, increment 
-
         //recursive call of insert in order to set the node in its place within the tree
         if (x < t->key)
         {
@@ -294,8 +321,7 @@ private:
         }
         else
         {
-            // Duplicate; do nothing
-            //it ALREADY EXISTS! so, update the node's data by inserting the document and the freq into the node's map
+            //the word already exists in the AvlTree; so, update the node's data by inserting the document and the freq into the node's map
             t->data.insert({document, freq});
         } 
 
@@ -306,30 +332,30 @@ private:
     }
 
     /**
-     * Internal method to remove from a subtree.
-     * x is the item to remove.
-     * t is the node that roots the subtree.
-     * Set the new root of the subtree.
-     */
-
-    /**
-     * Internal method to check if x is found in a subtree rooted at t.
+     * Internal method to check if a given key (x) is found in a subtree rooted at t.
+     * const Comparable& x: the key of a node (a word); the term we are searching for
+     * AvlNode *&t: the node that roots the subtree
      */
     bool contains(const Comparable &x, AvlNode *t) const
     {
+        //if root is null, the tree is empty; return
         if (t == nullptr)
             return false;
-
+        //if the key is encountered, the element is found; return true
         if (x == t->key)
-            return true; // Element found.
+            return true; 
+        //recursive call; if x is less than the key of a given node, search the tree again and pass in the node's left child
         else if (x < t->key)
             return contains(x, t->left);
+        //recursive call; if x is less than the key of a given node, search the tree again and pass in the node's right child
         else
             return contains(x, t->right);
     }
 
     /**
-     * Internal method to check if x is found in a subtree rooted at t.
+     * Internal method to return the map associated with a given node if it exists in the Avltree
+     * const Comparable& x: the key of a node (a word); the term we are searching for
+     * AvlNode *&t: the node that roots the subtree
      */
     std::map<Value, size_t> find (const Comparable &x, AvlNode *t) const
     {
@@ -338,22 +364,24 @@ private:
             return std::map<Value, size_t>();
         //if the word is found in the map, return its data
         if (x == t->key)
-            return t->data; // Element found.
-        //recursive call of find
+            return t->data; 
+        //recursive call of find, passing in a given node's left child
         else if (x < t->key)
             return find(x, t->left);
-        //recursive call of find
+        //recursive call of find, passing in a given node's right child
         else
             return find(x, t->right);
     }
 
     /*
     *interal method to sort a node's data from highest frequency to smallest frequency
+    * const Comparable x: the key of a node (a word); the node whose data the function is working with
+    * AvlNode *&t: the node that roots the subtree
     */
     std::vector<std::pair<Value, size_t>> organize(const Comparable x, AvlNode *t) const
     {
         //get the node's data using the find function
-        std::map<Value, size_t> OGdata = find(x, t); //find(x, root)
+        std::map<Value, size_t> OGdata = find(x, t); 
         //created a vector, organizedData, which is the node's data but in descending order; the keys are still the filepaths
         std::vector<std::pair<Value, size_t>> organizedData(OGdata.begin(), OGdata.end());
         //sort based on frequency
@@ -365,7 +393,9 @@ private:
     }
 
     /*
-    *internal function to return the first 15 key/value pairs in the node's data
+    *internal function to return the first 15 key/value pairs in a node's data
+    * const Comparable x: the key of a node (a word); the node whose data the function is working with
+    * AvlNode *&t: the node that roots the subtree
     */
     std::vector<std::pair<Value, size_t>> first15(const Comparable& x, AvlNode *t) const
     {
@@ -373,7 +403,7 @@ private:
         std::vector<std::pair<Value, size_t>> nodeData = organize(x, t);
         //intialize an empty vector called results, which will be returned at the end of the function
         std::vector<std::pair<Value, size_t>> results;
-        //initalize a variable called count to keep track of the amount of elements im putting into the results  map
+        //initalize a variable called count to keep track of the amount of elements placed into the results map
         int count = 0;
        //iterate through nodeData (the node's data, a vector of keys(filepaths) and values(frequencies) now sorted greatest to least based on frequencies)
        //if the map doesn't have 15 elements yet, or if nodeData isn't empty (for the ones with less than 15)
@@ -390,6 +420,8 @@ private:
 
     /*
     *internal function for in order tree traversal
+    * AvlNode *&t: the node that roots the subtree
+    * std::ofstream& outputFile: the file to which the function prints
     */
     void inOrderTraversal(AvlNode *t, std::ofstream& outputFile) const
     {
@@ -398,20 +430,19 @@ private:
         {
             return;
         }
-        //traverse and print left subtree
+        //recursive call with a given node's left child; traverse and print left subtree
         inOrderTraversal(t->left, outputFile);
 
-        //printing
+        //printing the node's key
         outputFile << t->key;
-
+        //iterates through the node's data map and prints the values seperated by commas
         for (const auto& pair : t->data)
         {
             outputFile << "," << pair.first << "," << pair.second;
         }
+        //ends the line
         outputFile << std::endl;
-
-
-        //traverse and print right subtree
+        //recursive call with a given node's right child; traverse and print right subtree
         inOrderTraversal(t->right, outputFile);
     }
 
