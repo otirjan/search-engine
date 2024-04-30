@@ -269,40 +269,182 @@ Class DocumentParser
 
 
 Template Class AvlTree
+    struct Avlnode
     AvlNode root
+    size_t total
+    static const int ALLOWED_IMBALANCE
 
-    Function insert(key, document, freq)
-        if key not present
-            create new node
+    Function insert(x, document, freq, t)
+        if t is not found
+            create new node, passing x, document, and freq
+            increment total
+            return
+        if x is less than t->key
+            recursive call with t->left
+        else if t->key is less than x
+            recursive call with t->right
         else
-            update node data
+            update t's map by inserting with document, freq
         balance tree
 
-    Function find(key)
-        locate node with key
-        return data map
+    Function find(x, t)
+        if t is null
+            return empty map
+        if x equals t->key
+            return t's data
+        else if x is less than t->key
+            recursive call with t->left
+        else
+            recursive call with t->right
 
-    Function organize(key)
-        retrieve and sort data by frequency
-
-    Function balance()
-        apply rotations as necessary to maintain balance
-
-    Function makeEmpty()
-        clear the tree recursively
+    Function organize(x, t)
+        initalize map OGData with map returned from find function
+        create vector of pairs organizedData which is the copied data of OGData
+        sort organizedData based on pair.second (the frequency)
+        return organizedData
 
     Function getTotal()
         return count of unique keys
 
-Class UserInterface
-    Set stopwords
+    Function contains(x, t)
+        if t is null
+            return false
+        if t is encountered
+            return true
+        else if x is less than t->key
+            recursive call with t->left
+        else
+            recursive call with t->right
 
-    Function parseDoc(filePath)
-        read document
-        if author or publication exists
-            extract and store
-        tokenize and process text
-        add each word to IndexHandler with calculated frequency
+    Function first15(x, t)
+        initalize vector of pairs called nodeData with the map returned from organize
+        intialize empty vector of pairs results
+        intialize count with 0
+        iterate through nodeData
+            if not at the end and count is not 15
+                add the pair to results
+                increment count
+        return results
+
+    Function exportToCSV(filename)
+        creates outputFile stream outputFile
+        if outputFile does not open
+            print error message
+            return
+        print header to outputFile
+        calls inOrderTraversal with root, outputFile
+        close outputFile
+        
+    Function AVLfromCSV(filename)
+        creates inputFile from filename
+        if inputFile does not open
+            prints error message
+            return
+        inialize string header
+        getline to store header at top of csv
+        while not end of file
+            initalize string line
+            while function can grab line from inputFile
+                initalize vector tokens
+                split line into tokens
+                push tokens into tokens vector
+                iterate through tokens vector
+                    variable key set to first entry in tokens
+                    variable doc set to tokens at index + 1
+                    variable freq set to tokens at index + 2, casts this ch to int
+                    calls insert with key, doc, freq and root
+        close inputFile
+
+    Function inOrderTraversal(t, outputFile)
+        if t is null
+            return
+        recursive call with t->left
+        print t->key to outputFile
+        for every pair in t's map (data)
+            print comma, print pair.first (filepath), print comma, print pair.second(frequency)
+        print endl
+        recursive call with t->right
+
+Class UserInterface
+    Documentparser parser
+    QueryProcessor queryprocessor
+    indexStartTime
+    indexEndTime
+    queryStartTime
+    queryEndTime
+
+    Function index()
+        starts time
+        initalizes string userPath
+        prompts user for directory path
+        reads in input
+        calls parser's testFileSystem with input
+        ends time
+        calculates duration
+        prints duration to terminal
+
+    Function indexToFile()
+        calls exportToCSV on wordAVl using queryprocessor's handler, passing in a csv
+        calls exportToCSV on personAVl using queryprocessor's handler, passing in a csv
+        calls exportToCSV on organizationdAVl using queryprocessor's handler, passing in a csv
+
+    Function AVLfromFile()
+        calls AVLfromCSV on wordAVl using queryprocessor's handler, passing in a csv
+        calls AVLfromCSV on personAVl using queryprocessor's handler, passing in a csv
+        calls AVLfromCSV on organizationAVl using queryprocessor's handler, passing in a csv
+
+    Function query()
+        starts time
+        initalizes vector of strings input
+        initalizes string line
+        prompts user for query
+        reads in user's query
+        while line is not empty
+            split user's query into tokens
+            push each token into input
+            clear line
+        call processQuery and pass in input as parameter
+        initalize vector final with vector returned from queryprocessor's getResults
+        if final is empty
+            print "no results found"
+            exit function
+        iterate through final
+            in each loop, print index, article title, article publication date, article publication, endl
+        stop time
+        calculate elapsed time
+        print elapsed time to terminal
+        ask user if they would like to view an article's full text
+        initalize char choice
+        retrieve user input and store in choice
+        if user indicates yes
+            initalize int selection as 0
+            prompt user to specify which article text they would like to see by inputting the article's corresponding number
+            retrieve user input
+            call UI's fullArticle function and pass article's filepath
+
+
+    Function fullArticle(filepath)
+        initalizes string fullArticle with the result of parser's fullArticle function, passing parser's fullArticle the filepath passed in as a parameter
+        prints fullArticle to terminal
+
+    Function stats()
+        prints total amount of articles in index by calling parser's getCount function
+        prints total amount of nodes in wordAVL by calling queryprocessor's handler's uniqueWords function
+
+    Function menu()
+        while true
+            prints menu options
+            initalizes int choice as 0
+            saves user input in choice variable
+            if input is not an int
+                print error message
+                clears input
+                ignore input buffer
+                continue
+            switch
+                calls corresponding function according to the value of choice
+
+
 
 
 
