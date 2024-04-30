@@ -155,7 +155,7 @@ int main() {
 
     //testPersonQuery(handler);
 
-    //stestOrgQuery(handler);
+    testOrgQuery(handler);
 
 
     return 0;
