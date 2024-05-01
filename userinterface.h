@@ -40,8 +40,6 @@ class UI
     //creates an index from a file directory
     void index()
     {
-        //starts time
-        indexStartTime = std::chrono::steady_clock::now();
         //string variable called userpath
         std::string userpath;
         //prompts user for the directory path
@@ -49,6 +47,9 @@ class UI
         //accepts user input
         std::cin >> userpath;
         //calls the parser's testFileSystem function, which loops over all the json files in the directory and parses them all
+        
+        //starts time
+        indexStartTime = std::chrono::steady_clock::now();
         parser.testFileSystem(userpath);
         //ends time
         indexEndTime = std::chrono::steady_clock::now();

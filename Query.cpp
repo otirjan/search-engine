@@ -34,7 +34,7 @@ std::vector <std::string> QueryProcessor::tokenize (std::vector<std::string>& te
             }
          }
    }  
-        return words;    //return vector of tokenized words 
+        return words;    //return vector of tokenized/stemmed words 
 }
 
 void QueryProcessor::processQuery(std::vector<std::string>& query)

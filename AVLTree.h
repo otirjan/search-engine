@@ -322,7 +322,8 @@ private:
         else
         {
             //the word already exists in the AvlTree; so, update the node's data by inserting the document and the freq into the node's map
-            t->data.insert({document, freq});
+            t->data[document] += freq;
+
         } 
 
         // This will call balance on the way back up the tree. It will only balance
@@ -386,7 +387,7 @@ private:
         std::vector<std::pair<Value, size_t>> organizedData(OGdata.begin(), OGdata.end());
         //sort based on frequency
         std::sort(organizedData.begin(), organizedData.end(), [](const auto& a, const auto& b) {
-        return a.second > b.second;
+            return a.second > b.second;
         });
         //return the organized vector
         return organizedData;
