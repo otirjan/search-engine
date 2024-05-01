@@ -57,7 +57,7 @@ using namespace std;
                 
                 if (person.HasMember("name") && person["name"].IsString()){    //looks thru people array for names
                     string name = person["name"].GetString();                 //extracts the name 
-                    handler.addPerson(name, filePath, calcFrequency(document, name));                //call the index handler to add each person to the AVl 
+                    handler.addPerson(name, filePath, 1);                //call the index handler to add each person to the AVl 
                 }
              }
             } else {
@@ -74,7 +74,7 @@ using namespace std;
 
                 if (org.HasMember("name") && org["name"].IsString()){    //looks thru people array for names
                     string organization = org["name"].GetString();                 //extracts the name 
-                    handler.addOrg(organization, filePath, calcFrequency(document, organization));   //call the index handler to add each person to the AVl          
+                    handler.addOrg(organization, filePath, 1);   //call the index handler to add each person to the AVl          
                 }
              }
             } else {

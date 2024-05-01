@@ -40,14 +40,14 @@ class UI
     //creates an index from a file directory
     void index()
     {
-        //starts time
-        indexStartTime = std::chrono::steady_clock::now();
         //string variable called userpath
         std::string userpath;
         //prompts user for the directory path
         std::cout << "Enter directory path: " << std::endl;
         //accepts user input
         std::cin >> userpath;
+        //starts time
+        indexStartTime = std::chrono::steady_clock::now();
         //calls the parser's testFileSystem function, which loops over all the json files in the directory and parses them all
         parser.testFileSystem(userpath);
         //ends time
@@ -83,8 +83,6 @@ class UI
     //allows user to search the index
     void query()
     {
-        //starts time
-        queryStartTime = std::chrono::steady_clock::now();
 
         //initalizes a vector of strings called input, which will hold user input
         std::vector<std::string> input;
@@ -97,6 +95,9 @@ class UI
         //reads in the user's query
         std::getline(std::cin, line);
         std::getline(std::cin, line);
+
+        //starts time
+        queryStartTime = std::chrono::steady_clock::now();
 
         //while the query has not been processed (meaning the string is not empty)
         while (!line.empty())
