@@ -42,10 +42,10 @@ Explanation of what data structures are used where. For each, state
     - why it is the appropriate data structure and what other data structure could have been used.
 
 DocParser
-    Data structures used: vector & set
+    Data structures used: vector & unordered set
     Time Complexity:
         Vector: O(1) for adding elements at the end, O(n) for accessing randomly or inserting/deleting in the middle.
-        Set: O(log n) for insertions, deletions, and lookups
+        Set: O(1) for lookups
     Space Complexity:
         Vector: O(n) 
         Set: O(n) 
@@ -53,8 +53,8 @@ DocParser
         Vector: ideal for storing words because vectors provide fast access to data and are efficient in terms of memory when elements are added at the end.
         Set: Perfect for stopwords because it offers efficient search, insertion, and deletion operations. The log(n) complexity for these operations ensures performance remains manageable even as the set size grows, which is important for checking stopwords frequently during parsing.
     What other data structure could've been used:
-        Vector: we could've used a list instead, but they don't provide as efficient random access. 
-        Set: we could've used an unordered set since the order of the stopwords isn't important for faster performance, but it would cost us higher memory consumption and worse worst-case performance. 
+        Vector: we could've used a list for stopwords instead, but they don't provide as efficient random access. 
+        
 
 Node
     Data structures used: inside of the Node struct in the AVLTree we implemented a map to associate document file paths with their respective frequencies of the keyword (key of the node).
@@ -74,7 +74,7 @@ IndexHandler
     Alternatives: hash tables offer fast access times but they lack the order and efficient range of query capabilities provided by the AVL tree
 
 Query Processor:
-    Data structures used: vector to store tokenized and processed query terms, map used to rank ndocument paths based on their frequencies, set used for stop words
+    Data structures used: vector to store tokenized and processed query terms, map used to rank document paths based on their frequencies, unordered set used for stop words
     Time Complexity:
         Vector:  tokenization is O(n)
         Map: O(log n) for insertions, deletions, and lookup
@@ -90,7 +90,7 @@ Query Processor:
     Alternatives: 
         Vector: could use a list, but it would have slower random access
         Map: could use unordered map for faster average-case performance, but without the benefit of sorted keys.
-        Set: could use unordered set but would have higher space consumption
+        Unordered Set: could use ordered set but would have taken longer to sort 
 
 
 
@@ -105,8 +105,8 @@ Robust Data Handling: Capable of handling large datasets and complex queries eff
 - Describe how to use the software.
 Starting the Software: Launch the application from the terminal or command line interface by running the executable file. 
 Entering Queries: Use the search bar to type in your query. Queries can be plain text for simple searches or include special operators for advanced searches:
-Use PERSON:<name> to look for documents mentioning a specific person.
-Use ORG:<organization> to find documents that reference a particular organization.
+Use PERSON:<name> to look for documents mentioning a specific person. (no space between person and name)
+Use ORG:<organization> to find documents that reference a particular organization. (no space between org and name)
 Prefix a term with - to exclude documents containing that term.
 Viewing Results: After submitting the query, the results will be displayed in order of relevance. Each result will provide a document title, a snippet containing the query terms, and a link or method to access the full document.
 
@@ -130,9 +130,13 @@ Viewing Results: After submitting the query, the results will be displayed in or
 
 ### Performance
 - Provide statistics (word counts, timing, etc) for indexing all documents (or as many as you can in a reasonable amount of time).
-***TODO: fill out when code is finalized 
+
+It parsed through 273,270 of the documents in dataset in 1 hour, 20 seconds. 
+
+parsed: 30at Wed May  1  01:36:30 2024
+parsed: 273270at Wed May  1 02:57:05 2024
 
 ### Bonus Work
 Did you attempt any bonuses? If so, please give a brief description of what you did.
 
-We created maps within each node in the AVL to track the frequency of each word within a document. We decided to store this within a map within the node so that when the associated documents of a word are retreived, they will already be sorted from highest-lowest. We hoped to increase efficiency with this data structure and make it easier to combine total frequencies when we were doing intersection in the queryProcessor. We also attempted to stem the words before adding them to the map and before searching in order to return the most accurate results, however, stemming took a significant portion of our time, so we made the decision to prioritize run time and remove the stemming library. 
+We created maps within each node in the AVL to track the frequency of each word within a document. We decided to store this within a map within the node so that when the associated documents of a word are retreived, they will already be sorted from highest-lowest. We hoped to increase efficiency with this data structure and make it easier to combine total frequencies when we were doing intersection in the queryProcessor. We also attempted to stem the words before adding them to the map and before searching in order to return the most accurate results, however, stemming took a significant portion of our run time, so we made the decision to prioritize run time and remove the stemming library. 

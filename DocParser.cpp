@@ -280,7 +280,7 @@ void DocumentParser::testFileSystem(const string& path)  // this takes in the fo
         // We only want to attempt to parse files that end with .json...
         if (entry.is_regular_file() && entry.path().extension().string() == ".json") {
             docCount++;
-            if (docCount % 30 == 0) {
+            if (docCount % 1000 == 0) {
                 auto now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
                 std::string time = std::ctime(&now);
 
