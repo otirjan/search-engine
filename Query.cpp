@@ -13,7 +13,7 @@ std::vector <std::string> QueryProcessor::tokenize (std::vector<std::string>& te
    for (const auto& word: text)
    {
 
-    if (word.find("PERSON:") == 0) { //if the word starts w/ ppl or org, dont stem
+    if (word.find("PERSON:") == 0) { //if the word starts w/ ppl or org, dont manipulate, add directly to words
              std::string processedWord = word.substr(7);
              words.push_back(processedWord); 
          } else if (word.find("ORG:") == 0){
@@ -27,8 +27,6 @@ std::vector <std::string> QueryProcessor::tokenize (std::vector<std::string>& te
             processedWord.erase(std::remove_if(processedWord.begin(), processedWord.end(), ::ispunct), processedWord.end());
             // lowercase the word
             std::transform(processedWord.begin(), processedWord.end(), processedWord.begin(), ::tolower);
-            // stem the word
-            //processedWord = stemWord(processedWord);
             // only add to the processed words vector if it is not a stop word
             if (!processedWord.empty() && stopwords.find(processedWord) == stopwords.end()) 
             {
@@ -39,22 +37,11 @@ std::vector <std::string> QueryProcessor::tokenize (std::vector<std::string>& te
         return words;    //return vector of tokenized/stemmed words 
 }
 
-// string QueryProcessor::stemWord(string& word)
-// {
-//             string stemWord = word;
-
-//             Porter2Stemmer::trim(stemWord);
-//             Porter2Stemmer::stem(stemWord);  
-
-//             return stemWord; 
-// }
-
 void QueryProcessor::processQuery(std::vector<std::string>& query)
 {
     rankedResults.clear();
     
     std::vector<std::string> tokens = tokenize(query);     //tokenize the query 
-
 
     for(auto& word : query) {
        if(word[0]== '-'){                   //add words preceeded by "-" to excluded words (add them without the '-')

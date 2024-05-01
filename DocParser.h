@@ -27,14 +27,13 @@ using namespace std;
 
 class DocumentParser {
     private:
-       std::unordered_set<string> stopwords;
+        std::unordered_set<string> stopwords;
         IndexHandler handler;
         int count;
 
     public:
         DocumentParser();
         vector <string> tokenize (const string& text);
-        //string stemWord(string& word);
         void parseDoc(const string& filePath);
         size_t calcFrequency(const Document& document, const string& word);
         void testFileSystem(const string &path);  
