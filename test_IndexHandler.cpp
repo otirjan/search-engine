@@ -79,12 +79,12 @@ TEST_CASE("IndexHandler Tests") {
     SECTION("lowercasing"){ //PASSED 
         IndexHandler handler; 
         
-        std::string word1 = "HAPPY"; 
+         std::string word1 = "HAPPY"; 
 
-        std::string lowerWord1 = handler.toLower(word1);
+         std::string lowerWord1 = handler.toLower(word1);
 
-        REQUIRE(lowerWord1 == "happy");
+         REQUIRE(lowerWord1 == "happy");
 
         //std::cout << "Original: " << word1 << ", Lowercased: " << lowerWord1 << std::endl;
-    }
-}
+     }
+ }

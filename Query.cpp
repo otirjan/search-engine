@@ -53,7 +53,7 @@ void QueryProcessor::processQuery(std::vector<std::string>& query)
 }
 
 
-//takes in a vector of words already processed (unsure if we need to tokenize in this, i dont think so bc it shoudl be taking in processed query already)
+//takes in a vector of words already processed
 void QueryProcessor::searchQuery(std::vector<std::string>& processedQuery)
 {
     if(processedQuery.empty())  //after removing stopwords, if theres nothing to search for 

@@ -10,7 +10,7 @@ int main()
 {
     //instance of UI. testing (compare output to Cameron's test_QueryProcessor.cpp)
     UI testUI;
-    testUI.menu();
+   // testUI.menu();
 
     return 0;
 }

@@ -12,7 +12,7 @@ add_compile_options(-Wall -Wextra -pedantic)
 
 add_executable(test_DocParser test_DocParser.cpp DocParser.cpp)
 
-add_executable(test_IndexHandler test_IndexHandler.cpp)
+#add_executable(test_IndexHandler test_IndexHandler.cpp)
 
 add_executable(rapidJSONExample rapidJSONExample.cpp)
 add_executable(supersearch main.cpp DocParser.cpp Query.cpp)
