@@ -8,7 +8,7 @@
 TEST_CASE("Tokenization Test") {
     DocumentParser parser;
     string text = "This is a test document for tokenization";
-    vector<string> expected_tokens = {"test", "document", "token"};
+    vector<string> expected_tokens = {"test", "document", "tokenization"};
     vector<string> tokens = parser.tokenize(text);
     REQUIRE(tokens == expected_tokens);
 

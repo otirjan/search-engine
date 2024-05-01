@@ -69,7 +69,7 @@ void DocumentParser::parseDoc(const string& filePath) {
 
             if (person.HasMember("name") && person["name"].IsString()) {           // looks thru people array for names
                 string name = person["name"].GetString();                          // extracts the name
-                handler.addPerson(name, filePath, 1);  // call the index handler to add each person to the AVl
+                handler.addPerson(name, filePath,1);  // call the index handler to add each person to the AVl
             }
         }
     } else {
