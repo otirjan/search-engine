@@ -130,9 +130,13 @@ Viewing Results: After submitting the query, the results will be displayed in or
 
 ### Performance
 - Provide statistics (word counts, timing, etc) for indexing all documents (or as many as you can in a reasonable amount of time).
-***TODO: fill out when code is finalized 
+
+It parsed through 273,270 of the documents in dataset in 1 hour, 20 seconds. 
+
+parsed: 30at Wed May  1  01:36:30 2024
+parsed: 273270at Wed May  1 02:57:05 2024
 
 ### Bonus Work
 Did you attempt any bonuses? If so, please give a brief description of what you did.
 
-We created maps within each node in the AVL to track the frequency of each word within a document. We decided to store this within a map within the node so that when the associated documents of a word are retreived, they will already be sorted from highest-lowest. We hoped to increase efficiency with this data structure and make it easier to combine total frequencies when we were doing intersection in the queryProcessor. We also attempted to stem the words before adding them to the map and before searching in order to return the most accurate results, however, stemming took a significant portion of our time, so we made the decision to prioritize run time and remove the stemming library. 
+We created maps within each node in the AVL to track the frequency of each word within a document. We decided to store this within a map within the node so that when the associated documents of a word are retreived, they will already be sorted from highest-lowest. We hoped to increase efficiency with this data structure and make it easier to combine total frequencies when we were doing intersection in the queryProcessor. We also attempted to stem the words before adding them to the map and before searching in order to return the most accurate results, however, stemming took a significant portion of our run time, so we made the decision to prioritize run time and remove the stemming library. 
