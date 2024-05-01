@@ -58,6 +58,14 @@ Class IndexHandler:
             change the char to lowercase and append to result
         return result
 
+1. Take in a word (already deciphered as person, org, or word) 
+2. If its a person, add it to the person AVL
+3. If its an org, add it to the org AVL 
+4. If its a word, add it to the wordAVL
+5. If a user wants to search a person, use find function to look for it in the person AVL and return associated map 
+6. If a user wants to search an org, use find function to look for it in the org AVL and return associated map
+7. If a user wants to search a word, use find function to look for it in the word AVL and return associated map
+8. If prompted, return the total number of words in the avl 
 
 
 Class QueryProcessor:
