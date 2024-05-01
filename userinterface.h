@@ -243,8 +243,6 @@ class UI
             }
         }
     }
-    
-
 };
 
 #endif

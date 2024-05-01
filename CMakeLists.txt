@@ -10,17 +10,17 @@ file(COPY sample_data/ DESTINATION sample_data/)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 add_compile_options(-Wall -Wextra -pedantic)
 
-add_executable(test_DocParser test_DocParser.cpp DocParser.cpp porter2_stemmer.cpp)
+add_executable(test_DocParser test_DocParser.cpp DocParser.cpp)
 
 add_executable(test_IndexHandler test_IndexHandler.cpp)
 
 add_executable(rapidJSONExample rapidJSONExample.cpp)
-add_executable(supersearch main.cpp DocParser.cpp porter2_stemmer.cpp Query.cpp)
+add_executable(supersearch main.cpp DocParser.cpp Query.cpp)
 add_executable(test_AVLTree test_AVLTree.cpp)
 add_test(NAME TestAVL COMMAND test_AVLTree)
 add_executable(printingAVLTree printingAVLTree.cpp)
-add_executable(UITests UITests.cpp DocParser.cpp porter2_stemmer.cpp Query.cpp)
-add_executable(test_QueryProcessor test_QueryProcessor.cpp Query.cpp DocParser.cpp porter2_stemmer.cpp)
+add_executable(UITests UITests.cpp DocParser.cpp Query.cpp)
+add_executable(test_QueryProcessor test_QueryProcessor.cpp Query.cpp DocParser.cpp)
 #do we need DocParser.cpp and porter2 here? i think so but unsure 
 
 

@@ -19,21 +19,6 @@ TEST_CASE("Tokenization Test") {
     REQUIRE(tokens1 == expected_tokens1);
     }
 
-
-TEST_CASE("Stemming Test") {
-    DocumentParser parser;
-    string word = "running";
-    string expected_stem = "run";
-    string stem = parser.stemWord(word);
-    REQUIRE(stem == expected_stem);
-
-
-    string word1 = "programming";
-    string expected_stem1 = "program";
-    string stem1 = parser.stemWord(word1);
-    REQUIRE(stem1 == expected_stem1);
-}
-
 TEST_CASE("Stopword Removal Test") {
     DocumentParser parser;
     string text_with_stopwords = "This is a test document with stopwords";
