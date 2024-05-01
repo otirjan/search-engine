@@ -37,7 +37,6 @@ class UI
 
     }
 
-
     //creates an index from a file directory. parameter is for a prompt from the command line interface
     void index(const std::string& filepath)
     {
@@ -51,6 +50,7 @@ class UI
         std::chrono::duration<double> indexDuration = indexEndTime - indexStartTime;
         //prints the time spent making an index
         std::cout << "Time taken for indexing: " << indexDuration.count() << " seconds" << std::endl;
+        //persistence
         indexToFile();
     }
 
@@ -96,7 +96,6 @@ class UI
         //using the handler, calls AvlTree's AVLfromCSV function and passes in corresponding file names; fills orgAVL
         queryprocessor.getHandler().organizationAVL.AVLfromCSV("orgAVL.csv");
     }
-
 
     //allows user to search the index. parameter is for a prompt from the command line interface
     void query(const std::string& query)
