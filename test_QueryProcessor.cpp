@@ -131,19 +131,19 @@ void testOrgQuery(IndexHandler& indexHandler) {
 
 
 int main() {
-    // Path to the folder containing the data
+    // path to folder containing the data
     std::string dataFolderPath = "sample_data/coll_1";
 
-    // Create an instance of DocumentParser
+    //instance of DocumentParser
     DocumentParser docParser;
 
-    // Call the function to parse documents in the specified folder
+    //function to parse documents in the specified folder
     docParser.testFileSystem(dataFolderPath);
 
     IndexHandler handler;
     handler = docParser.getIndexHandler();
 
-    std::cout << "Parsing complete." << std::endl;
+    std::cout << "Parsing complete. Uncomment one of the tests below to run it." << std::endl;
 
    //test one of these at a time for convenience
    
@@ -155,7 +155,7 @@ int main() {
 
     //testPersonQuery(handler);
 
-    testOrgQuery(handler);
+    //testOrgQuery(handler);
 
 
     return 0;
