@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
     //if the command is index
     if (command == "index")
     {
-        //saves the filepath provided in a string called filepath
+        //saves the filepath provided in a string called filepath 
         //std::string filepath = argv[2];
         filepath = argv[2];
         //calls UI's index function that accepts a string parameter
@@ -41,6 +41,7 @@ int main(int argc, char* argv[])
         query_string = argv[2];
         //std::cout << "query string: " << query_string << std::endl;
         //calls UI's query function that accepts a string parameter
+        search.AVLfromFile();
         search.query(query_string);
     }
     //if the command is ui

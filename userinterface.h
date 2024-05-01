@@ -51,6 +51,7 @@ class UI
         std::chrono::duration<double> indexDuration = indexEndTime - indexStartTime;
         //prints the time spent making an index
         std::cout << "Time taken for indexing: " << indexDuration.count() << " seconds" << std::endl;
+        indexToFile();
     }
 
     //creates an index from a file directory. this index is called by the menu
