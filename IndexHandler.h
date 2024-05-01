@@ -29,21 +29,21 @@ class IndexHandler {
         // wordAVL.organize(word);
     }
 
-    void addPerson(std::string& word, const std::string& filePath, size_t freq) {  // if the word already exists, it wont make a new node but it will add the doc and its freq to the map
+    void addPerson(std::string& word, const std::string& filePath) {  // if the word already exists, it wont make a new node but it will add the doc and its freq to the map
         if (!isValidString(word)) {
             cerr << "Cannot add Person. Must be a string.";
         }
         toLower(word);
-        personAVL.insert(word, filePath, freq);
+        personAVL.insert(word, filePath, 1);
         // personAVL.organize(word);
     }
 
-    void addOrg(std::string& word, const std::string& filePath, size_t freq) {
+    void addOrg(std::string& word, const std::string& filePath) {
         if (!isValidString(word)) {
             cerr << "Cannot add org. Must be a string.";
         }
         toLower(word);
-        organizationAVL.insert(word, filePath, freq);
+        organizationAVL.insert(word, filePath, 1);
         // organizationAVL.organize(word);
     }
 

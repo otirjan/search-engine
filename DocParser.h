@@ -20,7 +20,6 @@
 #include "rapidjson/istreamwrapper.h"
 #include "rapidjson/document.h"
 
-#include "porter2_stemmer.h"
 #include "IndexHandler.h"
 
 using namespace rapidjson;

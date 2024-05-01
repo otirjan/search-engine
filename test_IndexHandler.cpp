@@ -9,32 +9,41 @@ TEST_CASE("IndexHandler Tests") {
     IndexHandler handler;
 
     SECTION("Adding + Searching Words") {
-        handler.addWord("computer", "file1.txt", 3);
-        handler.addWord("block", "file2.txt", 5);
-        handler.addWord("computer", "file3.txt", 2);
+        std::string word = "computer";
+        handler.addWord(word, "file1.txt");
+        
+        std::string word2 = "block";
+        handler.addWord(word2, "file2.txt");
 
-        REQUIRE(handler.searchWord("computer") == std::map<std::string, size_t>{{"file1.txt", 3}, {"file3.txt", 2}});
-        REQUIRE(handler.searchWord("block") == std::map<std::string, size_t>{{"file2.txt", 5}});
+        std::string word3 = "computer";
+        handler.addWord(word3, "file3.txt");
+
+        REQUIRE(handler.searchWord("computer") == std::map<std::string, size_t>{{"file1.txt", 1}, {"file3.txt", 1}});
+        REQUIRE(handler.searchWord("block") == std::map<std::string, size_t>{{"file2.txt", 1}});
         REQUIRE(handler.searchWord("orange").empty());
     }
 
     SECTION("Adding + Searching Persons") {
-        handler.addPerson("Cameron Tofani", "file1.txt", 2);
-        handler.addPerson("Makayla A", "file2.txt", 3);
-        handler.addPerson("Cameron Tofani", "file3.txt", 1);
+         std::string word4 = "Cameron Tofani";
+        handler.addPerson(word4, "file1.txt");
 
-        REQUIRE(handler.searchPerson("Cameron Tofani") == std::map<std::string, size_t>{{"file1.txt", 2}, {"file3.txt", 1}});
-        REQUIRE(handler.searchPerson("Makayla A") == std::map<std::string, size_t>{{"file2.txt", 3}});
+        std::string word5 = "Makayla A";
+        handler.addPerson(word5, "file2.txt");
+
+        REQUIRE(handler.searchPerson("Cameron Tofani") == std::map<std::string, size_t>{{"file1.txt", 1}});
+        REQUIRE(handler.searchPerson("Makayla A") == std::map<std::string, size_t>{{"file2.txt", 1}});
         REQUIRE(handler.searchPerson("Liv T").empty());
     }
 
     SECTION("Adding + Searching Orgs") {
-        handler.addOrg("Apple", "file1.txt", 10);
-        handler.addOrg("Google", "file2.txt", 8);
-        handler.addOrg("Apple", "file3.txt", 6);
+         std::string word7 = "Apple";
+        handler.addOrg(word7, "file1.txt");
 
-        REQUIRE(handler.searchOrg("Apple") == std::map<std::string, size_t>{{"file1.txt", 10}, {"file3.txt", 6}});
-        REQUIRE(handler.searchOrg("Google") == std::map<std::string, size_t>{{"file2.txt", 8}});
+        std::string word8 = "Google";
+        handler.addOrg(word8 ,"file2.txt");
+
+        REQUIRE(handler.searchOrg("Apple") == std::map<std::string, size_t>{{"file1.txt", 1}});
+        REQUIRE(handler.searchOrg("Google") == std::map<std::string, size_t>{{"file2.txt", 1}});
         REQUIRE(handler.searchOrg("Mac").empty());
     }
 
@@ -44,7 +53,7 @@ TEST_CASE("IndexHandler Tests") {
 
         //adding a word with an empty string
         std::string invalidWord = "";
-        handler.addWord(invalidWord, "file1.txt", 3);
+        handler.addWord(invalidWord, "file1.txt");
         REQUIRE(errorStream.str() == "Cannot add word. Must be a string.");
 
         // Clear the error stream
@@ -52,7 +61,7 @@ TEST_CASE("IndexHandler Tests") {
 
         // Test adding a person with an empty string
         std::string invalidPerson = "";
-        handler.addPerson(invalidPerson, "file1.txt", 2);
+        handler.addPerson(invalidPerson, "file1.txt");
         REQUIRE(errorStream.str() == "Cannot add Person. Must be a string.");
 
         // Clear the error stream
@@ -60,7 +69,7 @@ TEST_CASE("IndexHandler Tests") {
 
         // Test adding an organization with an empty string
         std::string invalidOrg = "";
-        handler.addOrg(invalidOrg, "file1.txt", 5);
+        handler.addOrg(invalidOrg, "file1.txt");
         REQUIRE(errorStream.str() == "Cannot add org. Must be a string.");
 
         // Restore cerr
