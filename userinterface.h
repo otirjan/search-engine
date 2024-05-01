@@ -49,9 +49,6 @@ class UI
         //starts time
         indexStartTime = std::chrono::steady_clock::now();
         //calls the parser's testFileSystem function, which loops over all the json files in the directory and parses them all
-        
-        //starts time
-        indexStartTime = std::chrono::steady_clock::now();
         parser.testFileSystem(userpath);
         //ends time
         indexEndTime = std::chrono::steady_clock::now();

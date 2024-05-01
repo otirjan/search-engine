@@ -5,19 +5,19 @@ Workflow:
     2. pass in directory filepath
     3. iterate through directory, check  if they are .json files
     4. tokenize, lowercase, etc
-    5. add to correspending AVL (to personAVL if person, orgAVL if org, all words to wordAVL)
+    5. add to correspending AVL (to personAVL if person, orgAVL if org, all words to wordAVL). if the node doesn't exist, add to tree.
+    if the node exists, update the frequency at the given filepath by 1
     6. return time taken to create index
     7. query
-    8. enter input, tokenize input, put into vector
-    9. 
-    1(). print results
-    11. offer option to read article text, print if desired
-
-
-
-
-
-
+    8. enter input, tokenize input, put into vector and pass to query processor
+    9. tokenize input, check for words to negate
+    10. search for the query in AVL. if query is more than one term, erase word when corresponding map is returned
+    11. compare maps to calculate intersections between, order the map from least to greatest by frequency. remove negated words if applicable
+    update ranked results
+    12. return results map to UI
+    13. print results
+    14. offer option to read article text, print if desired
+    15. menu; options to index, collapse to csv, build from csv, view statistics
 
 Class IndexHandler:
         AvlTree wordAVL, personAVL, organizationAVL
