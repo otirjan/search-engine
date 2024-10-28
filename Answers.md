@@ -17,17 +17,6 @@ Place [x] for what applies.
 
 ## Answers
 
-### Project Management
-
-Complete the tasks and planned completion columns **BEFORE** You start with 
-coding!
-
-
-Weekly milestones/tasks. Set out a plan at the beginning and then record when you got it done.
-
-![Weekly Tasks](table.png)
-
-
 ### High-level Design of Solution
 
 - Add a UML class diagram, etc.
